@@ -1,0 +1,35 @@
+<?php
+$l_add_language = "Legg til spr&aring;k";
+$l_changes_saved = "Endrigner lagret.";
+$l_charset = "Tegnsett";
+$l_check_integrity_of_files = "Kontroller integriteten til filene";
+$l_cp_translation = "CP oversettelse";
+$l_directories = "Mapper";
+$l_edit_file = "Rediger fil";
+$l_file = "Fil";
+$l_file_format_must_be_png = "Filformatet m&aring; v&aelig;re png.";
+$l_flag = "Flagg";
+$l_integrity = "Integritet";
+$l_language = "Spr&aring;k";
+$l_languages = "Spr&aring;k";
+$l_moderator = "moderator";
+$l_new_directory = "Ny mappe";
+$l_new_file = "Ny fil";
+$l_no_file_selected = "No file selected.";
+$l_open_directory = "Ingen fil valgt.";
+$l_open_language = "&Aring;pne spr&aring;k";
+$l_photo_could_not_be_uploaded_please_check_file_size = "Fotoet kunne ikke lastes opp. Vennligst sjekk filst&oslash;rrelsen.";
+$l_photo_exceeds_filesize = "Fotoet overskrider filst&oslash;rrelsen.";
+$l_photo_exceeds_filesize_form = "Fotoet overskrider filst&oslash;rrelsen til skjemaet.";
+$l_photo_unknown_error = "Bildeopplastingen mislyktes. Ukjent feil.";
+$l_photo_uploaded = "Foto lastet opp.";
+$l_save = "Lagre";
+$l_select_photo = "Velg foto";
+$l_size = "St&oslash;rrelse";
+$l_translations = "Oversettelse";
+$l_unknown_file_format = "Ukjent filformat.";
+$l_unknown_upload_error = "Ukjent opplastet feil.";
+$l_updated = "Oppdatert";
+$l_upload = "Last opp";
+$l_width_and_height_must_be = "Bredde og h&oslash;yde m&aring; v&aelig;re 16x16.";
+?>

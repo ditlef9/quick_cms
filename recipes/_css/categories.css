@@ -1,0 +1,39 @@
+
+
+/*- Recipes categories ---------------------------------------------------------------------------- */
+/* round icons */
+div.recipes_categories_row{
+	display: flex;
+	flex-wrap: wrap;
+}
+div.recipes_categories_column{
+	flex: 20%;
+	max-width: 20%;
+	text-align: center;
+}
+div.recipes_categories_column > p{
+	line-height: normal;
+}
+div.recipes_categories_column > p > a > img{
+	border-radius: 5%;
+	margin-bottom: 8px;
+	vertical-align: middle;
+}
+div.recipes_categories_column > p > a > img:hover{
+	border-radius: 3%;
+}
+
+
+@media screen and (max-width: 52.375em) {
+	div.recipes_categories_column{
+		flex: 50%;
+		max-width: 50%;
+		text-align: center;
+	}
+	div.recipes_categories_column:nth-child(2n+1) > p{ /* Left*/
+		padding-right: 10px;
+	}
+	div.recipes_categories_column:nth-child(2n) > p{ /* Right */
+		padding-left: 10px;
+	}
+}

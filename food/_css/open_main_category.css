@@ -1,0 +1,54 @@
+@import url("index.css");
+
+
+/* Show sub categories */
+#food_show_sub_categories {
+	clear: both;
+}
+
+#food_show_sub_categories ul {
+	list-style-type: none;
+	margin: -4px 0px 0px 0px;
+	padding: 0;
+}
+#food_show_sub_categories li {
+	display: inline-block;
+	padding-right: 4px;
+	margin: 24px 0px 0px 0px;
+}
+#food_show_sub_categories a {
+	padding: 8px;
+	background: #fff;
+    	border: 0 none;
+    	box-sizing: border-box;
+	border: #dcdcdc 1px solid;
+    	border-radius: 5px;
+	color: #413746;
+}
+#food_show_sub_categories a:hover {
+	border-color: #959595;
+	color: #246ada;
+}
+
+#food_show_sub_categories a.active{
+	background: #fbfbfa;
+	border-color: #b1aab4;
+}
+
+/* Food categories with food */
+div.food_sub_categories_with_food {
+	background: #f1f1f2;
+}
+div.food_sub_categories_with_food > a{
+	display:block; /* make it fill entire li */
+	color: #333333;
+	font: bold 16px 'Open Sans',sans-serif;
+	padding: 10px 10px 10px 10px;
+	overflow: hidden;
+}
+div.food_sub_categories_with_food_right{
+	float: right;
+	margin-top: 5px;
+	margin-right: 10px;
+	
+}

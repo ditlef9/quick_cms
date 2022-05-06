@@ -1,0 +1,33 @@
+<?php
+$l_alias = "Alias";
+$l_rank  = "Rank";
+$l_added = "Added";
+$l_admin = "Admin";
+$l_moderator = "Moderator";
+$l_editor = "Editor";
+$l_member = "Member";
+$l_add_member = "Add member";
+$l_email = "Email";
+$l_full_access = "Full access";
+$l_full_access_cant_delete_admin = "Full access, cant delete admin";
+$l_can_edit_space_and_pages = "Can edit space and pages";
+$l_member = "Member";
+$l_view_access_only = "View access only";
+$l_user_have_to_be_registered_before_you_can_add_him_or_her_as_a_member = "User have to be registred before you can add him or her as a member.";
+$l_register_new_user = "Registrer new user.";
+$l_edit_member = "Edit member";
+$l_save_changes = "Save changes";
+$l_changes_saved = "Changes saved";
+$l_delete_member = "Delete member";
+$l_are_you_sure = "Are you sure?";
+$l_confirm = "Confirm";
+$l_membership_requested = "Membership requested";
+$l_accept = "Accept";
+$l_decline = "Decline";
+$l_welcome_to = "Welcome to";
+$l_hi = "Hi";
+$l_you_have_gained_access_to_the_space = "You have gained access to the space";
+$l_the_url_to_the_space_is = "The URL to the space is";
+$l_membership_request_declined = "Membership request declined";
+$l_your_membership_request_was_declined = "Your membership request was declined.";
+?>

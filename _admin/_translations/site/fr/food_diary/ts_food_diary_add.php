@@ -1,0 +1,32 @@
+<?php
+$l_add = "Ajouter";
+$l_after_training_lowercase = "apr&egrave;s l&#039;entrainement";
+$l_before_training_lowercase = "avant l&#039;entra&icirc;nement";
+$l_breakfast_lowercase = "petit d&eacute;jeuner";
+$l_cal_lowercase = "cal";
+$l_carb_lowercase = "carb";
+$l_dinner_lowercase = "d&icirc;ner";
+$l_fat_lowercase = "gras";
+$l_food = "Aliments";
+$l_food_categories = "Cat&eacute;gories de nourriture";
+$l_food_search = "Recherche de nourriture";
+$l_fridays_lowercase = "les vendredis";
+$l_lunch_lowercase = "le d&eacute;jeuner";
+$l_mondays_lowercase = "les lundis";
+$l_new_entry = "Nouvelle entr&eacute;e";
+$l_new_food = "Nouvelle nourriture";
+$l_on_lowercase = "sur";
+$l_on_this_page_you_will_see_food_you_have_added_before = "Sur cette page, vous verrez les aliments que vous avez ajout&eacute;s auparavant.";
+$l_proteins_lowercase = "les prot&eacute;ines";
+$l_recent = "R&eacute;cent";
+$l_recipes = "Recettes";
+$l_saturdays_lowercase = "les samedis";
+$l_snacks_lowercase = "des collations";
+$l_sundays_lowercase = "les dimanches";
+$l_supper = "souper";
+$l_the_more_you_use_the_food_diary_the_smarter_it_gets = "Plus vous utilisez l&#039;agenda alimentaire, plus il devient intelligent.";
+$l_the_page_is_smart_so_it_will_remember_what_you_usually_have_for_your = "La page est intelligente, elle se souviendra donc de ce que vous avez habituellement pour votre";
+$l_thursdays_lowercase = "les jeudis";
+$l_tuesdays_lowercase = "mardi";
+$l_wednesdays_lowercase = "les mercredis";
+?>

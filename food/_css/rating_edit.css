@@ -1,0 +1,5 @@
+
+/*- Rating ------------------------------------------ */
+.inp_rating_radio_1, .inp_rating_radio_2, .inp_rating_radio_3, .inp_rating_radio_4, .inp_rating_radio_5 {
+	display: none;
+}

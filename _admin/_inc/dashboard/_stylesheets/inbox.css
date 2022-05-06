@@ -1,0 +1,51 @@
+/*- Table inbox ------------------------------------- */
+div.message_div_unread{
+	border-top: #fff 1px solid;
+	border-bottom: #e3e8ea 1px solid;
+}
+div.message_div_unread:hover{
+	border-top: #bbbebf 1px solid;
+	border-bottom: #bbbebf 1px solid;
+}
+div.message_div_read{
+	border-top: #f5f7f7 1px solid;
+	border-bottom: #e3e8ea 1px solid;
+	background: #f5f7f7;
+}
+div.message_div_read:hover{
+	border-top: #bbbebf 1px solid;
+	border-bottom: #bbbebf 1px solid;
+}
+
+
+
+td.message_row_img_unread{
+	padding: 0px 10px 0px 0px;
+	width: 40px;
+}
+td.message_row_text_unread{
+	padding: 0px 0px 0px 0px;
+}
+
+td.message_row_img_read{
+	padding: 0px 10px 0px 0px;
+	width: 40px;
+}
+td.message_row_text_read{
+	padding: 0px 0px 0px 0px;
+}
+
+
+a.message_from_name_unread{
+	color: #000;
+	font-weight: bold;
+}
+a.message_title_unread{
+	color: #7e7e7e;
+}
+a.message_from_name_read{
+	color: #000;
+}
+a.message_title_read{
+	color: #7e7e7e;
+}

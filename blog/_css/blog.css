@@ -1,0 +1,70 @@
+
+	/*- Recipe of the day ------------------------------------------------------- */
+	div.blog_post_of_the_day{
+		position: relative;
+		text-align: center;
+		color: white;
+		margin-top: 30px;
+	}
+
+	img.blog_post_of_the_day_img{
+		position:relative;
+	}
+	div.blog_post_of_the_day_title{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		background: rgba(0,0,0,0.35);
+		padding: 15px 0px 15px 0px;
+		width: 100%;
+	}
+	div.blog_post_of_the_day_title_left{
+		float: left;
+	}
+	a.blog_post_of_the_day_a{
+		font: normal 20px 'Open Sans',sans-serif;
+		color: #ffffff;
+		text-overflow: ellipsis; 
+		padding: 0px 15px 0px 15px;
+	}
+	div.blog_post_of_the_day_slogan{
+		border-radius: 50%;
+		text-align: center;
+		background: #2e3345;
+		position: absolute;
+		bottom: 15px;
+		left: 15px;
+		padding: 25px 20px 25px 20px;
+		background:rgba(71,92,127,0.85);
+	}
+	div.blog_post_of_the_day_slogan > span{
+		font: normal 20px 'Open Sans',sans-serif;
+		color: #ffffff;
+	}
+
+	div.blog_post_of_the_day_right{
+		float: right;
+	}
+	p.blog_post_of_the_day_right_p{
+		padding: 0;
+		margin: 5px 15px 0px 0px;
+	}
+	a.blog_post_of_the_day_right_a{
+		font: normal 16px 'Open Sans',sans-serif;
+		color: #ffffff;
+		text-overflow: ellipsis; 
+		padding: 0px 15px 0px 15px;
+	}
+
+
+	@media screen and (max-width: 52.375em) {
+	
+		div.blog_post_of_the_day_slogan{
+			padding: 20px 10px 20px 10px;
+		}
+		div.blog_post_of_the_day_slogan > span{
+			font: normal 16px 'Open Sans',sans-serif;
+			color: #ffffff;
+		}
+
+	}

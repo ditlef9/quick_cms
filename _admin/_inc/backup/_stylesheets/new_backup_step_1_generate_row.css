@@ -1,0 +1,14 @@
+
+
+/*- Dashboard Row Two (2)  ----------------------------------------------- */
+div.backup_row{            display: flex;
+            flex-direction: row;
+
+}
+
+div.backup_column_left{
+	padding-right: 2%;
+
+}
+div.backup_column_right{
+}

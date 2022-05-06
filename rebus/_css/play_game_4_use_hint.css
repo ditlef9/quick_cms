@@ -1,0 +1,77 @@
+/*- Body -------------------------------------------------------------------------- */
+html,body {
+	margin:0;
+	padding:0;
+	height: 100%;
+}
+body {
+	background: #f9f9f7; 
+	color: #000;
+	font: normal 16px 'Open Sans', sans-serif;
+}
+
+
+
+/*- Body -------------------------------------------------------------------------- */
+div.background {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	background-color: #f5f5f0;
+	height: auto !important;
+}
+
+
+div.center {
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	text-align: center;
+}
+
+/*- Buttons ---------------------------------------------------------------------- */
+.btn {
+	background: #475c7f;
+	border: none; 
+	border-radius: 5px;
+	color: #FFF;
+	padding: 4px 10px 4px 10px; 
+	margin: 0 3px; 
+	font: normal 14px 'Open Sans',sans-serif;
+}
+.btn:hover {
+	color: #fff;
+	background: #4f6488;
+	text-decoration: none;
+}
+
+.btn_default {
+	padding: 4px 10px 4px 10px; 
+	margin: 0px 3px 0px 0px; 
+	font: normal 14px 'Open Sans',sans-serif;
+	background: #fff;
+	border: #cccccc 1px solid; 
+	border-radius: 5px;
+	color: #333333;
+	text-decoration: none;
+}
+.btn_default:hover {
+	border: #adadad 1px solid; 
+	background: #e6e6e6;
+	color: #333333;
+}
+
+/*- Hint ----------------------------------------------- */
+div.hint_value{
+	margin: 12px 0px 0px 0px;
+	padding: 10px 0px 10px 0px;
+	background: rgba(255, 255, 255, 0.7);
+}
+
+/*- Sounds ----------------------------------------------- */
+div.audio{
+	height: 200px;
+}

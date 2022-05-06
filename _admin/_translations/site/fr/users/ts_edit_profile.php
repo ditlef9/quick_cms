@@ -1,0 +1,32 @@
+<?php
+$l_about = "Sur";
+$l_about_me = "&Agrave; propos de moi";
+$l_alias = "Alias";
+$l_divorced = "Divorc&eacute;";
+$l_edit_profile = "Editer le profil";
+$l_engaged = "Engag&eacute;";
+$l_female = "Femelle";
+$l_gender = "Le sexe";
+$l_high_school = "&Eacute;cole secondaire";
+$l_interested_in = "Int&eacute;ress&eacute; par";
+$l_in_a_open_relationship = "Dans une relation libre";
+$l_in_a_relationship = "En couple";
+$l_its_complicated = "C&#039;est compliqu&eacute;";
+$l_languages = "Langages";
+$l_male = "M&acirc;le";
+$l_male_and_female = "M&acirc;le et femelle";
+$l_married = "Mari&eacute;";
+$l_men = "Hommes";
+$l_name = "Pr&eacute;nom";
+$l_please_select = "Veuillez choisir";
+$l_relationship = "Relation";
+$l_relationship_status = "Statut de la relation";
+$l_save = "Sauvegarder";
+$l_seperated = "S&eacute;par&eacute;";
+$l_single = "Unique";
+$l_university = "Universit&eacute;";
+$l_website = "Site Internet";
+$l_widow_widower = "Veuve / veuf";
+$l_women = "Femmes";
+$l_work = "Travail";
+?>

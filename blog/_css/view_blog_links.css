@@ -1,0 +1,31 @@
+p.link{
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 4px 0px;
+	line-height: 1.6;
+}
+p.link_description{
+	margin: 0px 0px 10px 0px;
+	padding: 0px 0px 10px 0px;
+	color: #545454;
+	line-height: 1;
+}
+a.link_title_a{
+	color: #1a0dab;
+	font-size: 110%;
+}
+a.link_title_a:hover{
+	text-decoration: underline;
+}
+a.link_url_a{
+	color: #006621; // green
+}
+a.link_url_ad_a{
+	padding: 1px 2px 1px 2px; 
+	margin: 5px 4px 0px 0px; 
+	border: #006621 1px solid; 
+	border-radius: 5px;
+	color: #006621;
+	font-size: 60%;
+	float: left;
+
+}

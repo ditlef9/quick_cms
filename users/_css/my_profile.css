@@ -1,0 +1,46 @@
+/**
+*
+* File: users/_css/my_profile.css
+* Version 1.0.0
+* Date 11:55 11.03.2018
+* Copyright (c) 2008-2018 Sindre Andre Ditlefsen
+* License: http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
+
+/*- Vertical ------------------------------------------------------------------------ */
+.vertical {
+	margin-bottom: 10px;
+}
+.vertical > ul {
+	margin:0;
+	padding: 0;
+	list-style:none;
+}
+.vertical > ul > li {
+	margin: 0px 0px 0px 0px;
+	padding: 10px 0px 10px 0px;
+	border-bottom: #ccc 1px solid;
+}
+.vertical > ul > li:hover {
+	background: #faf4f2;
+}
+.vertical > ul > li > a {
+	font: normal 15px 'Open Sans',sans-serif;
+	display:block;
+	color: #333;
+	padding: 0px 0px 0px 10px;
+}
+.vertical > ul > li > a > img {
+	float: left;
+	padding: 0px 6px 0px 0px;
+}
+.vertical > ul > li > a:hover {
+	background: #faf4f2;
+	text-decoration: none;
+}
+.vertical > ul > li > a.active {
+	background: #fff;
+	font-weight: bold;
+}

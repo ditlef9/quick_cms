@@ -1,0 +1,35 @@
+<?php
+$l_about = "Om";
+$l_access_denied_please_contact_administrator = "Ingen tilgang. Ta kontakt med administrator.";
+$l_account_temporarily_banned_please_wait_one_hour_before_trying_again = "Konto midlertidig utestengt. Vennligst pr&oslash;v igjen om en time.";
+$l_administrator = "Administrator";
+$l_author = "Forfatter";
+$l_check_your_email = "Sjekk din e-post.";
+$l_database_name = "Databasenavn";
+$l_email = "E-post";
+$l_forgot_password = "Glemt passord";
+$l_help = "Hjelp";
+$l_host = "Vert";
+$l_install = "Installer";
+$l_invalid_email_format = "Ugyldig e-post format.";
+$l_login = "Logg inn";
+$l_password = "Passord";
+$l_please_enter_your_email = "Vennligst skriv inn din e-postadresse.";
+$l_please_enter_your_password = "Vennligst skriv inn ditt passord.";
+$l_please_enter_your_user_name = "Vennligst skriv inn ditt brukernavn.";
+$l_please_log_in_to_view_the_control_panel = "Vennligst logg inn for &aring; se p&aring; kontrollpanelet.";
+$l_prefix = "Prefiks";
+$l_register = "Register";
+$l_setup = "Oppsett";
+$l_site = "Side";
+$l_title = "Tittel";
+$l_unknown_email_address = "Ukjent e-post adresse.";
+$l_username = "Brukernavn";
+$l_user_identification = "Brukeridentifikasjon";
+$l_user_not_found = "Bruker ikke funnet.";
+$l_wanted_password = "&Oslash;nsket passord";
+$l_webmaster_mail = "Webmaster e-post";
+$l_welcome_to = "Velkommen til";
+$l_wrong_key = "Feil n&oslash;kkel.";
+$l_wrong_password_please_enter_your_password = "Feil passord. Vennligst skriv inn passordet ditt.";
+?>

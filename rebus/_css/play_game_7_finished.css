@@ -1,0 +1,36 @@
+/*- In game ----------------------------------------------------------------------- */
+div.in_game{
+	background: #fff;
+	border-radius: 25px;
+	text-align: center;
+	padding: 5px 0px 10px 10px;
+	margin: 20px 0px 20px 0px;
+
+}
+
+/*- Time used and points ----------------------------------------------------------- */
+
+	/* Points */
+	div.points{
+		background: #7c27be;
+		border-radius: 25px;
+		padding: 5px 11px 5px 11px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+		float: left;
+		margin-bottom: 20px;
+	}
+	span.points_span{
+		color: #fff;
+	}
+	/* Time used */
+	div.time_used{
+		background: #be2769;
+		border-radius: 25px;
+		padding: 5px 11px 5px 11px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+		float: right;
+		margin-bottom: 20px;
+	}
+	#time_used_span{
+		color: #fff;
+	}

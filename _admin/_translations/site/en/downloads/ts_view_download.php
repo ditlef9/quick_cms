@@ -1,0 +1,29 @@
+<?php
+$l_downloads = "Downloads";
+$l_download = "Download";
+$l_now_downloading = "Now downloading";
+$l_images = "Images";
+$l_updated = "Updated";
+$l_version = "Version";
+$l_size = "Size";
+$l_name = "Name";
+$l_hits = "Hits";
+$l_unique = "Unique";
+$l_info = "Info";
+$l_unique_downloads = "Unique downloads";
+$l_click_to_download = "Click to download";
+$l_new_comment_for_download = "New comment for download";
+$l_view_download = "View download";
+$l_view_comment = "View comment";
+$l_mark_as_spam = "Mark as spam";
+$l_unsubscribe = "Unsubscribe";
+$l_write_a_comment = "Write a comment";
+$l_save_comment = "Save comment";
+$l_login_to_post_comment = "Login to post comment";
+$l_create_new_account = "Create new account";
+$l_comments = "Comments";
+$l_edit = "Edit";
+$l_delete = "Delete";
+$l_report = "Report";
+$l_actions = "Actions";
+?>

@@ -1,0 +1,130 @@
+/**
+*
+* File: food/_css/index.css
+* Version 1.0.0.
+* Date 12:42 21.01.2018
+* Copyright (c) 2008-2018 Sindre Andre Ditlefsen
+* License: http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+/*- Headline ------------------------------------------------------------------------------ */
+div.food_float_left{
+	float: left;
+}
+div.food_float_right{
+	float: right;
+	padding: 10px 0px 0px 0px;
+}
+@media screen and (max-width: 52.375em) {
+	div.food_float_left{
+		float: none;
+	}
+	div.food_float_right{
+		float: none;
+		padding: 0px 0px 0px 0px;
+		overflow: auto;
+		white-space: nowrap;
+	}
+}
+
+/*- Search box on home page ---------------------------------------------------------------------- */
+div.food_search{
+
+}
+
+
+/*- Food main categories ---------------------------------------------------------------------------- */
+/* round icons */
+div.food_categories_row{
+	display: flex;
+	flex-wrap: wrap;
+	margin: 20px 0px 15px 0px;
+}
+div.food_categories_column{
+	flex: 20%;
+	max-width: 20%;
+	text-align: center;
+	padding: 5px 0px 0px 0px;
+}
+div.food_categories_column > p{
+	line-height: normal;
+}
+div.food_categories_column > p > a{
+	font-size: 90%;
+}
+div.food_categories_column > p > a > img{
+	border-radius: 5%;
+	margin-bottom: 8px;
+	vertical-align: middle;
+}
+div.food_categories_column > p > a > img:hover{
+	border-radius: 3%;
+}
+
+
+@media screen and (max-width: 52.375em) {
+	div.food_categories_column{
+		flex: 33%;
+		max-width: 33%;
+		text-align: center;
+	}
+	div.food_categories_column:nth-child(2n+1) > p{ /* Left*/
+		padding-right: 10px;
+	}
+	div.food_categories_column:nth-child(2n) > p{ /* Right */
+		padding-left: 10px;
+	}
+}
+
+
+/*- Main Categories ---------------------------------------------------------------------- */
+div.food_all_main_categories_selector{
+	margin-top: 10px;
+	background: #fff;
+    	border: 0 none;
+    	box-sizing: border-box;
+	border: #dcdcdc 1px solid;
+    	border-radius: 5px;
+}
+#show_all_main_categories_link_text{
+	display: block;
+	color: #333333;
+	font: normal 18px 'Open Sans',sans-serif;
+	padding: 10px 10px 10px 10px;
+	overflow: hidden;
+}
+img.show_all_main_categories_img{
+	float: right;
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+#food_show_all_main_categories{
+	display: none; /* Activated by clicking on Categories */
+}
+
+#food_show_all_main_categories ul {
+	list-style:none;
+	margin: 0px 0px 0px 0px;
+	padding: 6px 0px 0px 0px;
+}
+
+#food_show_all_main_categories li {
+	border-bottom: #f7f7f5 1px solid;
+}
+#food_show_all_main_categories a {
+	padding: 10px 0px 10px 10px;
+	color: #413746;
+	display:block; /* make it fill entire li */
+}
+#food_show_all_main_categories a:hover {
+	background: #f1f1f2;
+	color: #246ada;
+}
+
+
+/*- Food in list ---------------------------------------------------------------------- */
+span.nutritional_number{
+	font-size: 90%;
+	color: #655c5a;
+}

@@ -1,0 +1,2 @@
+|Blank user agent is not allowed.
+Mozilla/5.0 (compatible; ips-agent)|What is this browser?

@@ -1,0 +1,29 @@
+<?php
+$l_actions = "Handlinger";
+$l_click_to_download = "Klikk for &aring; laste ned";
+$l_comments = "Kommentarer";
+$l_create_new_account = "Lag ny konto";
+$l_delete = "Slett";
+$l_download = "Last ned";
+$l_downloads = "Nedlastninger";
+$l_edit = "Rediger";
+$l_hits = "Treff";
+$l_images = "Bilder";
+$l_info = "Info";
+$l_login_to_post_comment = "Logg inn for &aring; skrive kommentar";
+$l_mark_as_spam = "Marker som spam";
+$l_name = "Navn";
+$l_new_comment_for_download = "Ny kommentar til nedlastning";
+$l_now_downloading = "Laster ned";
+$l_report = "Rapporter";
+$l_save_comment = "Lagre kommentar";
+$l_size = "St&oslash;rrelse";
+$l_unique = "Unike";
+$l_unique_downloads = "Unike nedlastninger";
+$l_unsubscribe = "Avmeld";
+$l_updated = "Oppdatert";
+$l_version = "Versjon";
+$l_view_comment = "Vis kommentar";
+$l_view_download = "Vis nedlastning";
+$l_write_a_comment = "Skriv en kommentar";
+?>

@@ -1,0 +1,118 @@
+
+/*- Body -------------------------------------------------------------------------- */
+html,body {
+	margin:0;
+	padding:0;
+	height:100%; /* needed for container min-height */
+}
+body {
+	background: #ffffff; 
+	color: #000;
+	font: normal 16px 'Open Sans', sans-serif;
+}
+
+
+/*- Paragrafer og span ----------------------------------------------------------- */
+p{
+	margin: 0;
+	font: normal 16px 'Open Sans', sans-serif;
+        color: #000;
+	padding: 10px 0px 10px 0px;
+	line-height: 1.6;
+}
+span{
+        color: #000;
+}
+
+
+/*- Input ------------------------------------------------------------------------ */
+input {  /* Submit button */
+	padding: 3px;
+	border: 1px solid #BBB;
+	background-color: #FFF; 
+	font: normal 16px Arial,"Helvetica Neue",Helvetica,sans-serif;
+}
+textarea { 
+	padding: 3px; border: 1px solid #BBB; font-size: 12px; 
+	background-color: #FFF; 
+}
+select  { border: 1px solid #BBB; padding: 2px; }
+.checkbox { border: none;}
+input.submit { background-color: #8EAF0D;  border: none; color: #FFF; padding: 3px 5px; margin: 0 3px; font-size: 12px; }
+button { background-color: #8EAF0D;  border: 1px solid #698208; color: #FFF; padding: 3px 5px; margin: 0 3px; font-size: 12px; }
+.radio {border: 0; margin: 0 3px -3px 0; background: transparent; }
+
+input {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+
+/*- Linker ------------------------------------------------------------------ */
+a {
+	color: #375962;
+	font: normal 16px 'Open Sans', sans-serif;
+	text-decoration: none;
+}
+a:hover {
+	color: #c1452b;
+	text-decoration: none;
+}
+
+a.bold {
+	color: #000;
+	font: normal 16px 'Open Sans', sans-serif;
+	text-decoration: none;
+}
+a.bold:hover {
+	color: #c1452b;
+	text-decoration: none;
+}
+
+
+
+/*- Main ------------------------------------------------------------------ */
+
+main{
+	min-height: 100%;
+	height: calc(100% - 50px);
+}
+@media screen and (max-width: 52.375em) {
+}
+
+
+/*- Drawer ------------------------------------------------------------------ */
+
+#drawer{
+	background: var(--background-color);
+	background-size: 25px 25px;
+	background-image: linear-gradient(to right, #f1f1f1 1px, transparent 1px), linear-gradient(to bottom, #f1f1f1 1px, transparent 1px);
+	min-height: 100%;
+	z-index: 99;
+	padding: 10px 10px 10px 10px;
+}
+
+	/* Elements --------------------------------------------------------- */
+	div.element_meta{
+		text-align: right;
+		line-height: 1;
+	}
+	div.element_meta > span{
+		color: grey;
+		font: normal 10px 'Open Sans', sans-serif;
+	}
+
+	/* Elements :: Text boxes ------------------------------------------- */
+
+
+	/* Elements :: Text boxes :: Single ---------------------------------- */
+	div.element_text_box_single{
+		background: #fff;
+		border: #000 1px solid;
+		width: 100px;
+		height: 50px;
+		text-align: center;
+	}
+
+	/* Elements :: Connectionss :: Arrow --------------------------------- */

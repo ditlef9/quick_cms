@@ -1,0 +1,2 @@
+|Blank hostname shouldn&#039;t be allowed.
+Magic Browser|Magic Browser what?

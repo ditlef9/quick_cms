@@ -1,0 +1,63 @@
+/*- Headline ------------------------------------------------------------------------------ */
+div.recipes_headline{
+	float: left;
+}
+div.recipes_buttons{
+	float: right;
+	padding: 10px 0px 0px 0px;
+}
+div.recipes_buttons > p{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+@media screen and (max-width: 52.375em) {
+	div.recipes_headline{
+		float: none;
+	}
+	div.recipes_menu{
+		float: none;
+		padding: 0px 0px 0px 0px;
+		overflow: auto;
+		white-space: nowrap;
+	}
+}
+
+/*- 4 cols Left, center_left, center_right and right ------------------------------------------------------------ */
+.left_center_center_right_left{
+	float: left;
+	width: 24%;
+	margin-right: 1%;
+}
+.left_center_center_left_right_center, .left_center_center_right_right_center{
+	float: left;
+	width: 24%;
+	margin-right: 1%;
+}
+.left_center_center_right_right{
+	float:right;
+	width: 25%;
+}
+/* Example media queries */
+@media screen and (max-width: 52.375em) {
+	.left_center_center_right_left{
+		float: left;
+		width: 46%;
+		margin: 0px 10px 0px 0px;
+	}
+	.left_center_center_left_right_center{
+		float: right;
+		width: 46%;
+		margin: 0px 0px 0px 10px;
+	}
+	.left_center_center_right_right_center{
+		clear: both;
+		float: left;
+		width: 46%;
+		margin: 0px 10px 0px 0px;
+	}
+	.left_center_center_right_right{
+		float: right;
+		width: 46%;
+		margin: 0px 0px 0px 10px;
+	}
+}

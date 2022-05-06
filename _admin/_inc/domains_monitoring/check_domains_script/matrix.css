@@ -1,0 +1,167 @@
+/**
+*
+* File: _admin/_inc\domains_monitoring\_stylesheets/matrix.css
+* Version 2
+* Date 09:58 25.09.2021
+* Copyright (c) 2021 Sindre Andre Ditlefsen
+* License: http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+/*- Body -------------------------------------------------------------------------- */
+html, body, div, span, object, iframe, img {
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+	font-size:100%;
+	vertical-align:baseline;
+	background:transparent;
+}
+body {
+	background: #2b303b;
+	color: #c0c5ce;
+	font: normal 16px 'Open Sans',sans-serif;
+
+}
+table{
+	border-spacing:0px; 
+}
+td{
+	padding: 0px;
+}
+/*- Text ------------------------------------------------------------------------------- */
+h2{
+	font: normal 24px 'Open Sans',sans-serif;
+	color: #b58dae;
+	margin: 0px 0px 0px 0px;
+	padding: 10px 0px 10px 0px;
+}
+h3{
+	font: bold 15px 'Open Sans',sans-serif;
+	color: #b58dae;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 10px 0px;
+}
+p {
+	font: normal 14px 'Open Sans',sans-serif;
+	color: #c0c5ce;
+	margin: 0px 0px 0px 0px;
+	padding: 10px 0px 10px 0px;
+}
+span {
+	font: normal 14px 'Open Sans',sans-serif;
+	color: #c0c5ce;
+}
+
+
+/*- Tables ------------------------------------------------------------------ */
+table.hor-zebra {
+	width: 100%;
+	text-align: left;
+	border-spacing:0;
+	border: #585b5d 1px solid;
+}
+
+table.hor-zebra>thead {
+	border-top: #585b5d 1px solid;
+}
+
+table.hor-zebra>thead>tr>th {
+	background: #2b2b2b;
+	border-top: #3d3d3d 1px solid;
+	border-bottom: #3d3d3d 1px solid;
+	padding: 4px;
+	color: #000;
+}
+
+table.hor-zebra>tbody>tr>td {
+	background: #3a3a3a;
+	border-bottom: #1f1f1f 1px solid;
+	padding: 8px 4px 8px 4px;
+}
+
+table.hor-zebra>tbody>tr:nth-child(odd)>td{
+	background: #3a3a3a;
+	border-bottom: #1f1f1f 1px solid;
+}
+table.hor-zebra>tbody>tr>td.important {
+	background: #fff7e5;
+	border-bottom: #eabc63 1px solid;
+}
+table.hor-zebra>tbody>tr>td.danger {
+	background: #ffe7e5;
+	border-bottom: #ff4940 1px solid;
+	border-top: #ff4940 1px solid;
+}
+
+table.hor-zebra>tbody>tr:hover td {
+	background: #575757;
+}
+
+
+
+/*- Header ------------------------------------------------------------------------ */
+header{
+	margin: 10px 10px 10px 10px;
+}
+div.header_inner{
+	clear: both;
+	overflow: hidden;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap; // allow wrapping items
+}
+div.header_inner_col{
+	flex-grow: 1;
+	flex-basis: 33%; 
+	text-align: center;
+}
+div.header_inner_col > p, div.header_inner_col  > div > p{
+	font: normal 16px 'Open Sans',sans-serif;
+}
+
+	/*- Progress -------------------------------------------------------------- */
+	#progressbar {
+		background-color: black;
+		border-radius: 13px;
+		/* (height of inner div) / 2 + padding */
+		padding: 3px;
+	}
+
+	div.progressbar_inner_red {
+		background-color: red;
+		width: 40%;
+		/* Adjust with JavaScript */
+		height: 20px;
+		border-radius: 10px;
+	}
+	div.progressbar_inner_orange {
+		background-color: orange;
+		width: 40%;
+		/* Adjust with JavaScript */
+		height: 20px;
+		border-radius: 10px;
+	}
+	div.progressbar_inner_yellow {
+		background-color: yellow;
+		width: 40%;
+		/* Adjust with JavaScript */
+		height: 20px;
+		border-radius: 10px;
+	}
+
+/*- Left and right ----------------------------------------------------------------- */
+div.wrapper{
+	margin: 10px 10px 10px 10px;
+}
+div.content_left{
+	float: left;
+	width: 38%;
+	padding-right: 2%;
+}
+div.content_right{
+	float: right;
+	width: 58%;
+	padding-left: 2%;
+}
+

@@ -1,0 +1,14 @@
+/* Leaflet maps */
+@import url("../../_admin/_javascripts/leaflet/leaflet.css"); /* Using a url */
+
+/* Slider */
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  width: 100%;
+}
+#loading_image{
+	display: none;
+}

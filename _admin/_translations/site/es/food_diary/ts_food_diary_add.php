@@ -1,0 +1,32 @@
+<?php
+$l_add = "A&ntilde;adir";
+$l_after_training_lowercase = "despu&eacute;s de entrenar";
+$l_before_training_lowercase = "antes de entrenar";
+$l_breakfast_lowercase = "desayuno";
+$l_cal_lowercase = "cal";
+$l_carb_lowercase = "carb";
+$l_dinner_lowercase = "cena";
+$l_fat_lowercase = "gordo";
+$l_food = "Comida";
+$l_food_categories = "Categorias de comida";
+$l_food_search = "B&uacute;squeda de comida";
+$l_fridays_lowercase = "los viernes";
+$l_lunch_lowercase = "almuerzo";
+$l_mondays_lowercase = "lunes";
+$l_new_entry = "Nueva entrada";
+$l_new_food = "Nueva comida";
+$l_on_lowercase = "en";
+$l_on_this_page_you_will_see_food_you_have_added_before = "En esta p&aacute;gina podr&aacute;s ver los alimentos que has a&ntilde;adido antes.";
+$l_proteins_lowercase = "prote&iacute;nas";
+$l_recent = "Reciente";
+$l_recipes = "Recetas";
+$l_saturdays_lowercase = "s&aacute;bados";
+$l_snacks_lowercase = "aperitivos";
+$l_sundays_lowercase = "domingos";
+$l_supper = "cena";
+$l_the_more_you_use_the_food_diary_the_smarter_it_gets = "Cuanto m&aacute;s use el diario de alimentos, m&aacute;s inteligente se volver&aacute;.";
+$l_the_page_is_smart_so_it_will_remember_what_you_usually_have_for_your = "La p&aacute;gina es inteligente por lo que recordar&aacute; lo que normalmente tiene para su";
+$l_thursdays_lowercase = "los jueves";
+$l_tuesdays_lowercase = "los martes";
+$l_wednesdays_lowercase = "miercoles";
+?>

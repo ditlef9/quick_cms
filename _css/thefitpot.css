@@ -1,0 +1,360 @@
+@import '../blog/_css/index.css';
+@import '../search/_css/search.css';
+
+/*- Search on index ------------------------------------------------------------------ */
+div.search_search_div{
+	width: 100%;
+	padding: 10px 0px 10px 0px;
+}
+div.search_search_div > form > p > input[type=text]{
+	position: relative;
+	padding: 5px 40px 5px 5px;
+	color: #525252;
+	border: #c3ccd9 1px solid;
+	border-radius: 5px;
+	background: linear-gradient(to right, #FFFFFF 0%,#464747 #F9F9F9 100%);
+	width: 85%;
+}
+div.search_search_div > form > p > input[type=text]:hover{
+	position: relative;
+	padding: 5px 40px 5px 5px;
+	color: #000;
+	border: #000 1px solid;
+	border-radius: 5px;
+	background: linear-gradient(to right, #FFFFFF 0%,#464747 #F9F9F9 100%);
+	width: 85%;
+}
+div.search_search_div > form > p > input[type=submit]{
+	position: relative;
+	left: -37px;
+	color: #8233C5;
+	background: url("../_webdesign/thefitpot/images/header/main_navigation_search_black.png") no-repeat;
+	border: 0;
+}
+
+
+/*- Grid on index ------------------------------------------------------------------ */
+div.grid_wrapper{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+div.grid_wrapper > div.grid_item{
+	padding: 15px 0px 15px 0px;
+}
+div.grid_wrapper > div.grid_item > a > img{
+	float: left;
+}
+div.grid_wrapper > div.grid_item > a > span{
+	float: left;
+	padding: 10px 0px 0px 6px;
+	font-size: 110%;
+	color: #474445;
+}
+@media screen and (max-width: 52.375em) {
+
+	div.grid_wrapper > div.grid_item{
+		text-align: center;
+	}
+	div.grid_wrapper > div.grid_item > a > img{
+		float: none;
+		padding: 0px 0px 4px 0px;
+	}
+	div.grid_wrapper > div.grid_item > a > span::before {
+		content: "\A";
+		white-space: pre;
+	}
+	div.grid_wrapper > div.grid_item > a > span{
+		float: none;
+		padding: 0px 0px 0px 0px;
+		font-size: 110%;
+		color: #474445;
+	}
+}
+
+/*- Blog first post ------------------------------------------------------------------ */
+div.blog_frontpage_first_post{
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+div.blog_frontpage_first_post_category_title_box{
+	background: #fff;
+	position: absolute;
+	margin: -12% 0px 0px 2%;
+	padding: 20px 20px 0px 20px;
+	max-width: 35%;
+}
+a.blog_frontpage_first_post_category{
+	text-transform: uppercase;
+	font: bold 15px 'Open Sans',sans-serif;
+	color: #175da1;
+}
+a.blog_frontpage_first_post_category:hover{
+	color: #3e8dda;
+}
+a.blog_frontpage_first_post_title{
+	font: bold 24px 'Open Sans',sans-serif;
+	color: #000;
+}
+
+@media screen and (max-width: 52.375em) {
+	div.blog_frontpage_first_post_category_title_box{
+		position: static;
+		margin-left: 0;
+		padding: 0px 0px 0px 0px;
+		max-width: 100%;
+	}
+}
+
+/*- Blog rest ------------------------------------------------------------------ */
+
+
+/*- Front page Posts ------------------------------------------------------------ */
+p.frontpage_category_headline_leftside_p{
+	padding: 50px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	float: left;
+}
+a.frontpage_category_headline_leftside_a{
+	font: bold 24px 'Open Sans',sans-serif;
+	color: #000;
+}
+
+p.frontpage_category_headline_rightside_p{
+	padding: 58px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	float: right;
+}
+a.frontpage_category_headline_rightside_a{
+	font: bold 12px 'Open Sans',sans-serif;
+	color: #175da1;
+	text-transform: uppercase;
+}
+a.frontpage_category_headline_rightside_a:hover{
+	color: #3e8dda;
+}
+
+
+
+p.frontpage_post_image{
+	padding: 8px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+p.frontpage_post_category_p{
+	padding: 4px 0px 4px 0px;
+	margin: 0px 0px 0px 0px;
+}
+a.frontpage_post_category_a{
+	text-transform: uppercase;
+	font: bold 13px 'Open Sans',sans-serif;
+	color: #175da1;
+}
+a.frontpage_post_category_a:hover{
+	color: #3e8dda;
+}
+p.frontpage_post_title{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+
+
+/*- Left, center and right ------------------------------------------------------------ */
+.left_center_right_left{
+	float: left;
+	margin-right: 10px;
+	width: 31%;
+}
+.left_center_right_center{
+	display: inline-block;
+	margin:0 auto;
+	margin: 0px 0px 0px 2.5%;
+	width: 31%;
+}
+.left_center_right_right{
+	float:right;
+	margin-left: 10px;
+	width: 31%;
+}
+/* Example media queries */
+@media screen and (max-width: 52.375em) {
+	.left_center_right_left, .left_center_right_right{
+		float: none;
+		width: 100%;
+		margin: 0;
+	}
+	.left_center_right_center{
+		float: none;
+		width: 100%;
+		margin: 20px 0px 20px 0px;
+	}
+}
+
+
+/*- 4 cols Left, center_left, center_right and right ------------------------------------------------------------ */
+.left_center_center_right_left{
+	float: left;
+	width: 24%;
+	margin-right: 1%;
+}
+.left_center_center_left_right_center, .left_center_center_right_right_center{
+	float: left;
+	width: 24%;
+	margin-right: 1%;
+}
+.left_center_center_right_right{
+	float:right;
+	width: 25%;
+}
+/* Example media queries */
+@media screen and (max-width: 52.375em) {
+	.left_center_center_right_left{
+		float: left;
+		width: 46%;
+		margin: 0px 10px 0px 0px;
+	}
+	.left_center_center_left_right_center{
+		float: right;
+		width: 46%;
+		margin: 0px 0px 0px 10px;
+	}
+	.left_center_center_right_right_center{
+		clear: both;
+		float: left;
+		width: 46%;
+		margin: 0px 10px 0px 0px;
+	}
+	.left_center_center_right_right{
+		float: right;
+		width: 46%;
+		margin: 0px 0px 0px 10px;
+	}
+}
+
+
+/*- Headline ------------------------------------------------------------------------------ */
+div.blog_headline_left{
+	float: left;
+	padding: 0px 30px 0px 0px;
+}
+div.blog_headline_center{
+	float: left;
+}
+div.blog_headline_center > p{
+	padding: 22px 0px 0px 0px;
+	margin: 0;
+}
+div.blog_headline_right{
+	float: right;
+}
+div.blog_headline_right > p{
+	padding: 22px 0px 0px 0px;
+	margin: 0;
+}
+
+
+/*- Common all posts ---------------------------------------------------------------------- */
+a.blog_post_a_pre_h{
+	font: normal 16px 'Open Sans',sans-serif;
+	color: #000;
+	letter-spacing: 0.5px;
+}
+a.blog_post_a_h1{
+	font: bold 24px 'Open Sans',sans-serif;
+	color: #000;
+}
+a.blog_post_a_h2{
+	font: bold 18px 'Open Sans',sans-serif;
+	color: #000;
+}
+a.blog_post_a_h3{
+	font: bold 17px 'Open Sans',sans-serif;
+	color: #000;
+}
+
+
+
+/*- 1 big on left, 2 small on right ----------------------------------------------------- */
+div.blog_one_big_on_left__two_small_on_right__left{
+	float: left;
+	max-width: 800px;
+}
+div.blog_one_big_on_left__two_small_on_right__left > p{
+	padding: 0px 0px 0px 0px;
+	margin: 6px 0px 20px 0px;
+	line-height: normal;
+}
+
+div.blog_one_big_on_left__two_small_on_right__right{
+	float: right;
+	max-width: 300px;
+}
+div.blog_one_big_on_left__two_small_on_right__right > p{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+div.blog_one_big_on_left__two_small_on_right__right > hr{
+	padding: 0px 0px 0px 0px;
+	margin: 10px 0px 15px 0px;
+}
+
+
+
+
+/*- 2 small on left, 1 big on right ----------------------------------------------------- */
+div.blog_two_small_on_left__one_big_on_right__left{
+	clear: both;
+	float: left;
+	margin-top: 30px;
+	max-width: 300px;
+}
+div.blog_two_small_on_left__one_big_on_right__left > p{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+div.blog_two_small_on_left__one_big_on_right__left > hr{
+	padding: 0px 0px 0px 0px;
+	margin: 10px 0px 15px 0px;
+}
+
+div.blog_two_small_on_left__one_big_on_right__right{
+	float: right;
+	margin-top: 30px;
+	max-width: 800px;
+}
+div.blog_two_small_on_left__one_big_on_right__right > p{
+	padding: 0px 0px 0px 0px;
+	margin: 6px 0px 20px 0px;
+	line-height: normal;
+}
+
+
+
+
+/*- 3 small -------------------------------------------------------------------------- */
+div.blog_three_small__left{
+	clear: both;
+	float: left;
+	margin: 30px 35px 0px 0px;
+	max-width: 360px;
+}
+div.blog_three_small__center{
+	float: left;
+	margin: 30px 35px 0px 0px;
+	max-width: 360px;
+}
+div.blog_three_small__right{
+	float: right;
+	margin-top: 30px;
+	max-width: 360px;
+}
+
+
+/*- 2 small -------------------------------------------------------------------------- */
+div.blog_two_small__left{
+	clear: both;
+	float: left;
+	margin: 30px 0px 0px 0px;
+}
+div.blog_two_small__right{
+	float: right;
+	margin: 30px 0px 0px 0px;
+}

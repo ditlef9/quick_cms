@@ -1,0 +1,141 @@
+
+/*- Metadata box ---------------------------------------------------------------------------- */
+div.metadata_row{
+	display: flex;
+	flex-wrap: wrap;
+}
+div.metadata_column{
+	flex: 33%;
+	max-width: 33%;
+	text-align: center;
+}
+div.metadata_column > p {
+	vertical-align:middle;
+}
+div.metadata_column > p > img{
+	vertical-align: top;
+}
+div.metadata_column > p > a{
+	color: black;
+	line-height: normal;
+	padding: 0;
+	margin: 0;
+}
+@media screen and (max-width: 52.375em) {
+	div.metadata_column{
+		text-align: center;
+	}
+}
+
+
+/* Timer ------------------------------------------------------------------------------------------- */
+div.start_game{
+	text-align: center;
+}
+span.get_ready {
+	font-color: grey;
+	font-size: 30px;
+}
+span.game_starts_in {
+	font-color: grey;
+	font-size: 25px;
+}
+
+ul.timer {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+ul.timer > li{
+	display: inline-block;
+	padding: 20px;
+}
+ul.timer > li > span{
+	display: block;
+	font-size: 20px;
+	text-align: center;
+}
+#days {
+	font-size: 100px;
+	color: #db4844;
+}
+#hours {
+	font-size: 100px;
+	color: #f07c22;
+}
+#minutes {
+	font-size: 100px;
+	color: #f6da74;
+}
+#seconds {
+	font-size: 100px;
+	color: #abcd58;
+}
+
+/* Start game button */
+#start_game_buttons > h2{
+	font: normal 34px 'Open Sans',sans-serif;
+}
+ul.start_buttons_list {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+ul.start_buttons_list > li{
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+ul.start_buttons_list > li:hover{
+}
+ul.start_buttons_list > li > a{
+	font: normal 18px 'Open Sans',sans-serif;
+	color: #1c1c1c;
+	text-decoration:none;
+	padding: 20px 0px 20px 0px;
+	border-bottom: #d5d5d5 1px solid;
+	display:block;
+}
+ul.start_buttons_list > li > a:hover {
+	color: #1c1c1c;
+	text-decoration:none;
+	background: #f1f1f1;
+}
+ul.start_buttons_list > li > a > img {
+	vertical-align:middle;
+	margin: 0px 0px 5px 0px;
+}
+
+
+ul.start_buttons_list > li > a.start_buttons_list_option{
+	position: absolute;
+	right: 10px;
+	font: normal 12px 'Open Sans',sans-serif;
+	padding: 4px 10px 4px 10px; 
+	margin: -50px 3px 0px 0px; 
+	font: normal 14px 'Open Sans',sans-serif;
+	background: #fff;
+	border: #cccccc 1px solid; 
+	border-radius: 5px;
+	color: #333333;
+}
+ul.start_buttons_list > li > a.start_buttons_list_option > img{
+	vertical-align:middle;
+	margin: 0px 0px 5px 0px;
+}
+ul.start_buttons_list > li > a.start_buttons_list_option:hover {
+	border: #adadad 1px solid; 
+	background: #e6e6e6;
+	color: #333333;
+}
+
+
+/* high_score */
+div.high_score{
+	background: #fff;
+	border-radius: 25px;
+	text-align: center;
+	padding: 5px 0px 10px 10px;
+	margin: 20px 0px 20px 0px;
+
+}

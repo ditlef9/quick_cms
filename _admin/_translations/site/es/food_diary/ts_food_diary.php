@@ -1,0 +1,37 @@
+<?php
+$l_active = "Activo";
+$l_added_to_your_diary_lowercase = "a&ntilde;adido a tu diario";
+$l_after_training = "Despu&eacute;s de entrenar";
+$l_before_training = "Antes de entrenar";
+$l_breakfast = "Desayuno";
+$l_carb = "Carb";
+$l_carbs = "Carbs";
+$l_dinner = "Cena";
+$l_energy = "Energ&iacute;a";
+$l_fat = "Gordo";
+$l_food = "Comida";
+$l_food_diary = "Diario de comida";
+$l_kcal_lowercase = "kcal";
+$l_lifestyle = "Estilo de vida";
+$l_lunch = "Almuerzo";
+$l_my_goal = "Mi meta";
+$l_my_profile_data = "Mis datos de perfil";
+$l_over_your_target_lowercase = "sobre tu objetivo";
+$l_please_set_your_goal = "Por favor, establece tu objetivo";
+$l_proteins = "Prote&iacute;nas";
+$l_remaining = "Restante";
+$l_sedentary = "Sedentario";
+$l_snacks = "Aperitivos";
+$l_summary = "Resumen";
+$l_supper = "Cena";
+$l_target = "Objetivo";
+$l_this_is = "Esto es";
+$l_to_go_lowercase = "ir";
+$l_with_activity_lowercase = "con actividad";
+$l_with_sedentary_lifestyle_lowercase = "con estilo de vida sedentario";
+$l_your_target_is = "Tu objetivo es";
+$l_you_can_eat = "Puedes comer";
+$l_you_can_still_eat = "Todav&iacute;a puedes comer";
+$l_you_have = "Tienes";
+$l_you_have_eaten = "Has comido";
+?>

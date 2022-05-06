@@ -1,0 +1,58 @@
+
+/*- Course ------------------------------------------------------------------- */
+img.courses_img_thumb{
+	border-radius: 6px;
+}
+
+p.courses_sub_category{
+	padding: 0px 0px 0px 0px;
+	margin: 20px 0px 0px 0px;
+}
+p.courses_sub_category > a{
+	font-size: 13px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: #000;
+}
+
+p.courses_course_title{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+p.courses_course_title > a{
+	font: 20px 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+
+}
+p.courses_course_numbers{
+	padding: 4px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	font-size: 80%;
+}
+
+
+div.courses_users_enrolled{
+	background: #f7f7f7;
+	border-radius: 12px;
+	text-align: center;
+	margin-top: 30px;
+	padding: 4px 8px 4px 8px;
+	float: right;
+}
+p.courses_users_enrolled_number{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	color: #000;
+	font: bold 28px 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+}
+
+p.courses_users_enrolled_text{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	color: #000;
+}
+
+div.courses_after{
+	clear: both;
+	border-top: #eeeeee 1px solid;
+	padding-bottom: 6px;
+}

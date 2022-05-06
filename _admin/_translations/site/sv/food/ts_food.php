@@ -1,0 +1,34 @@
+<?php
+$l_add_food = "L&auml;gg till mat";
+$l_asc = "Asc";
+$l_calories = "Kalorier";
+$l_cal_lowercase = "kal";
+$l_carbs = "Kolh";
+$l_carb_lowercase = "kolh";
+$l_categories = "Kategorier";
+$l_dash_of_which_saturated_fatty_acids = "- varav m&auml;ttade fettsyror";
+$l_dash_of_which_sugars_calculated = "- varav &auml;r sockerarter";
+$l_date = "Datum";
+$l_desc = "Desc";
+$l_fat = "Fett";
+$l_fat_lowercase = "fett";
+$l_food = "Mat";
+$l_integrations = "Integrationer";
+$l_language = "Spr&aring;k";
+$l_main_categories = "Huvudkategorier";
+$l_manufacturer_and_name = "Tillverkare och namn";
+$l_my_favorites = "Mina favoriter";
+$l_my_food = "Min mat";
+$l_my_stores = "Mina butiker";
+$l_name = "Namn";
+$l_new_food = "Ny mat";
+$l_new_products = "Nya produkter";
+$l_order_by = "Sortera efter";
+$l_proteins = "Proteiner";
+$l_proteins_lowercase = "protein";
+$l_salt = "Salt";
+$l_unique_hits = "Unika tr&auml;ffar";
+$l_user_pages = "Anv&auml;ndarsidor";
+$l_views = "Visningar";
+$l_without_image = "Utan bild";
+?>

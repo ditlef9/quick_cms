@@ -1,0 +1,229 @@
+/*- Headline recipe ---------------------------------------------------- */
+div.recipe_headline{
+	text-align: center;
+}
+div.recipe_headline > h1{
+	font-size: 30px;
+	margin-top: 0;
+}
+
+
+
+
+div.recipe_headline > ul{
+	list-style:none;
+	margin: 15px 0px 15px 0px;
+	padding:0;
+	text-align:center;
+}
+div.recipe_headline > ul > li{
+	display:inline;
+}
+div.recipe_headline > ul > li > a{
+	display:inline-block;
+	padding: 0px 5px 0px 5px;
+}
+div.recipe_headline > ul > li > a > img{
+	float: left;
+	padding: 0px 4px 0px 0px;
+}
+
+
+div.headline_hr{
+	width: 38px;
+	height: 5px;
+	background: black;
+	margin: 0px auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+div.recipe_headline > p{
+	margin: 20px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+
+p.recipe_intro{
+	margin: 20px 0px 0px 0px;
+	padding: 0px 0px 20px 0px;
+	font: 20px italic serif;
+}
+
+/*- Info line ------------------------------------------------------- */
+div.recipe_info_line{
+	margin: 20px 0px 20px 0px;
+	border-top: #dddddd 1px solid;
+	border-bottom: #dddddd 1px solid;
+	padding: 4px 0px 4px 0px;
+}
+
+
+div.recipe_info_line > ul{
+	list-style:none;
+	margin: 15px 0px 15px 0px;
+	padding:0;
+	text-align:center;
+}
+div.recipe_info_line > ul > li{
+	display:inline;
+}
+div.recipe_info_line > ul > li > a{
+	display:inline-block;
+	padding: 0px 5px 0px 5px;
+}
+div.recipe_info_line > ul > li > a > img{
+	float: left;
+	padding: 0px 4px 0px 0px;
+}
+div.recipe_info_line > ul > li > a > img.share_button{
+	float: none;
+	position: relative;
+	padding: 0px 0px 0px 0px;
+	top: 3px;
+}
+
+
+/*- Ingredients ----------------------------------------------------- */
+div.ingredients{
+	
+}
+td.ingredients_headcell, td.ingredients_headcell_desktop{
+	
+}
+
+td.ingredients_body_bodycell, td.ingredients_body_desktop_bodycell{
+	vertical-align: top;
+	border-bottom: #f2f2f2 1px solid;
+	padding: 6px;
+}
+td.ingredients_body_subcell, td.ingredients_body_desktop_subcell{
+	vertical-align: top;
+	border-bottom: #f2f2f2 1px solid;
+	padding: 6px;
+}
+
+input.ingredients_amount{
+	border: #fff 1px solid;
+	border-bottom: #bbbbbb 1px dashed;
+   	text-align: center;
+	min-width: 28px;
+	width: auto;
+}
+
+div.mobile_only{
+	display: none;
+}
+
+@media screen and (max-width: 52.375em) {
+	td.ingredients_headcell_desktop{
+		display: none;
+	}
+	td.ingredients_body_desktop_bodycell, td.ingredients_body_desktop_subcell {
+		display: none;
+	}
+	div.desktop_only{
+		display: none;
+	}
+	div.mobile_only{
+		display: inline;
+	}
+}
+
+
+
+/*- Directions --------------------------------------------------------- */
+div.directions{
+	clear: both;
+}
+div.directions > h2 {
+	margin: 20px 0px 0px 0px;
+	padding: 0;
+}
+
+
+/*- Comments ---------------------------------------------------------- */
+span.recipes_comment_by{
+	font-size: 80%;
+}
+a.recipes_comment_author{
+	font-size: 80%;
+}
+a.recipes_comment_date{
+	font-size: 80%;
+	color: #858585;
+}
+
+
+
+
+
+/*- View recipe show age restrictions waring ---------------------------------------------- */
+div.view_recipe_select_country_row{
+	display: flex;
+}
+
+div.view_recipe_select_country_col{
+	flex: 1;
+	padding: 1px 0px 1px 0px;
+}
+
+@media screen and (max-width: 52.375em) {
+	div.view_recipe_select_country_row{
+		display: inline-block;
+	}
+	div.view_recipe_select_country_col{
+		flex: 0;
+	}
+}
+
+
+
+/*- Front page Posts ------------------------------------------------------------ */
+p.frontpage_category_headline_leftside_p{
+	padding: 50px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	float: left;
+}
+a.frontpage_category_headline_leftside_a{
+	font: bold 24px 'Open Sans',sans-serif;
+	color: #000;
+}
+
+p.frontpage_category_headline_rightside_p{
+	padding: 58px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	float: right;
+}
+a.frontpage_category_headline_rightside_a{
+	font: bold 12px 'Open Sans',sans-serif;
+	color: #175da1;
+	text-transform: uppercase;
+}
+a.frontpage_category_headline_rightside_a:hover{
+	color: #3e8dda;
+}
+
+
+
+p.frontpage_post_image{
+	padding: 8px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+p.frontpage_post_category_p{
+	padding: 4px 0px 4px 0px;
+	margin: 0px 0px 0px 0px;
+}
+a.frontpage_post_category_a{
+	text-transform: uppercase;
+	font: bold 13px 'Open Sans',sans-serif;
+	color: #175da1;
+}
+a.frontpage_post_category_a:hover{
+	color: #3e8dda;
+}
+p.frontpage_post_title{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+

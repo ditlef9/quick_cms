@@ -1,0 +1,9 @@
+_admin/_data
+_cache
+_uploads
+edb
+_admin/_inc/edb
+_admin/_translations/site/en/edb
+_admin/_translations/site/no/edb
+*.zip
+_DATABASE_*

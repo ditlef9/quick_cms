@@ -1,0 +1,26 @@
+
+
+/*- Image Gallery Folder Browse ------------------------------------------- */
+div.image_gallery_folders_list{
+	float: left;
+	background: #f4f5f7;
+	border: #ebecf0 1px solid;
+	padding: 6px 6px 6px 6px;
+}
+/*- Image Gallery Folder Browse ------------------------------------------- */
+div.image_gallery_folder_browse{
+	float: left;
+	padding: 0px 6px 6px 30px;
+}
+div.image_gallery_folder_browse > h2{
+	padding-top: 0;
+	margin-top: 0;
+}
+div.image_gallery_folder_browse_row{
+	display: flex;
+}
+div.image_gallery_folder_browse_col{	
+	flex: 1;
+	text-align: center;
+	padding: 0px 15px 0px 15px;
+}

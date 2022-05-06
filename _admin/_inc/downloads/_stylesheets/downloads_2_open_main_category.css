@@ -1,0 +1,85 @@
+/**
+*
+* File: _admin/_inc/downloads/_stylesheets/index.css
+* Version 1.0.0.
+* Date 12:42 21.01.2018
+* Copyright (c) 2008-2018 Sindre Andre Ditlefsen
+* License: http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
+/* Main Categories */
+div.downloads_all_main_categories_selector{
+	margin-top: 10px;
+	background: #fff;
+    	border: 0 none;
+    	box-sizing: border-box;
+	border: #dcdcdc 1px solid;
+    	border-radius: 5px;
+}
+#show_all_main_categories_link_text{
+	display: block;
+	color: #333333;
+	font: normal 18px 'Open Sans',sans-serif;
+	padding: 10px 10px 10px 10px;
+	overflow: hidden;
+}
+img.show_all_main_categories_img{
+	float: right;
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+#downloads_show_all_main_categories{
+	display: none; /* Activated by clicking on Categories */
+}
+
+#downloads_show_all_main_categories ul {
+	list-style:none;
+	margin: 0px 0px 0px 0px;
+	padding: 6px 0px 0px 0px;
+}
+
+#downloads_show_all_main_categories li {
+	border-bottom: #f7f7f5 1px solid;
+}
+#downloads_show_all_main_categories a {
+	padding: 10px 0px 10px 10px;
+	color: #413746;
+	display:block; /* make it fill entire li */
+}
+#downloads_show_all_main_categories a:hover {
+	background: #f1f1f2;
+	color: #246ada;
+}
+
+/*- Downloads list ---------------------------------------------- */
+table.downloads_list {
+	width: 100%;
+	text-align: left;
+    	border-spacing: 0px 5px;
+}
+
+tr.downloads_list_tr{
+	background: #f3f3f3;
+	border-bottom: #fff 5px solid;
+}
+tr.downloads_list_tr:hover{
+	background: #f8f8f8;
+	border-bottom: #fff 5px solid;
+}
+a.download_title_a{
+	color: black;
+	font-weight: bold;
+
+}
+p.download_intro{
+	padding: 0;
+	margin: 0;
+}
+p.download_data{
+	padding: 0;
+	margin: 10px 0px 10px 0px;
+	color: #555555;
+	font-size: 80%;
+}

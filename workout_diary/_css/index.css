@@ -1,0 +1,10 @@
+
+p.workout_introduction{
+	margin: 0px 0px 12px 0px;
+	padding: 0;
+}
+@media screen and (max-width: 52.375em) {
+	p.workout_introduction{
+		display: none;
+	}
+}

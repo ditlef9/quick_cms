@@ -1,0 +1,114 @@
+@import url("index.css");
+@import url("open_main_category.css");
+
+
+img.food_score_img {
+	position: relative;
+	top: 30px;
+	left: 50px;
+}
+
+
+
+/*- View food show age restrictions waring ---------------------------------------------- */
+div.view_food_select_country_row{
+	display: flex;
+}
+
+div.view_food_select_country_col{
+	flex: 1;
+	padding: 1px 0px 1px 0px;
+}
+
+@media screen and (max-width: 52.375em) {
+	div.view_food_select_country_row{
+		display: inline-block;
+	}
+	div.view_food_select_country_col{
+		flex: 0;
+	}
+}
+
+
+
+
+/*- Nutritional_facts Statistics --------------------------------------------------- */
+table.nutritional_facts_statistics {
+	width: 100%;
+	text-align: left;
+	border-spacing:0;
+	border: #cccccc 1px solid;
+	width: auto;
+	min-width: 0;
+	display: table;
+}
+table.nutritional_facts_statistics > thead {
+	border-top: #cccccc 1px solid;
+}
+
+/*- th -*/
+table.nutritional_facts_statistics > thead > tr > th {
+	background: #e2e2e2;
+	border-top: #ffffff 1px solid;
+	border-bottom: #cccccc 1px solid;
+	padding: 6px 4px 6px 4px;
+	color: #000;
+	vertical-align: bottom;
+	text-align: center;
+}
+table.nutritional_facts_statistics > thead > tr > th > span > a {
+	font-weight: bold;
+	color: #000520;
+}
+table.nutritional_facts_statistics > thead > tr > th.category_main, 
+table.nutritional_facts_statistics> thead > tr > th.category_main_left,
+table.nutritional_facts_statistics > thead > tr > th.category_main_middle, 
+table.nutritional_facts_statistics > thead > tr > th.category_main_right {
+	border-right: #000 2px solid;
+	border-left: #000 2px solid;
+	text-align: center;
+}
+table.nutritional_facts_statistics > thead > tr > th.category_main_left {
+	border-right: #000 0px solid;
+}
+table.nutritional_facts_statistics > thead > tr > th.category_main_middle {
+	border-left: #000 0px solid;
+	border-right: #000 0px solid;
+}
+table.nutritional_facts_statistics > thead > tr > th.category_main_right {
+	border-left: #000 0px solid;
+}
+
+/*- td -*/
+
+table.nutritional_facts_statistics >tbody>tr>td {
+	background: #f3f3f3;
+	border-bottom: #cccccc 1px solid;
+	padding: 8px 4px 8px 4px;
+}
+
+table.nutritional_facts_statistics >tbody>tr:nth-child(2n)>td {
+	background: #fefefe;
+	border-bottom: #cccccc 1px solid;
+}
+
+
+
+table.nutritional_facts_statistics > tbody > tr > td.category_main, 
+table.nutritional_facts_statistics > tbody > tr > td.category_main_left, 
+table.nutritional_facts_statistics > tbody > tr > td.category_main_middle, 
+table.nutritional_facts_statistics > tbody > tr > td.category_main_right {
+	border-right: #000 2px solid;
+	border-left: #000 2px solid;
+	text-align: center;
+}
+table.nutritional_facts_statistics > tbody > tr > td.category_main_left {
+	border-right: #000 0px solid;
+}
+table.nutritional_facts_statistics > tbody > tr > td.category_main_middle {
+	border-left: #000 0px solid;
+	border-right: #000 0px solid;
+}
+table.nutritional_facts_statistics > tbody > tr > td.category_main_right {
+	border-left: #000 0px solid;
+}

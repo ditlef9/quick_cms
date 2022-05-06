@@ -1,0 +1,29 @@
+<?php
+$l_city = "By";
+$l_coordinates = "Kordinater";
+$l_country = "Land";
+$l_county = "Fylke";
+$l_create = "Opprett";
+$l_game_coordinates = "Spillets kordinater";
+$l_latitude = "Breddegrad";
+$l_location = "Lokasjon";
+$l_longitude = "Lengdegrad";
+$l_municipality = "Kommune";
+$l_my_games = "Mine spill";
+$l_new = "Ny";
+$l_new_city = "Ny by";
+$l_new_city_name_in = "Nytt bynavn i";
+$l_new_county = "Nytt fylke";
+$l_new_county_name = "Nytt fylkesnavn";
+$l_new_municipality = "Ny kommune";
+$l_new_municipality_name_in = "Nytt kommunenavn i";
+$l_new_place = "Nytt sted";
+$l_new_place_name_in = "Nytt stedsnavn i";
+$l_place = "Sted";
+$l_please_select = "Vennligst velg";
+$l_please_select_coordinates_for = "Vennligst velg kordinater for";
+$l_rebus = "Rebus";
+$l_save = "Lagre";
+$l_save_changes = "Lagre endringer";
+$l_select_coordinates_for_place = "Velg kordinater for sted";
+?>

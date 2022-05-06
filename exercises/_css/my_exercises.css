@@ -1,0 +1,19 @@
+/*- Table my exercises ------------------------------------- */
+div.my_exercises_div{
+	border-top: #fff 1px solid;
+	border-bottom: #e3e8ea 1px solid;
+}
+div.my_exercises_div:hover{
+	border-top: #bbbebf 1px solid;
+	border-bottom: #bbbebf 1px solid;
+}
+
+
+td.my_exercises_row_img{
+	padding: 0px 10px 0px 0px;
+	width: 40px;
+}
+td.my_exercises_row_text{
+	padding: 0px 0px 0px 0px;
+}
+

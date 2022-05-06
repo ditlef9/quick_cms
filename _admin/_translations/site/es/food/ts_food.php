@@ -1,0 +1,33 @@
+<?php
+$l_add_food = "Agregar comida";
+$l_asc = "Asc";
+$l_calories = "Calor&iacute;as";
+$l_cal_lowercase = "cal";
+$l_carbs = "Carbo";
+$l_carb_lowercase = "carbo";
+$l_categories = "Categor&iacute;as";
+$l_dash_of_which_saturated_fatty_acids = "- de los cuales &aacute;cidos grasos saturados";
+$l_dash_of_which_sugars_calculated = "- de los cuales son los az&uacute;cares";
+$l_date = "Fecha";
+$l_desc = "Desc";
+$l_fat = "Gordo";
+$l_fat_lowercase = "gordo";
+$l_food = "Comida";
+$l_integrations = "Integraciones";
+$l_language = "Idioma";
+$l_main_categories = "Categor&iacute;as principales";
+$l_manufacturer_and_name = "Fabricante y nombre";
+$l_my_favorites = "Mis favoritos";
+$l_my_food = "Mi alimento";
+$l_my_stores = "Mis tiendas";
+$l_name = "Nombre";
+$l_new_food = "Nueva comida";
+$l_new_products = "Nuevos productos";
+$l_order_by = "Orden por";
+$l_proteins = "Prote&iacute;nas";
+$l_proteins_lowercase = "prote&iacute;n";
+$l_unique_hits = "Golpes &uacute;nicos";
+$l_user_pages = "P&aacute;ginas de usuario";
+$l_views = "Puntos de vista";
+$l_without_image = "Sin imagen";
+?>

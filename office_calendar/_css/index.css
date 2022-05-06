@@ -1,0 +1,81 @@
+/*- Calendar left side, Upcoming events right side ---------------------------------------- */
+td.td_calendar_a_side{
+	vertical-align: top;
+}
+td.td_upcoming_events_b_side{
+	vertical-align: top;
+	width: 48%;
+	padding-right: 4%;
+}
+
+/*- Calendar left side ------------------------------------------------------------ */
+
+table.equipment_calendar {
+  width: 100%;
+  text-align: left;
+  border-spacing:0;
+  border: #cccccc 1px solid;
+}
+
+table.equipment_calendar>thead {
+  border-top: #cccccc 1px solid;
+}
+
+table.equipment_calendar>thead>tr>th {
+	background: #e2e2e2;
+	border-top: #ffffff 1px solid;
+	border-bottom: #cccccc 1px solid;
+	padding: 4px;
+	color: #000;
+}
+
+table.equipment_calendar>tbody>tr>td {
+	background: #f3f3f3;
+	border-bottom: #cccccc 1px solid;
+	padding: 8px 4px 8px 4px;
+}
+table.equipment_calendar>tbody>tr>td.day {
+	background: #fff;
+	border-bottom: #cccccc 1px solid;
+	padding: 8px 4px 8px 4px;
+}
+table.equipment_calendar>tbody>tr>td.day:hover { 
+	background: #fcfcfc; 
+}
+
+/* Inside calendar */
+div.calendar_min_height{
+	min-height: 100px;
+}
+div.calendar_day_number{
+	text-align: center;
+}
+div.calendar_day_number > a{
+	color: #3c4043;
+}
+
+div.calendar_day_number > a:hover{
+	background: #039be5;
+	border: none; 
+	border-radius: 8px;
+	color: #FFF;
+	padding: 4px 6px 4px 6px; 
+	margin: 0 3px; 
+}
+
+/* Calendar event */
+div.calendar_event{
+	border-radius: 8px;
+	padding: 0px 6px 0px 6px; 
+}
+
+
+
+
+/*- Upcoming events right side ------------------------------------------------------------ */
+#Upcoming_events_right_side{
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+  padding: 1rem;
+}

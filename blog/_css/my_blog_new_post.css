@@ -1,0 +1,26 @@
+p.insert{
+	margin: 0px 0px 3px 0px;
+	padding: 0;
+}
+a.insert_bold, a.insert_italic, a.insert_underline, a.insert_striketrough,
+a.insert_img, a.insert_link, a.insert_bullet {
+	background: #F3F3F3;
+	color: #505050;
+	padding: 3px 5px 3px 5px;
+	border: #D2D2D2 1px solid;
+	border-radius: 3px;
+	margin: 0px 0px 0px 0px;
+}
+
+a.insert_bold{
+	font-weight: bold;
+}
+a.insert_italic{
+    font-style: italic;
+}
+a.insert_underline{
+	text-decoration: underline;
+}
+a.insert_striketrough{
+	text-decoration: line-through;
+}

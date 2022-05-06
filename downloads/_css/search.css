@@ -1,0 +1,18 @@
+@import url("index.css");
+
+
+/*- Exact search ------------------------------------------------ */
+div.downloads_exact_search_wrapper{
+	border: #bbbbbb 1px solid;
+	overflow: auto;
+	margin-bottom: 20px;
+}
+div.downloads_exact_search_inner_left{
+	float: left;
+	width: 616px;
+}
+div.downloads_exact_search_inner_right{
+	float: left;
+	width: 160px;
+	padding: 0px 20px 0px 20px;
+}

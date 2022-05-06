@@ -1,0 +1,11 @@
+.goal_result {
+	border: #fff 1px solid;
+	border-bottom: #000 1px dashed;
+	font-weight: bold;
+	text-align: center;
+}
+
+.no_frame{
+	border: #fff 0px solid;
+	background: #f3f3f3;
+}

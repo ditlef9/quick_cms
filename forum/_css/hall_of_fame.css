@@ -1,0 +1,33 @@
+/*- Tables ------------------------------------------------------------------ */
+table.hor_hall_of_fame_zebra {
+  width: 100%;
+  text-align: left;
+  border-spacing:0;
+  border: #cccccc 1px solid;
+}
+
+table.hor_hall_of_fame_zebra>thead {
+
+}
+
+table.hor_hall_of_fame_zebra>thead>tr>th {
+	background: #ccccee;
+	padding: 4px;
+	color: #fff;
+}
+
+table.hor_hall_of_fame_zebra>tbody>tr>td {
+	background: #fafafc;
+	border-bottom: #cccccc 1px solid;
+	padding: 8px 4px 8px 4px;
+}
+
+table.hor_hall_of_fame_zebra>tbody>tr>td.odd {
+	background: #fafafc;
+	border-bottom: #cccccc 1px solid;
+	padding: 8px 4px 8px 4px;
+}
+table.hor_hall_of_fame_zebra>tbody>tr:hover td {
+	background: #f2f2f2;
+}
+

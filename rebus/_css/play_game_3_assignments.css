@@ -1,0 +1,128 @@
+/* Leaflet maps */
+@import url("../../_admin/_javascripts/leaflet/leaflet.css"); /* Using a url */
+
+
+/*- Assignment number x of y ----------------------------------------------------------- */
+div.assignment_x_of_y {
+	text-align: center;
+}
+div.assignment_x_of_y > ul {
+	list-style-type: none;
+	margin: 20px 0px 20px 0px;
+	padding: 0;
+}
+div.assignment_x_of_y > ul > li {
+	display:inline;
+	border-radius: 25px;
+	padding: 5px 5px 5px 5px;
+}
+
+
+div.assignment_x_of_y > ul > li.active {
+	display:inline;
+	border-radius: 25px;
+	background: #fff;
+	padding: 5px 11px 5px 11px;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+}
+
+
+/*- Time used and points ----------------------------------------------------------- */
+
+	/* Points */
+	div.points{
+		background: #7c27be;
+		border-radius: 25px;
+		padding: 5px 11px 5px 11px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+		float: left;
+		margin-bottom: 20px;
+	}
+	span.points_span{
+		color: #fff;
+	}
+	/* Time used */
+	div.time_used{
+		background: #be2769;
+		border-radius: 25px;
+		padding: 5px 11px 5px 11px;
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+		float: right;
+		margin-bottom: 20px;
+	}
+	#time_used_span{
+		color: #fff;
+	}
+
+
+
+/*- Assignment in game ----------------------------------------------------------- */
+div.assignment_in_game{
+	clear: both;
+	background: #fff;
+	border-radius: 25px;
+	text-align: center;
+	padding: 5px 0px 10px 10px;
+	margin: 0px 0px 20px 0px;
+}
+
+
+
+/*- Hint buttons ---------------------------------------------------------------- */
+.btn_hint{
+	background: #475c7f;
+	border: none; 
+	border-radius: 5px;
+	color: #FFF;
+	padding: 4px 10px 4px 10px; 
+	margin: 0 3px; 
+	font: normal 14px 'Open Sans',sans-serif;
+}
+.btn_hint:hover {
+	color: #fff;
+	background: #4f6488;
+	text-decoration: none;
+}
+
+
+/*- Image upload icon ---------------------------------------------------------------- */
+input[type="file"] {
+	display: none;
+}
+.custom-file-upload {
+	background: url("../_gfx/camera_black_24x24.png") no-repeat;
+	background-position: 10px center; 
+	cursor: pointer;
+
+	padding: 10px 10px 10px 40px; 
+	margin: 0px 3px 0px 0px; 
+	font: normal 14px 'Open Sans',sans-serif;
+	border: #cccccc 1px solid; 
+	border-radius: 5px;
+	color: #333333;
+}
+.custom-file-upload:hover {
+	background: #e6e6e6 url("../_gfx/camera_black_active_24x24.png") no-repeat;
+	background-position: 10px center; 
+	cursor: pointer;
+
+	border: #adadad 1px solid; 
+	color: #333333;
+}
+
+#loading_image{
+	display: none;
+}
+
+
+/*- Geo locations ----------------------------------------------------------------- */
+p.inp_latitude_longitude{
+	color: #ccc;
+	font-size: 12px;
+}
+#inp_latitude, #inp_longitude{
+	border: #fff 1px solid;
+	border-bottom: #ccc 1px dashed;
+	color: #ccc;
+	font-size: 12px;
+}

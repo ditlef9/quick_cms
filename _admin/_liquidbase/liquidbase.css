@@ -1,0 +1,228 @@
+﻿/* AskIT CMS Login */
+
+/*- Nullstilling ------------------------------------------------------------------ */
+div.clear{
+	clear: both;
+}
+
+/*- Body -------------------------------------------------------------------------- */
+html{
+	height: 100%;
+}
+body {
+	background: #1d2531;
+	color: #000;
+	font: normal 16px 'Open Sans',sans-serif;
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	margin: 0;
+}
+
+
+/*- Bilder ----------------------------------------------------------------------- */
+img{
+	max-width: 100%;
+}
+
+
+/*- Overskrifter ----------------------------------------------------------------- */
+h1 {
+	font: normal 20px 'Open Sans',sans-serif;
+    	color: #292625;
+	padding: 0px 0 20px 0px;
+	margin: 0px 0px 0px 0px;
+}
+
+/*- Paragrafer og span ----------------------------------------------------------- */
+p{
+	margin: 0;
+	font: normal 16px 'Open Sans',sans-serif;
+        color: #000;
+}
+span{
+        color: #000;
+}
+
+
+/*- Input ------------------------------------------------------------------------ */
+input {  /* Submit button */
+	padding: 3px;
+	border: 1px solid #BBB;
+	font: normal 16px 'Open Sans',sans-serif;
+	background-color: #FFF; 
+}
+textarea { 
+	padding: 3px; border: 1px solid #BBB; 
+	font: normal 16px 'Open Sans',sans-serif;
+	background-color: #FFF; 
+}
+select  { border: 1px solid #BBB; padding: 2px; }
+.checkbox { border: none;}
+input.submit { background-color: #8EAF0D;  border: none; color: #FFF; padding: 3px 5px; margin: 0 3px; font-size: 12px; }
+button { background-color: #8EAF0D;  border: 1px solid #698208; color: #FFF; padding: 3px 5px; margin: 0 3px; font-size: 12px; }
+.radio {border: 0; margin: 0 3px -3px 0; background: transparent; }
+label { width: 150px; height: 20px; float: left;}
+.bredlabel { width: 550px; height: 20px; margin: 0 5px 0 0; float: none;}
+
+.inp_email_registration{ display: none; }
+
+@media screen and (max-width: 52.375em) {
+	input.textarea,.uneditable-input{
+		width: 206px; 
+	}
+}
+
+
+
+
+
+
+
+
+/*- Linker ------------------------------------------------------------------ */
+a {
+	color: #44a8ec;
+	font: normal 16px 'Open Sans',sans-serif;
+	text-decoration: none;
+}
+a:hover {
+	color: #48b0f7;
+	text-decoration: none;
+}
+
+
+/*- Wrapper ------------------------------------------------------------------ */
+#wrapper {
+	margin: 0;
+	padding: 0;
+	background: url('_gfx/bg/04.jpg') no-repeat center center fixed; 
+	background-size: cover;
+	height: 100%;
+}
+#content { 
+	width: 1200px; 
+	margin: 0px auto; 
+	padding-top: 10%;
+}
+
+
+/*- Header ---------------------------------------------------------------- */
+header{
+	width: 100%;
+	background: #263544;
+	border-radius: 5px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+
+	padding: 20px 30px 20px 30px;
+}
+header p{
+	padding: 0px 0px 0px 0px;
+	margin: 0;	
+	color: #fff;
+	font: bold 20px 'Open Sans',sans-serif;
+}
+
+header > p.header_right{
+	padding: 0px 0px 0px 0px;
+	margin: 0;	
+	color: #fff;
+	font: bold 20px 'Open Sans',sans-serif;
+	float: right;
+}
+
+@media screen and (max-width: 52.375em) {
+	header{
+		width: 70%;
+	}
+}
+
+/*- Main --------------------------------------------------------------- */
+#main{
+	width: 100%;
+	background: #fff; 
+	padding: 20px 30px 20px 30px;
+	border-top: #000 1px solid;
+	border-bottom: #e5e5e5 1px solid;
+}
+@media screen and (max-width: 52.375em) {
+	#main{
+		width: 70%;
+	}
+}
+
+/*- Tables ------------------------------------------------------------------ */
+table.hor-zebra {
+	width: 100%;
+	text-align: left;
+	border-spacing:0;
+	border: #cccccc 1px solid;
+    table-layout: auto !important;
+}
+
+table.hor-zebra>thead {
+	border-top: #cccccc 1px solid;
+}
+
+table.hor-zebra>thead>tr>th {
+	background: #e2e2e2;
+	border-top: #ffffff 1px solid;
+	border-bottom: #cccccc 1px solid;
+	padding: 4px;
+	color: #000;
+
+}
+
+table.hor-zebra>tbody>tr>td {
+	background: #f3f3f3;
+	border-bottom: #cccccc 1px solid;
+	padding: 8px 4px 8px 4px;
+
+}
+
+table.hor-zebra>tbody>tr:nth-child(2n)>td {
+	background: #f8f8f8;
+	border-bottom: #cccccc 1px solid;
+}
+table.hor-zebra>tbody>tr>td.important {
+	background: #fff7e5;
+	border-bottom: #eabc63 1px solid;
+}
+table.hor-zebra>tbody>tr>td.danger {
+	background: #ffe7e5;
+	border-bottom: #ff4940 1px solid;
+	border-top: #ff4940 1px solid;
+}
+
+table.hor-zebra>tbody>tr:hover td {
+	background: #faf4f2;
+}
+
+
+
+/*- Footer ------------------------------------------------------------------------ */
+footer{
+	width: 100%;
+	background: #f2f0f0;
+	border-radius: 5px;
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+	padding: 5px 30px 5px 30px;
+	text-align: right;
+}
+@media screen and (max-width: 52.375em) {
+	footer{
+		width: 70%;
+	}
+}
+
+footer a{
+	background: url("_gfx/footer_go_right.png") no-repeat right 0px;
+	color: #4f4846;
+	padding: 0px 18px 0px 0px;
+}
+footer a:hover{
+	background: url("_gfx/footer_go_right_hover.png") no-repeat right 0px;
+	color: #000;
+}

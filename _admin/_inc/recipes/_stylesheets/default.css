@@ -1,0 +1,60 @@
+
+
+
+
+
+
+/*- 4 cols Left, center_left, center_right and right ------------------------------------------------------------ */
+.left_center_center_right_left{
+	float: left;
+	width: 24%;
+	margin-right: 1%;
+}
+.left_center_center_left_right_center, .left_center_center_right_right_center{
+	float: left;
+	width: 24%;
+	margin-right: 1%;
+}
+.left_center_center_right_right{
+	float:right;
+	width: 25%;
+}
+/* Example media queries */
+@media screen and (max-width: 52.375em) {
+	.left_center_center_right_left{
+		float: left;
+		width: 46%;
+		margin: 0px 10px 0px 0px;
+	}
+	.left_center_center_left_right_center{
+		float: right;
+		width: 46%;
+		margin: 0px 0px 0px 10px;
+	}
+	.left_center_center_right_right_center{
+		clear: both;
+		float: left;
+		width: 46%;
+		margin: 0px 10px 0px 0px;
+	}
+	.left_center_center_right_right{
+		float: right;
+		width: 46%;
+		margin: 0px 0px 0px 10px;
+	}
+}
+
+
+/*- Recipe image and text ---------------------------------------------- */
+p.recipe_image_and_text{
+	padding: 4px 0px 0px 0px;
+	margin: 4px 0px 4px 0px;
+}
+a.recipe_title{
+	color: black;
+	font: normal 18px 'Open Sans',sans-serif;
+}
+p.recipe_actions{
+	padding: 0px 0px 0px 0px;
+	margin: 12px 0px 20px 0px;
+}

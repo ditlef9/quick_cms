@@ -1,0 +1,30 @@
+<?php
+$l_groups = "Groups";
+$l_rebus = "Rebus";
+$l_group_members = "Group members";
+$l_username = "Username";
+$l_status = "Status";
+$l_admin = "Admin";
+$l_moderator = "Moderator";
+$l_member = "Member";
+$l_invite_member = "Invite member";
+$l_username_or_email = "Username or email";
+$l_rebus_invite_at = "Rebus invite at";
+$l_hello = "Hello";
+$l_has_invited_you_to_rebus_lowercase = "has invited you to rebus";
+$l_join_the_group_by_following_the_link_below = "Join the group by following the link below";
+$l_accept = "Accept";
+$l_your_information = "Your information";
+$l_email = "Email";
+$l_password = "Password";
+$l_best_regards = "Best regards";
+$l_waiting_for_user_to_accept_invitation = "Wating for user to accept invitation";
+$l_not_verified_by_moderator = "Not verified by moderator";
+$l_verify_user = "Verify user";
+$l_edit_member = "Edit member";
+$l_yes = "Yes";
+$l_no = "No";
+$l_delete = "Delete";
+$l_are_you_sure = "Are you sure?";
+$l_confirm = "Confirm";
+?>

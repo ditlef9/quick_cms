@@ -1,0 +1,51 @@
+@import url("index.css");
+
+
+
+th.current_sub_category_calories_med, td.current_sub_category_calories_med,
+th.current_sub_category_calories_diff, td.current_sub_category_calories_diff,
+p.protein_diff {
+	display: none;
+}
+
+
+
+/*- View food show age restrictions waring ---------------------------------------------- */
+div.view_food_select_country_row{
+	display: flex;
+}
+
+div.view_food_select_country_col{
+	flex: 1;
+	padding: 1px 0px 1px 0px;
+}
+
+@media screen and (max-width: 52.375em) {
+	div.view_food_select_country_row{
+		display: inline-block;
+	}
+	div.view_food_select_country_col{
+		flex: 0;
+	}
+}
+
+
+
+/*- Comments ---------------------------------------------------------- */
+span.food_comment_by{
+	font-size: 80%;
+}
+a.food_comment_author{
+	font-size: 80%;
+}
+a.food_comment_date{
+	font-size: 80%;
+	color: #858585;
+}
+
+
+
+/*- Rating ------------------------------------------ */
+.inp_rating_radio_1, .inp_rating_radio_2, .inp_rating_radio_3, .inp_rating_radio_4, .inp_rating_radio_5 {
+	display: none;
+}

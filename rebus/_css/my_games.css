@@ -1,0 +1,52 @@
+
+/*- Games ---------------------------------------------------------------------------- */
+div.games_row{
+	display: flex;
+	flex-wrap: wrap;
+}
+div.games_column{
+	flex: 20%;
+	max-width: 20%;
+	text-align: center;
+	margin-bottom: 10px;
+}
+@media screen and (max-width: 52.375em) {
+	div.games_column{
+		flex: 33%;
+		max-width: 33%;
+	}
+}
+
+
+
+
+
+div.games_column_inner{
+	display: inline-block; 
+	background: #fff;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+div.games_column_inner:nth-child(2n+1) { /* Left*/
+	margin-right: 10px;
+}
+
+div.games_column_inner:nth-child(2n) { /* Right */
+	margin-left: 10px;
+}
+
+div.games_column > div.games_column_inner > p{
+	line-height: normal;
+	padding-top: 0;
+	margin-top: 0;
+}
+div.games_column > div.games_column_inner > p > a > img{
+	border-radius: 1%;
+	margin-bottom: 8px;
+	vertical-align: middle;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+div.games_column > div.games_column_inner > p > a > img:hover{
+	border-radius: 1%;
+}

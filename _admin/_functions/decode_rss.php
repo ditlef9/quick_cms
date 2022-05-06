@@ -1,0 +1,29 @@
+<?php
+/**
+*
+* File: _admin/_functions/fix_rss.php
+* Version 16:05 25.08.2011
+* Copyright (c) 2008-2011 Sindre Andre Ditlefsen
+* License: http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+function decode_rss($str){
+	$str = utf8_encode($str);
+	$str = utf8_decode($str);
+	$str = str_replace("Â«","«","$str");
+	$str = str_replace("Â»","»","$str");
+	$str = str_replace("Ã¥","å","$str");
+	$str = str_replace("Ã¸","ø","$str");
+	$str = str_replace("Ã¦","æ","$str");
+	$str = str_replace("Ã˜","Ø","$str");
+	$str = str_replace("Ã…˜","Å","$str");
+	$str = str_replace("Ã…","Å","$str");
+	$str = str_replace("â€“","","$str");
+	$str = str_replace("Ã¡","á","$str");
+	$str = str_replace("Ã¶","ö","$str");
+	$str = str_replace("Ã©","é","$str");
+	$str = str_replace("\n","<br />","$str");
+	$str = str_replace("â€","&rdquo;","$str");
+	return $str;
+}
+?>

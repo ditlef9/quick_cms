@@ -1,0 +1,7 @@
+p.reference_title{
+	padding: 18px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+p.reference_title > a{
+	font: 20px 'Segoe UI','Helvetica Neue',Helvetica,Roboto,Oxygen,Ubuntu,Cantarell,'Fira Sans','Droid Sans',sans-serif;
+}

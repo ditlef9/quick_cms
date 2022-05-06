@@ -1,0 +1,19 @@
+
+
+/*- webcamera chat -------------------------------------------- */
+#webcamera_chat{
+	display: none;
+	position: fixed;
+	width: 500px;
+	height: 750px;
+	border: 1px solid #dedede;
+	height: 80%;
+	top: 0;
+	right: 0;
+	background: #fff;
+}
+
+
+#webcamera_my_camera{
+	background-color: #666;
+}

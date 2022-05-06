@@ -1,0 +1,37 @@
+<?php
+$l_active = "Actif";
+$l_added_to_your_diary_lowercase = "ajout&eacute; &agrave; votre agenda";
+$l_after_training = "Apr&egrave;s l&#039;entrainement";
+$l_before_training = "Avant l&#039;entra&icirc;nement";
+$l_breakfast = "Petit d&eacute;jeuner";
+$l_carb = "Carb";
+$l_carbs = "Glucides";
+$l_dinner = "D&icirc;ner";
+$l_energy = "&Eacute;nergie";
+$l_fat = "Gras";
+$l_food = "Aliments";
+$l_food_diary = "Journal alimentaire";
+$l_kcal_lowercase = "kcal";
+$l_lifestyle = "Mode de vie";
+$l_lunch = "Le d&eacute;jeuner";
+$l_my_goal = "Mon but";
+$l_my_profile_data = "Mes donn&eacute;es de profil";
+$l_over_your_target_lowercase = "sur votre cible";
+$l_please_set_your_goal = "S&#039;il vous pla&icirc;t fixer votre objectif";
+$l_proteins = "Prot&eacute;ines";
+$l_remaining = "Restant";
+$l_sedentary = "S&eacute;dentaire";
+$l_snacks = "Des collations";
+$l_summary = "R&eacute;sum&eacute;";
+$l_supper = "Souper";
+$l_target = "Cible";
+$l_this_is = "C&#039;est";
+$l_to_go_lowercase = "aller";
+$l_with_activity_lowercase = "avec activit&eacute;";
+$l_with_sedentary_lifestyle_lowercase = "avec la vie s&eacute;dentaire";
+$l_your_target_is = "Votre cible est";
+$l_you_can_eat = "Tu peux manger";
+$l_you_can_still_eat = "Tu peux encore manger";
+$l_you_have = "Tu as";
+$l_you_have_eaten = "Tu as mang&eacute;";
+?>

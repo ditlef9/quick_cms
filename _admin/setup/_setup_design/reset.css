@@ -1,0 +1,156 @@
+/**
+*
+* File: _admin/css/reset.css
+* Version 16:05 25.08.2011
+* Copyright (c) 2008-2011 Sindre Andre Ditlefsen
+* License: http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
+
+/*- Reset ---------------------------------------------------------------------------- */
+html, body, div, span, object, iframe, img {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+
+
+/*- Basic Structure ------------------------------------------------------------------- */
+article,aside,details,figcaption,figure, footer,header,hgroup,menu,nav,section {
+	display: block;
+}
+p{
+	padding: 12px 0px 12px 0px;
+	margin: 0;
+}
+table{
+	border-spacing:0px; 
+}
+td{
+	padding: 0px;
+}
+
+
+/*- Lists ------------------------------------------------------------------------------ */
+ul {
+	padding: 10px 0px 10px 0px;
+}
+ol {
+	padding: 10px 0px 10px 0px;
+}
+
+/*- Line ------------------------------------------------------------------------------- */
+hr{
+	display:block;
+	height:1px;
+	border:0;   
+	border-top:1px solid #cccccc;
+	margin:1em 0;
+	padding:0;
+}
+
+/*- Smal -------------------------------------------------------------------------------- */
+.smal{
+	font-size: 10px;
+}
+.smal_grey{
+	font-size: 10px;
+	color: #444444;
+}
+
+
+/*- Mark, Ins and Del ------------------------------------------------------------------- */
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+
+/*- Abbr ---------------------------------------------------------------------------------- */
+abbr[title], dfn[title] {
+    border-bottom: #000 1px dotted;
+    cursor:help;
+}
+
+
+/*- Feedback boxes ------------------------------------------------------------------------- */
+.info, .success, .warning, .error, .validation {
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	font-family:Arial, Helvetica, sans-serif; 
+	font-size:13px;
+}
+.info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url("images/dialog-information.png");
+}
+.success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image:url("images/dialog-information.png");
+}
+.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url("images/dialog-warning.png");
+}
+.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url("images/dialog-error.png");
+}
+
+
+/*- Facebook searchbox ------------------------------------------------------------------------- */
+#searchbox{
+	width:250px;
+	border:solid 1px #000;
+	padding:3px;
+}
+#display{
+	width:250px;
+	display:none;
+	float:right; margin-right:30px;
+	border-left:solid 1px #dedede;
+	border-right:solid 1px #dedede;
+	border-bottom:solid 1px #dedede;
+	overflow:hidden;
+}
+.display_box{
+	padding:4px; border-top:solid 1px #dedede; font-size:12px; height:30px;
+}
+
+.display_box:hover{
+	background:#3b5998;
+	color:#FFFFFF;
+}
+#shade{
+	background-color:#00CCFF;
+}
+
+preload {display:none;}

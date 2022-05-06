@@ -1,0 +1,30 @@
+
+/*- Left and right ------------------------------------------------------------------------------ */
+div.workout_plans_float_left{
+	float: left;
+}
+div.workout_plans_float_right{
+	float: right;
+	padding: 10px 0px 0px 0px;
+}
+@media screen and (max-width: 52.375em) {
+	div.workout_plans_float_left{
+		float: none;
+	}
+	div.workout_plans_float_right{
+		float: none;
+		padding: 0px 0px 0px 0px;
+		overflow: auto;
+		white-space: nowrap;
+	}
+}
+
+p.workout_introduction{
+	margin: 0px 0px 12px 0px;
+	padding: 0;
+}
+@media screen and (max-width: 52.375em) {
+	p.workout_introduction{
+		display: none;
+	}
+}

@@ -1,0 +1,34 @@
+<?php
+$l_admin = "Admin";
+$l_april = "Avril";
+$l_august = "Ao&ucirc;t";
+$l_create_free_account = "Cr&eacute;er un compte gratuitement";
+$l_december = "D&eacute;cembre";
+$l_editor = "&Eacute;diteur";
+$l_february = "F&eacute;vrier";
+$l_follow_us = "Suivez nous!";
+$l_friday = "Vendredi";
+$l_january = "January";
+$l_july = "Janvier";
+$l_june = "Juin";
+$l_login = "S&#039;identifier";
+$l_logout = "Connectez - Out";
+$l_march = "Mars";
+$l_may = "Mai";
+$l_moderator = "Mod&eacute;rateur";
+$l_monday = "Lundi";
+$l_newest_members = "Nouveaux membres";
+$l_november = "Novembre";
+$l_october = "Octobre";
+$l_registrer = "Registre";
+$l_saturday = "Samedi";
+$l_search = "Chercher";
+$l_september = "Septembre";
+$l_sunday = "Dimanche";
+$l_thursday = "Jeudi";
+$l_top = "Haut";
+$l_trusted = "De confiance";
+$l_tuesday = "Mardi";
+$l_wednesday = "Mercredi";
+$l_you_are_here = "Tu es l&agrave;";
+?>

@@ -1,0 +1,30 @@
+<?php
+$l_accept = "Aksepter";
+$l_admin = "Admin";
+$l_are_you_sure = "Er du sikker?";
+$l_best_regards = "Med vennlig hilsen";
+$l_confirm = "Bekreft";
+$l_delete = "Slett";
+$l_edit_member = "Rediger medlem";
+$l_email = "E-post";
+$l_groups = "Grupper";
+$l_group_members = "Medlemmer av gruppen";
+$l_has_invited_you_to_rebus_lowercase = "har invitert deg til rebus";
+$l_hello = "Hei";
+$l_invite_member = "Inviter medlem";
+$l_join_the_group_by_following_the_link_below = "Bli med i gruppen ved &aring; f&oslash;lge lenken nedenfor";
+$l_member = "Medlem";
+$l_moderator = "Moderator";
+$l_no = "Nei";
+$l_not_verified_by_moderator = "Ikke bekreftet av moderator";
+$l_password = "Passord";
+$l_rebus = "Rebus";
+$l_rebus_invite_at = "Rebus innvitasjon hos";
+$l_status = "Status";
+$l_username = "Brukernavn";
+$l_username_or_email = "Brukernavn eller e-post";
+$l_verify_user = "Bekreft bruker";
+$l_waiting_for_user_to_accept_invitation = "Venter p&aring; at brukeren skal godta invitasjonen";
+$l_yes = "Ja";
+$l_your_information = "Din informasjon";
+?>

@@ -1,0 +1,271 @@
+/*- Headline ------------------------------------------------------------------------------ */
+div.blog_headline_left{
+	float: left;
+	padding: 0px 30px 0px 0px;
+}
+div.blog_headline_center{
+	float: left;
+}
+div.blog_headline_center > p{
+	padding: 22px 0px 0px 0px;
+	margin: 0;
+}
+div.blog_headline_right{
+	float: right;
+}
+div.blog_headline_right > p{
+	padding: 22px 0px 0px 0px;
+	margin: 0;
+}
+
+
+/*- Common all posts ---------------------------------------------------------------------- */
+a.blog_post_a_pre_h{
+	font: normal 16px 'Open Sans',sans-serif;
+	color: #000;
+	letter-spacing: 0.5px;
+}
+a.blog_post_a_h1{
+	font: bold 24px 'Open Sans',sans-serif;
+	color: #000;
+}
+a.blog_post_a_h2{
+	font: bold 18px 'Open Sans',sans-serif;
+	color: #000;
+}
+a.blog_post_a_h3{
+	font: bold 17px 'Open Sans',sans-serif;
+	color: #000;
+}
+
+
+
+/*- A 1 big on left, 2 small on right ----------------------------------------------------- */
+div.blog_flex_row_a{
+	display: flex;                  /* establish flex container */
+	flex-direction: row;            /* default value; can be omitted */
+	flex-wrap: nowrap;              /* default value; can be omitted */
+	justify-content: flex-start; /* switched from default (flex-start, see below) */
+	margin: 20px 0px 20px 0px;
+	align-items: flex-start;
+}
+div.blog_flex_column_a_left{
+	padding: 0px 10px 0px 0px;
+}
+div.blog_flex_column_a_right{
+	padding: 0px 0px 0px 10px;
+	flex-shrink: 3;
+}
+
+
+div.blog_flex_column_a_left > p{
+	padding: 0px 0px 0px 0px;
+	margin: 6px 0px 0px 0px;
+	line-height: normal;
+}
+div.blog_flex_column_a_right > p{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+div.blog_flex_column_a_right > hr{
+	padding: 0px 0px 0px 0px;
+	margin: 10px 0px 15px 0px;
+}
+
+
+/*- 1 big on left, 2 small on right mobile */
+@media screen and (max-width: 52.375em) {
+	div.blog_flex_row_a{
+		flex-direction: column;
+	}
+	div.blog_flex_column_a_right{
+		display: flex;	
+		justify-content: space-evenly;
+		margin: 20px 0px 0px 0px;
+	}
+	div.blog_flex_column_a_right_item:first-of-type{
+		margin: 0px 20px 0px 0px;
+		width: 50%;
+	}
+	div.blog_flex_column_a_right_item:nth-of-type(2) {
+		margin: 0px 0px 0px 20px;
+		width: 50%;
+	}
+	div.blog_flex_column_a_right_item > hr{
+		color: white;
+		border: #fff 1px solid;
+	}
+}
+
+
+/*- B 2 small on left, 1 big on right ----------------------------------------------------- */
+div.blog_flex_row_b{
+	display: flex;                  /* establish flex container */
+	flex-direction: row;            /* default value; can be omitted */
+	flex-wrap: nowrap;              /* default value; can be omitted */
+	justify-content: flex-start; /* switched from default (flex-start, see below) */
+	margin: 20px 0px 20px 0px;
+	align-items: flex-start;
+}
+
+div.blog_flex_column_b_left{
+	padding: 0px 10px 0px 0px;
+	flex-shrink: 3;
+}
+div.blog_flex_column_b_right{
+	padding: 0px 0px 0px 10px;
+}
+
+
+
+div.blog_flex_column_b_left > p{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+div.blog_flex_column_b_left > hr{
+	padding: 0px 0px 0px 0px;
+	margin: 10px 0px 15px 0px;
+}
+
+div.blog_flex_column_b_right > p{
+	padding: 0px 0px 0px 0px;
+	margin: 6px 0px 20px 0px;
+	line-height: normal;
+}
+
+/*- 1 big on left, 2 small on right mobile */
+@media screen and (max-width: 52.375em) {
+	div.blog_flex_row_b{
+		flex-direction: column;
+	}
+	div.blog_flex_column_b_left{
+		display: flex;	
+		justify-content: space-evenly;
+		margin: 20px 0px 0px 0px;
+	}
+	div.blog_flex_column_b_left_item:first-of-type{
+		margin: 0px 20px 0px 0px;
+		width: 50%;
+	}
+	div.blog_flex_column_b_left_item:nth-of-type(2) {
+		margin: 0px 0px 0px 20px;
+		width: 50%;
+	}
+	div.blog_flex_column_b_left_item > hr{
+		color: white;
+		border: #fff 1px solid;
+	}
+}
+
+
+
+
+/*- C 3 small -------------------------------------------------------------------------- */
+div.blog_flex_row_c{
+	display: flex;                  /* establish flex container */
+	justify-content: space-evenly;
+	margin: 20px 0px 20px 0px;
+	align-items: flex-start;
+}
+
+div.blog_flex_column_c_left{
+	margin: 30px 35px 0px 0px;
+}
+div.blog_flex_column_c_center{
+	margin: 30px 35px 0px 0px;
+}
+div.blog_flex_column_c_right{
+	margin-top: 30px;
+}
+
+/*- 3 small mobile */
+@media screen and (max-width: 52.375em) {
+	div.blog_flex_column_c_right{
+		flex-wrap: wrap;
+	}
+	div.blog_flex_column_c_left, div.blog_flex_column_c_center, div.blog_flex_column_c_right{
+		margin: 30px 0px 0px 0px;
+	}
+	div.blog_flex_column_c_left{
+		padding: 0px 10px 0px 10px;
+	}
+	div.blog_flex_column_c_right{
+		padding: 0px 10px 0px 10px;
+	}
+}
+
+
+/*- D 1 big on left, 2 small on right ----------------------------------------------------- */
+div.blog_flex_row_d{
+	display: flex;                  /* establish flex container */
+	flex-direction: row;            /* default value; can be omitted */
+	flex-wrap: nowrap;              /* default value; can be omitted */
+	justify-content: flex-start; /* switched from default (flex-start, see below) */
+	margin: 20px 0px 20px 0px;
+	align-items: flex-start;
+}
+div.blog_flex_column_d_left{
+	padding: 0px 10px 0px 0px;
+}
+div.blog_flex_column_d_right{
+	padding: 0px 0px 0px 10px;
+	flex-shrink: 3;
+}
+
+
+div.blog_flex_column_d_left > p{
+	padding: 0px 0px 0px 0px;
+	margin: 6px 0px 0px 0px;
+	line-height: normal;
+}
+div.blog_flex_column_d_right > p{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+div.blog_flex_column_d_right > hr{
+	padding: 0px 0px 0px 0px;
+	margin: 10px 0px 15px 0px;
+}
+
+
+/*- 1 big on left, 2 small on right mobile */
+@media screen and (max-width: 52.375em) {
+	div.blog_flex_row_d{
+		flex-direction: column;
+	}
+	div.blog_flex_column_d_right{
+		display: flex;	
+		justify-content: space-evenly;
+		margin: 20px 0px 0px 0px;
+	}
+	div.blog_flex_column_d_right_item:first-of-type{
+		margin: 0px 20px 0px 0px;
+		width: 50%;
+	}
+	div.blog_flex_column_d_right_item:nth-of-type(2) {
+		margin: 0px 0px 0px 20px;
+		width: 50%;
+	}
+	div.blog_flex_column_d_right_item > hr{
+		color: white;
+		border: #fff 1px solid;
+	}
+}
+
+
+/*- E 2 small -------------------------------------------------------------------------- */
+div.blog_flex_row_e{
+	display: flex;                  /* establish flex container */
+	flex-direction: row;            /* default value; can be omitted */
+	flex-wrap: nowrap;              /* default value; can be omitted */
+	justify-content: flex-start; /* switched from default (flex-start, see below) */
+	margin: 20px 0px 20px 0px;
+	align-items: flex-start;
+}
+
+div.blog_flex_column_e_left{
+	padding: 30px 10px 0px 0px;
+}
+div.blog_flex_column_e_right{
+	padding: 30px 0px 0px 10px;
+}

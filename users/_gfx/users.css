@@ -1,0 +1,112 @@
+
+/*- Gallery -------------------------------------------------------------------------- */
+div.photo_gallery {
+	overflow: hidden;
+	margin: 10px 0px 0px 0px;
+}
+div.photo_gallery > div.photo_frame {
+	float: left;
+	position: relative;
+	width: 20%;
+	margin: 0px 10px 20px 0px;
+	overflow:hidden;
+}
+div.photo_gallery > div.photo_frame > a > img.photo_img{
+	margin-right: 20px;
+	border: #ccc 3px double;
+}
+div.photo_gallery > div.photo_frame > a > img.photo_img:hover{
+	margin-right: 20px;
+	border: #adadad 3px double;
+}
+div.photo_gallery > div.photo_frame > div.photo_title {
+	 /* bg */
+	position: absolute;
+	margin-top: -48px;
+	background: rgba(0, 0, 0, 0.5);
+	color: #FFF;
+	padding: 10px 0px 10px 0px;
+	text-align: center;
+	width: 100%;
+	left: 3px;
+	right: 3px;
+	display: none;
+}
+
+
+
+
+
+@media only screen and (max-width : 480px) {
+      	/* Smartphone view: 1 tile */
+	.box {
+        	width: 100%;
+        	padding-bottom: 100%;
+      	}
+}
+@media only screen and (max-width : 650px) and (min-width : 481px) {
+	/* Tablet view: 2 tiles */
+	.box {
+		width: 50%;
+		padding-bottom: 50%;
+	}
+}
+@media only screen and (max-width : 1050px) and (min-width : 651px) {
+	/* Small desktop / ipad view: 3 tiles */
+	.box {
+		width: 33.3%;
+		padding-bottom: 33.3%;
+	}
+}
+@media only screen and (max-width : 1290px) and (min-width : 1051px) {
+	/* Medium desktop: 4 tiles */
+	.box {
+		width: 25%;
+		padding-bottom: 25%;
+	}
+}
+
+
+.photo_nvgt_prev{
+	background: #000 url('images/prev.png') no-repeat center;position:absolute;top:0;left:0;width: 60px;opacity: 0.2;
+}
+.photo_nvgt_next{
+	background: #000 url('images/next.png') no-repeat center;position:absolute;top:0;right:0px;width: 60px;opacity: 0.2;
+}
+
+.photo_nvgt_prev:hover, .photo_nvgt_next:hover{
+	opacity: 0.9;
+}
+
+
+/*- Divs ------------------------------------------------------------------------------ */
+div.headcell{
+	background: #ececec;
+	padding: 4px;
+	border: #d8d8d8 1px solid;
+}
+div.bodycell, div.bodycell_no_hover{
+	background: #f2f2f2;
+	padding: 4px;
+	border: #d8d8d8 1px solid;
+	overflow: hidden;
+}
+div.bodycell:hover{
+	background: #fbfbfb;
+	padding: 4px;
+	border: #d8d8d8 1px solid;
+}
+div.subcell{
+	background: #fbfbfb;
+	padding: 4px;
+	border: #d8d8d8 1px solid;
+	overflow: hidden;
+}
+div.subcell:hover{
+	background: #f6f6f6;
+	padding: 4px;
+	border: #d8d8d8 1px solid;
+}
+
+
+

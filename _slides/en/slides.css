@@ -1,0 +1,9 @@
+
+
+.owl-slide-1 {
+	background-image: url('imgs/1.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	height: 260px;
+}

@@ -1,0 +1,12 @@
+/*- Row Two (2)  ----------------------------------------------- */
+div.row_two{
+	display: flex;
+	flex-wrap: wrap;
+}
+div.columns_two_wrapper{
+	flex: 48%;
+	max-width: 48%;
+}
+div.columns_two_wrapper:first-of-type{
+	margin-right: 2%;
+}

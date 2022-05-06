@@ -1,0 +1,111 @@
+td.new_workout_session_main_id{
+	border-top: #cccccc 1px solid;
+}
+p.workout_session_main_exercise_title_p{
+	padding: 0;
+	margin: 12px 0px 0px 0px;
+	font-size: 18px;
+}
+a.workout_session_main_exercise_title_link{
+	color: black;
+	font-size: 18px;
+}
+
+p.entry_data{
+	padding: 0px 0px 12px 0px;
+	margin: 0px 0px 12px 0px;
+
+}
+
+/* Strenght */
+
+
+.inp_set_weight{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+	width: 30px;
+	text-align: right;
+}
+span.set_weight_previous{
+	color: #737373;
+}
+
+.inp_measurement{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+	text-align: center;
+}
+span.kg_lbs{
+	color: #000;
+	padding-right: 3px;
+}
+span.kg_lbs_previous{
+	color: #737373;
+	padding-right: 3px;
+	font-size: 14px;
+}
+
+.inp_set_reps{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+	width: 20px;
+	text-align: center;
+}
+
+span.set_reps_previous{
+	color: #737373;
+}
+
+
+
+
+/* Cardio previous */
+
+.inp_distance{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+	width: 40px;
+}
+span.distance_prev{
+	color: #737373;
+}
+
+.inp_velocity_a{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+	width: 40px;
+}
+span.velocity_a_prev{
+	color: #737373;
+}
+
+.inp_duration_hh{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+	width: 20px;
+	text-align: right;
+}
+.inp_duration_mm{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+	width: 20px;
+	text-align: center;
+}
+.inp_duration_ss{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+	width: 20px;
+	text-align: left;
+}
+
+span.duration_prev{
+	color: #737373;
+}
+
+.inp_notes{
+	border: #fff 1px solid;
+	border-bottom: #cccccc 1px dashed;
+}
+span.notes_prev{
+	color: #737373;
+}

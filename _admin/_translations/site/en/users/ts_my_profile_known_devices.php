@@ -1,0 +1,32 @@
+<?php
+$l_known_devices = "Known devices";
+$l_report_known_device = "Report known device";
+$l_report = "Report";
+$l_created = "Created";
+$l_updated = "Updated";
+$l_country = "Country";
+$l_type = "Type";
+$l_os = "OS";
+$l_browser = "Browser";
+$l_do_you_want_to_send_a_report_to_the_moderator_with_this_known_device = "Do you want to send a report to the moderator with this known device?";
+$l_send_report = "Send report";
+$l_cancel = "Cancel";
+$l_known_device_report_for = "Known device report for";
+$l_at_lowercase = "at";
+$l_hi = "Hi";
+$l_the_user = "The user";
+$l_has_reported_a_known_login_lowercase = "has reported a known login";
+$l_last_ip = "Last IP";
+$l_last_hostname = "Last hostname";
+$l_accepted_language = "Accepted language";
+$l_language = "Language";
+$l_url = "URL";
+$l_user_agent = "User agent";
+$l_first_ip = "First IP";
+$l_first_hostname = "First hostname";
+$l_user_information = "User information";
+$l_login_information = "Login information";
+$l_user_id = "User ID";
+$l_email = "Email";
+$l_username = "Username";
+?>

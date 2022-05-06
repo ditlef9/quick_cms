@@ -1,0 +1,151 @@
+﻿/* exam_certificate */
+
+/*- Nullstilling ------------------------------------------------------------------ */
+div.clear{
+	clear: both;
+}
+
+/*- Body -------------------------------------------------------------------------- */
+html{
+	height: 100%;
+}
+body {
+	background: #fff;
+	color: #000;
+	font: normal 16px 'Open Sans',sans-serif;
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	margin: 0;
+}
+
+/*- Fonts ----------------------------------------------------------------------- */
+@font-face {
+  font-family: HoneyMoon;
+  src: url(HoneyMoon.ttf);
+}
+@font-face {
+  font-family: Signatra;
+  src: url(Signatra.ttf);
+}
+@font-face {
+  font-family: Ananda;
+  src: url(Ananda.ttf);
+}
+@font-face {
+  font-family: JadynMaria;
+  src: url(JadynMaria.ttf);
+}
+
+/*- Bilder ----------------------------------------------------------------------- */
+img{
+	max-width: 100%;
+}
+
+
+/*- Overskrifter ----------------------------------------------------------------- */
+h1 {
+	font: normal 80px Signatra, 'Open Sans',sans-serif;
+    	color: #c20200;
+	padding: 40px 0 40px 0px;
+	margin: 0px 0px 0px 0px;
+}
+h2 {
+	font: normal 50px Ananda, 'Open Sans',sans-serif;
+    	color: #c20200;
+	padding: 0px 0 0px 0px;
+	margin: 0px 0px 0px 0px;
+	border-bottom: #d40517 4px solid;
+}
+
+/*- Paragrafer og span ----------------------------------------------------------- */
+p{
+	margin: 0;
+	font: normal 16px 'Open Sans',sans-serif;
+        color: #000;
+}
+span{
+        color: #000;
+}
+
+/*- Header ----------------------------------------------------------- */
+div.header{
+	width: 748px;
+	margin: 0px auto;
+	text-align:center;
+}
+div.header > p{
+	font: normal 400px HoneyMoon;
+	color: #000000;
+}
+
+/*- Main ----------------------------------------------------------- */
+div.main{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+
+	width: 748px;
+	margin: 0px auto;
+	text-align:center;
+}
+
+p.this_certificate_is_awarded_to{
+	color: #4c4a4b;
+	font: normal 20px 'Open Sans',sans-serif;
+	padding: 0px 0px 0px 0px;
+	margin: 20px 0px 20px 0px;
+}
+span.name{
+	font: normal 50px Ananda, 'Open Sans',sans-serif;
+    	color: #c20200;
+	padding: 0px 0 0px 0px;
+	margin: 0px 0px 0px 0px;
+	border-bottom: #d40517 4px solid;
+}
+
+p.course_contents{
+	margin: 60px 0px 20px 0px;
+}
+div.main > ul{
+	list-style: circle;
+	margin: 60px 0px 20px 0px;
+}
+div.main > ul > li {
+	display: inline;
+	border-right: #000 1px solid;
+	padding: 0px 10px 0px 10px;
+	margin: 10px 0px 10px 0px;
+}
+div.main > ul > li:last-child {
+	border-right: #fff 1px solid;
+}
+
+
+
+/*- Footer ----------------------------------------------------------- */
+div.footer_wrapper{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+
+}
+div.footer_inner{
+	width: 748px;
+	margin: 0px auto;
+	text-align:center;
+}
+span.signature_name{
+	font: normal 30px JadynMaria, 'Open Sans',sans-serif;
+    	color: #000;
+	border-bottom: #000 1px solid;
+}
+p.signature_date{
+	font: normal 14px 'Open Sans',sans-serif;
+    	color: #000;
+	padding: 0px 0px 0px 0px;
+	margin: 10px 0px 10px 0px;
+}

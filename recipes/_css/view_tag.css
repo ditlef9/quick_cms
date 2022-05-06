@@ -1,0 +1,23 @@
+/*- Headline ------------------------------------------------------------------------------ */
+div.recipes_headline{
+	float: left;
+}
+div.recipes_menu{
+	float: right;
+	padding: 10px 0px 0px 0px;
+}
+@media screen and (max-width: 52.375em) {
+	div.recipes_headline{
+		float: none;
+	}
+	div.recipes_menu{
+		float: none;
+		padding: 0px 0px 0px 0px;
+		overflow: auto;
+		white-space: nowrap;
+	}
+}
+
+
+
+

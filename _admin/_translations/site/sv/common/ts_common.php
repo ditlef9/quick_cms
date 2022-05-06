@@ -1,0 +1,34 @@
+<?php
+$l_admin = "Administration";
+$l_april = "April";
+$l_august = "Augusti";
+$l_create_free_account = "Skapa gratis konto";
+$l_december = "December";
+$l_editor = "Redakt&ouml;r";
+$l_february = "Februari";
+$l_follow_us = "F&ouml;lj oss!";
+$l_friday = "Fredag";
+$l_january = "Januari";
+$l_july = "Juli";
+$l_june = "Juni";
+$l_login = "Logga in";
+$l_logout = "Logga ut";
+$l_march = "Mars";
+$l_may = "Maj";
+$l_moderator = "Moderator";
+$l_monday = "M&aring;ndag";
+$l_newest_members = "Nyaste medlemmar";
+$l_november = "November";
+$l_october = "Oktober";
+$l_registrer = "Registrera";
+$l_saturday = "L&ouml;rdag";
+$l_search = "S&ouml;k";
+$l_september = "September";
+$l_sunday = "S&ouml;ndag";
+$l_thursday = "Torsdag";
+$l_top = "Topp";
+$l_trusted = "Betrodd";
+$l_tuesday = "Tisdag";
+$l_wednesday = "Onsdag";
+$l_you_are_here = "Du &auml;r h&auml;r";
+?>

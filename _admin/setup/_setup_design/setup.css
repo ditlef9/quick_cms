@@ -1,0 +1,289 @@
+﻿/* Nettport CMS Setup */
+
+/*- Nullstilling ------------------------------------------------------------------ */
+div.clear{
+	clear: both;
+}
+
+/*- Body -------------------------------------------------------------------------- */
+body {
+	background: #695b57;
+	color: #000;
+	font: normal 14px 'Open Sans',sans-serif;
+
+}
+
+/*- Bilder ----------------------------------------------------------------------- */
+img{
+	max-width: 100%;
+}
+
+
+/*- Overskrifter ----------------------------------------------------------------- */
+h1 {
+	font: normal 20px 'Open Sans',sans-serif;
+    	color: #111;
+	padding: 12px 0 12px 0px;
+	margin: 0px 0px 0px 0px;
+}
+
+/*- Paragrafer og span ----------------------------------------------------------- */
+p{
+	margin: 0;
+	font: normal 14px 'Open Sans',sans-serif;
+        color: #000;
+}
+span{
+        color: #000;
+}
+
+
+/*- Input ------------------------------------------------------------------------ */
+input { 
+	padding: 3px;
+	border: 1px solid #BBB;
+	font-size: 12px;
+	background-color: #FFF; 
+}
+textarea { 
+	padding: 3px; border: 1px solid #BBB; font-size: 12px; 
+	background-color: #FFF; 
+}
+select  { border: 1px solid #BBB; padding: 2px; }
+.checkbox { border: none;}
+input.submit, .submit { 
+	background: #f76e42;
+	border: none; 
+	border-radius: 5px;
+	color: #FFF;
+	padding: 4px 10px 4px 10px; 
+	margin: 0 3px; 
+	font: normal 14px 'Open Sans',sans-serif;
+}
+input.submit:hover, .submit:hover { 
+	color: #fff;
+	background: #e74916;
+}
+button {  /* Submit button */
+	background: #f76e42;
+	color: white;
+	border-color: #df6741;
+	font: normal 15px 'Open Sans',sans-serif;
+}
+.radio {border: 0; margin: 0 3px -3px 0; background: transparent; }
+label { width: 150px; height: 20px; float: left;}
+.bredlabel { width: 550px; height: 20px; margin: 0 5px 0 0; float: none;}
+
+
+/*- Linker ------------------------------------------------------------------ */
+a {
+	color: #d6491b;
+	font: normal 15px 'Open Sans',sans-serif;
+	text-decoration: none;
+}
+a:hover {
+	color: #2281ac;
+	text-decoration: none;
+}
+/*- Buttons ---------------------------------------------------------------------- */
+.btn {
+	background: #475c7f;
+	border: none; 
+	border-radius: 5px;
+	color: #FFF;
+	padding: 4px 10px 4px 10px; 
+	margin: 0 3px; 
+	font: normal 14px 'Open Sans',sans-serif;
+}
+.btn:hover {
+	color: #fff;
+	background: #4f6488;
+	text-decoration: none;
+}
+
+.btn_default {
+	padding: 4px 10px 4px 10px; 
+	margin: 0 3px; 
+	font: normal 14px 'Open Sans',sans-serif;
+	background: #fff;
+	border: #cccccc 1px solid; 
+	border-radius: 5px;
+	color: #333333;
+}
+.btn_default:hover {
+	border: #adadad 1px solid; 
+	background: #e6e6e6;
+	color: #333333;
+}
+
+
+.btn_warning {
+	padding: 4px 10px 4px 10px; 
+	margin: 0 3px; 
+	font: normal 14px 'Open Sans',sans-serif;
+	background: #f0ad4e;
+	border: #eea236 1px solid; 
+	border-radius: 5px;
+	color: #fff;
+}
+.btn_warning:hover {
+	border: #d58512 1px solid; 
+	background: #ec971f;
+	color: #fff;
+}
+
+
+.btn_danger {
+	padding: 4px 10px 4px 10px; 
+	margin: 0 3px; 
+	font: normal 14px 'Open Sans',sans-serif;
+	background: #d9534f;
+	border: #d43f3a 1px solid; 
+	border-radius: 5px;
+	color: #fff;
+}
+.btn_danger:hover {
+	border: #ac2925 1px solid; 
+	background: #c9302c;
+	color: #fff;
+}
+
+
+
+
+/*- Wrapper ---------------------------------------------------------------- */
+#wrapper{
+	width: 850px;
+	margin: 0px auto;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	border-radius: 0px;
+}
+
+
+/*- Header --------------------------------------------------------------- */
+header{
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	background: #383533;
+	padding: 20px 0px 20px 20px;	
+	border-bottom: #1a1817 1px solid;
+}
+header p{
+	padding: 0px 0px 0px 0px;
+	margin: 0;	
+	color: #eae6e3;
+}
+header a{
+	color: #f9f9f9;
+	font: bold 25px 'Open Sans',sans-serif;
+	text-decoration: none;
+}
+header a:hover{
+	color: #f76e42;
+	font: bold 25px 'Open Sans',sans-serif;
+	text-decoration: none;
+}
+header span{
+	color: #f76e42;
+	font: bold 25px 'Open Sans',sans-serif;
+	text-decoration: none;
+	vertical-align: super;
+	font-size: smaller;
+}
+
+/*- Main --------------------------------------------------------------- */
+#main{
+	display: flex; /* equal height of the children */
+}
+
+/*- Navigation --------------------------------------------------------- */
+#navigation{
+	background: #292625;
+	float: left;
+	width: 150px;
+	border-bottom-left-radius: 5px;
+}
+
+#navigation > ul{
+	list-style:none;
+	margin: 20px 0px 20px 0px;
+	padding: 0;
+}
+#navigation > ul > li {
+	list-style-type: none;
+}
+#navigation > ul > li > span {
+	display: block;
+	color: #a09d9b;
+	font: normal 13px 'Open Sans',sans-serif;
+	padding: 4px 0px 4px 20px;
+	margin: 0px 0px 5px 0px;
+	overflow: hidden;
+	text-overflow: ellipsis; 
+}
+#navigation > ul > li > span.active {
+	display: block;
+	color: #f2eeeb;
+	font: normal 14px 'Open Sans',sans-serif;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background: #383533;
+}
+
+/*- Content --------------------------------------------------------- */
+#content{
+	flex: 1; /* additionally, equal width */
+	background: #fff;
+	width: auto;
+	padding: 0px 40px 0px 40px;
+	overflow: auto;
+	border-bottom-right-radius: 5px;
+}
+
+
+
+
+/*- Tables ------------------------------------------------------------------ */
+table.hor-zebra {
+  width: 100%;
+  text-align: left;
+  border-spacing:0;
+  border: #cccccc 1px solid;
+}
+
+table.hor-zebra>thead {
+  border-top: #cccccc 1px solid;
+}
+
+table.hor-zebra>thead>tr>th {
+	background: #e2e2e2;
+	border-top: #ffffff 1px solid;
+	border-bottom: #cccccc 1px solid;
+	padding: 4px;
+	color: #000;
+}
+
+table.hor-zebra>tbody>tr>td {
+	background: #f3f3f3;
+	border-bottom: #cccccc 1px solid;
+	padding: 8px 4px 8px 4px;
+}
+
+table.hor-zebra>tbody>tr>td.odd {
+	background: #f8f8f8;
+	border-bottom: #cccccc 1px solid;
+}
+table.hor-zebra>tbody>tr>td.important {
+	background: #fff7e5;
+	border-bottom: #eabc63 1px solid;
+}
+table.hor-zebra>tbody>tr>td.danger {
+	background: #ffe7e5;
+	border-bottom: #ff4940 1px solid;
+	border-top: #ff4940 1px solid;
+}
+
+table.hor-zebra>tbody>tr:hover td {
+	background: #faf4f2;
+}

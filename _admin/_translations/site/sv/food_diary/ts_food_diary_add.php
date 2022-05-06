@@ -1,0 +1,32 @@
+<?php
+$l_add = "L&auml;gg till";
+$l_after_training_lowercase = "efter tr&auml;ning";
+$l_before_training_lowercase = "innan tr&auml;ning";
+$l_breakfast_lowercase = "frukost";
+$l_cal_lowercase = "cal";
+$l_carb_lowercase = "kolh";
+$l_dinner_lowercase = "middag";
+$l_fat_lowercase = "fett";
+$l_food = "Mat";
+$l_food_categories = "Livsmedelskategorier";
+$l_food_search = "Matss&ouml;kning";
+$l_fridays_lowercase = "fredagar";
+$l_lunch_lowercase = "lunch";
+$l_mondays_lowercase = "m&aring;ndagar";
+$l_new_entry = "Nytt inl&auml;gg";
+$l_new_food = "Ny mat";
+$l_on_lowercase = "p&aring;";
+$l_on_this_page_you_will_see_food_you_have_added_before = "P&aring; denna sida ser du mat du har lagt till tidigare.";
+$l_proteins_lowercase = "proteiner";
+$l_recent = "Nyligen";
+$l_recipes = "Recept";
+$l_saturdays_lowercase = "l&ouml;rdagar";
+$l_snacks_lowercase = "snacks";
+$l_sundays_lowercase = "s&ouml;ndagar";
+$l_supper = "kv&auml;llsmat";
+$l_the_more_you_use_the_food_diary_the_smarter_it_gets = "Ju mer du anv&auml;nder matdagboken, desto smartare blir det.";
+$l_the_page_is_smart_so_it_will_remember_what_you_usually_have_for_your = "Sidan &auml;r smart s&aring; det kommer att komma ih&aring;g vad du brukar ha f&ouml;r din";
+$l_thursdays_lowercase = "torsdagar";
+$l_tuesdays_lowercase = "tisdagar";
+$l_wednesdays_lowercase = "onsdagar";
+?>

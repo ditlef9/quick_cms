@@ -1,0 +1,25 @@
+/*- Language select ------------------------------------------ */
+div.language_select > ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+div.language_select > ul > li {
+	float: left;
+}
+
+div.language_select > ul > li > a {
+	display: block;
+	text-align: center;
+	padding: 16px;
+	text-decoration: none;
+}
+div.language_select > ul > li.active > a {
+	font-weight: bold;
+}
+div.language_select > ul > li > a:hover {
+	background-color: #dddddd;
+	border-radius: 5px;
+}

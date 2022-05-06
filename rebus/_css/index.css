@@ -1,0 +1,174 @@
+
+/*- Filter and sort by --------------------------------------------------------------- */
+div.filter_and_sort_by{
+
+}
+div.filter_and_sort_by > ul{
+	list-style:none;
+	padding: 0;
+	margin: 10px 0px 10px 0px;
+}
+div.filter_and_sort_by > ul > li{
+	margin: 10px 0px 10px 0px;
+	display: inline;
+}
+div.filter_and_sort_by > ul > li > a{
+	border-radius: 5px;
+	padding: 10px 10px 10px 30px;
+	color: #000;
+	font-weight: bold;
+}
+div.filter_and_sort_by > ul > li > a.activate_filter{
+	background: url("../_gfx/filter_list_black_24x24.png") no-repeat left center #fff;
+}
+div.filter_and_sort_by > ul > li > a.activate_sort_by{
+	background: url("../_gfx/sort_black_24x24.png") no-repeat left center #fff;
+}
+div.filter_and_sort_by > ul > li > a.activate_find_games_nearby{
+	background: url("../_gfx/location_searching_outline_black_24x24.png") no-repeat left center #fff;
+}
+
+	/*- Filter ------------------------------------------------------------------- */
+	div.filters_box{
+		background: #fff;
+		display: none;
+	}
+	div.filters_box > h2{
+		float: left;
+	}
+	a.close_filters_box{
+		float: right;
+		margin: 10px 0px 0px 0px;
+	}
+
+		/*- For each filter */
+		a.expand_or_close_filter{
+			font-weight: bold;
+			color: #000;
+			display: block;
+		}
+		a.expand_or_close_filter > img{
+			float: right;
+			margin: 5px 0px 0px 0px;
+		}
+		div.filters_box > div > p {
+			padding: 0px 0px 0px 0px;
+			margin: 0px 0px 0px 0px;
+		}
+		div.filters_box > div > p > a.filter_active{
+			font-weight: bold;
+		}
+
+		div.filter_inside{
+			display: none;
+		}
+		div.filter_inside > ul{
+			list-style:none;
+			padding: 0;
+			margin: 4px 0px 4px 0px;
+		}
+		div.filter_inside > ul > li{
+			padding: 0;
+			margin: 0px 0px 0px 0px;
+		}
+		div.filter_inside > ul > li > span > a{
+			display: inline-block;
+			vertical-align:middle;
+		}
+		div.filter_inside > ul > li > span > a > img{
+			display: inline-block;
+			vertical-align: top;
+		}
+			
+
+	/*- Sort by ------------------------------------------------------------------ */
+	div.sort_by_box{
+		background: #fff;
+		display: none;
+	}
+	div.sort_by_box > ul{
+		list-style:none;
+		padding: 0;
+		margin: 10px 0px 10px 0px;
+	}
+	div.sort_by_box > ul > li{
+		margin: 0px 0px 0px 0px;
+	}
+	div.sort_by_box > ul > li > a{
+		display:block;
+		border-radius: 5px;
+		padding: 4px 10px 4px 10px;
+		color: #000;
+	}
+	div.sort_by_box > ul > li > a.active{
+		color: blue
+	}
+
+/*- Games ---------------------------------------------------------------------------- */
+div.games_row{
+	display: flex;
+	flex-wrap: wrap;
+}
+div.games_column{
+	flex: 25%;
+	max-width: 25%;
+	text-align: center;
+	margin-bottom: 10px;
+}
+@media screen and (max-width: 52.375em) {
+	div.games_column{
+		flex: 50%;
+		max-width: 50%;
+		text-align: center;
+		margin-bottom: 10px;
+	}
+}
+
+
+
+div.games_column_inner{
+	display: inline-block; 
+	background: #fff;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	padding-bottom: 4px;
+}
+div.games_column_inner:nth-child(2n+1) { /* Left*/
+	margin-right: 10px;
+}
+
+div.games_column_inner:nth-child(2n) { /* Right */
+	margin-left: 10px;
+}
+
+div.games_column > div.games_column_inner > p{
+	line-height: normal;
+	padding-top: 0;
+	margin-top: 0;
+}
+div.games_column > div.games_column_inner > p > a > img{
+	border-radius: 1%;
+	margin-bottom: 8px;
+	vertical-align: middle;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+div.games_column > div.games_column_inner > p > a > img:hover{
+	border-radius: 1%;
+}
+
+/* List */
+div.games_column_inner > ul > ul {
+	padding: 6px 0px 8px 0px;
+}
+div.games_column_inner > ul > li {
+	display:inline;
+	padding-right: 6px;
+}
+div.games_column_inner > ul > li > span.grey {
+	display: inline-block;
+}
+div.games_column_inner > ul > li > span.grey > img {
+	float: left;
+	padding-right: 4px;
+}

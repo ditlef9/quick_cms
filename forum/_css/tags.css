@@ -1,0 +1,23 @@
+@import url("index.css");
+
+
+/*- Forum grids - tags ----------------------------------- */
+.forum_grids {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.forum_grids > div {
+	border-bottom: 1px dotted #e4e6e8;
+	margin: 0px 8px 0px 0px;
+	padding: 8px 4px 12px 4px;
+}
+.forum_tag_introduction_p {
+	margin: 0;
+	padding: 0;
+}
+@media screen and (max-width: 52.375em) {
+	.forum_grids {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+}

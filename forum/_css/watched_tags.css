@@ -1,0 +1,34 @@
+@import url("index.css");
+
+
+/*- Watched list ------------------------------------------------------------------------ */
+.vertical_list {
+	margin-bottom: 10px;
+}
+.vertical_list > ul {
+	margin:0;
+	padding: 0;
+	list-style:none;
+}
+.vertical_list > ul > li {
+	margin: 0px 0px 0px 0px;
+	padding: 10px 0px 10px 0px;
+	border-bottom: #ccc 1px solid;
+}
+.vertical_list > ul > li:hover {
+	background: #faf4f2;
+}
+.vertical_list > ul > li > a {
+	font: normal 15px 'Open Sans',sans-serif;
+	
+	color: #333;
+	padding: 0px 0px 0px 10px;
+}
+.vertical_list > ul > li > a:hover {
+	background: #faf4f2;
+	text-decoration: none;
+}
+.vertical_list > ul > li > a.active {
+	background: #fff;
+	font-weight: bold;
+}

@@ -1,0 +1,107 @@
+/*- Headline ------------------------------------------------------------------------------ */
+div.recipes_headline{
+	float: left;
+}
+div.recipes_menu{
+	float: right;
+	padding: 10px 0px 0px 0px;
+}
+@media screen and (max-width: 52.375em) {
+	div.recipes_headline{
+		float: none;
+	}
+	div.recipes_menu{
+		float: none;
+		padding: 0px 0px 0px 0px;
+		overflow: auto;
+		white-space: nowrap;
+	}
+}
+
+
+/*- Main ingredient ------------------------------------------------------------------------------ */
+div.horizontal_list{
+	overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+}
+
+div.horizontal_list > ul{
+	margin: 0;
+	padding: 0; 
+	display: flex; /* flex Set navigation bar horizontally using the  display tag*/
+}
+ /* Style the links inside the navigation bar */
+div.horizontal_list > ul li{
+	list-style: none;
+	text-align: center;
+	display: block;
+}
+div.horizontal_list > ul li:last-child{
+}
+div.horizontal_list > ul li a{
+	text-decoration: none;
+	padding: 0 6px 5px 6px;
+	display: block;
+}
+
+/*- Recipe posts ------------------------------------------------------------ */
+p.recipe_image_p{
+	padding: 8px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	line-height: 1;
+}
+p.recipe_category_p{
+	padding: 4px 0px 4px 0px;
+	margin: 0px 0px 0px 0px;
+	line-height: 1;
+}
+a.recipe_category_a{
+	text-transform: uppercase;
+	font: bold 13px 'Open Sans',sans-serif;
+	color: #175da1;
+}
+a.recipe_category_a:hover{
+	color: #3e8dda;
+}
+p.recipe_title_p{
+	padding: 4px 0px 6px 0px;
+	margin: 0px 0px 0px 0px;
+	line-height: 1;
+}
+
+
+div.recipe_tags {
+	overflow: hidden; /* Hide scrollbars */
+	white-space: nowrap;
+	margin: 4px 0px 6px 0px;
+}
+div.recipe_tags > ul{
+	list-style:none;
+	margin: 0px 0px 0px 0px;
+	padding:0;
+}
+div.recipe_tags > ul > li{
+	display:inline;
+}
+div.recipe_tags > ul > li > a{
+	display:inline-block;
+	padding: 2px 5px 2px 5px;
+	background: #fff;
+	border: #cccccc 1px solid; 
+	border-radius: 5px;
+	color: #333333;
+	font-size: 80%;
+}
+
+div.recipe_tags > ul > li > a:hover {
+	border: #adadad 1px solid; 
+	background: #e6e6e6;
+	color: #333333;
+}
+
+/* Recipe numbers */
+span.nutritional_number{
+	color: #3c3c3c;
+	font-size: 80%;
+}

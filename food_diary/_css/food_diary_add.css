@@ -1,0 +1,18 @@
+
+div.last_meal{
+	border-radius: 5px;
+	background: #fff;
+	margin-bottom: 10px;
+	overflow:hidden;
+	padding: 6px 6px 6px 6px; 
+}
+div.last_meal:hover{
+	background: #f8f8f8;
+}
+div.last_meal_image{
+	float: left;
+	padding-right: 8px;
+}
+div.last_meal_txt{
+	float: left;
+}

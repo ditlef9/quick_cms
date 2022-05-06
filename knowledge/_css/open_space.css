@@ -1,0 +1,63 @@
+@import url("navigation.css");
+@import url("view_page.css");
+
+
+/*- knowledge_headline_and_logo --------------------------------------------------------- */
+div.knowledge_headline_and_logo{
+	float: left;
+}
+div.knowledge_headline_and_logo > img{
+	float: left;
+	margin: 13px 0px 0px 0px;
+}
+div.knowledge_headline_and_logo > h1{
+	float: left;
+	padding-left: 8px;
+}
+
+
+	
+/*- The team ----------------------------------------------------------------------------- */
+div.knowledge_team_row{
+	display: flex;
+}
+div.knowledge_team_col{
+	flex: 1;
+	text-align: center;
+}
+
+@media screen and (max-width: 52.375em) {
+
+}
+div.knowledge_team_col > p > a > img {
+	border-radius: 50%;
+}
+div.knowledge_team_col > p > a {
+	color: black;
+}
+
+/*- Recently updated and popular ------------------------------------------------------------------ */
+div.knowledge_recently_updated{
+	float: left;
+	width: 40%;
+	margin: 10px 10% 10px 0;
+}
+div.knowledge_popular{
+	float: left;
+	width: 40%;
+	margin: 10px 0px 10px 10%;
+}
+
+div.knowledge_recently_updated > ul, div.knowledge_popular > ul{
+	list-style:none;
+	margin: 0px 0px 0px 0px;
+	padding: 0;
+}
+div.knowledge_recently_updated > ul > li, div.knowledge_popular > ul > li{
+	margin: 0px 6px 0px 0px;
+	padding: 6px 0px 6px 0px;
+	border-bottom: #cccccc 1px solid;
+}
+div.knowledge_recently_updated > ul > li > a, div.knowledge_popular > ul > li > a{
+	display:block;
+}

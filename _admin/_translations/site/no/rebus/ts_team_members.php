@@ -1,0 +1,32 @@
+<?php
+$l_accept = "Aksepter";
+$l_admin = "Admin";
+$l_are_you_sure = "Er du sikker?";
+$l_best_regards = "Med vennlig hilsen";
+$l_confirm = "Bekreft";
+$l_delete = "Slett";
+$l_edit_member = "Rediger medlem";
+$l_email = "E-post";
+$l_has_invited_you_to_rebus_lowercase = "har invitert deg til rebus";
+$l_hello = "Hei";
+$l_here_you_can_invite_family_friends_and_colleagues_to_your_team = "Her kan du invitere familie, venner og kolleger til laget ditt";
+$l_invited_people_will_get_an_email_with_a_link_that_they_have_to_click_on_to_accept_the_invite = "Inviterte vil motta en e-post med en lenke som de m&aring; klikke for &aring; godta invitasjonen";
+$l_invite_member = "Innviter medlem";
+$l_join_the_team_by_following_the_link_below = "Bli med p&aring; laget ved &aring; f&oslash;lge lenken nedenfor";
+$l_member = "Medlem";
+$l_moderator = "Moderator";
+$l_no = "Nei";
+$l_not_verified_by_moderator = "Ikke bekreftet av moderator";
+$l_password = "Passord";
+$l_rebus = "Rebus";
+$l_rebus_invite_at = "Rebus innvitasjon hos";
+$l_status = "Status";
+$l_teams = "Lag";
+$l_team_members = "Lag medlemmer";
+$l_username = "Brukernavn";
+$l_username_or_email = "Brukernavn eller e-post";
+$l_verify_user = "Verifiser bruker";
+$l_waiting_for_user_to_accept_invitation = "Venter p&aring; at brukeren skal godta invitasjonen";
+$l_yes = "Ja";
+$l_your_information = "Din informasjon";
+?>

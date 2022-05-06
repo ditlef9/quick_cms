@@ -1,0 +1,168 @@
+/*- Headline ------------------------------------------------------------------------------ */
+div.recipes_headline{
+	float: left;
+}
+div.recipes_menu{
+	float: right;
+	padding: 10px 0px 0px 0px;
+}
+@media screen and (max-width: 52.375em) {
+	div.recipes_headline{
+		float: none;
+	}
+	div.recipes_menu{
+		float: none;
+		padding: 0px 0px 0px 0px;
+		overflow: auto;
+		white-space: nowrap;
+	}
+}
+
+/*- Search box on home page ---------------------------------------------------------------------- */
+div.recipes_search{
+	display: none;
+}
+
+/*- Recipes categories ---------------------------------------------------------------------------- */
+/* round icons */
+div.recipes_categories_row{
+	display: flex;
+	flex-wrap: wrap;
+}
+div.recipes_categories_column{
+	flex: 25%;
+	max-width: 25%;
+	text-align: center;
+}
+div.recipes_categories_column > p{
+	line-height: normal;
+}
+div.recipes_categories_column > p > a > img{
+	border-radius: 5%;
+	margin-bottom: 8px;
+	vertical-align: middle;
+}
+div.recipes_categories_column > p > a > img:hover{
+	border-radius: 3%;
+}
+
+
+@media screen and (max-width: 52.375em) {
+	div.recipes_categories_column{
+		flex: 50%;
+		max-width: 50%;
+		text-align: center;
+	}
+	div.recipes_categories_column:nth-child(2n+1) > p{ /* Left*/
+		padding-right: 10px;
+	}
+	div.recipes_categories_column:nth-child(2n) > p{ /* Right */
+		padding-left: 10px;
+	}
+}
+
+/*- Common all posts ---------------------------------------------------------------------- */
+a.recipes_post_a_pre_h{
+	font: normal 16px 'Open Sans',sans-serif;
+	color: #000;
+	letter-spacing: 0.5px;
+}
+a.recipes_post_a_h1{
+	font: bold 24px 'Open Sans',sans-serif;
+	color: #000;
+}
+a.recipes_post_a_h2{
+	font: bold 18px 'Open Sans',sans-serif;
+	color: #000;
+}
+a.recipes_post_a_h3{
+	font: bold 17px 'Open Sans',sans-serif;
+	color: #000;
+}
+/*- Front page Posts ------------------------------------------------------------ */
+p.frontpage_category_headline_leftside_p{
+	padding: 40px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	float: left;
+}
+a.frontpage_category_headline_leftside_a{
+	font: bold 24px 'Open Sans',sans-serif;
+	color: #000;
+}
+
+p.frontpage_category_headline_rightside_p{
+	padding: 48px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	float: right;
+}
+@media screen and (max-width: 52.375em) {
+	p.frontpage_category_headline_rightside_p{
+		padding: 40px 0px 0px 0px;
+	}
+}
+a.frontpage_category_headline_rightside_a{
+	font: bold 12px 'Open Sans',sans-serif;
+	color: #175da1;
+	text-transform: uppercase;
+}
+a.frontpage_category_headline_rightside_a:hover{
+	color: #3e8dda;
+}
+
+
+
+
+p.frontpage_post_image{
+	padding: 8px 0px 4px 0px;
+	margin: 0px 0px 0px 0px;
+	line-height: normal;
+}
+p.frontpage_post_category_p{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	line-height: normal;
+}
+a.frontpage_post_category_a{
+	text-transform: uppercase;
+	font: bold 13px 'Open Sans',sans-serif;
+	color: #175da1;
+}
+a.frontpage_post_category_a:hover{
+	color: #3e8dda;
+}
+p.frontpage_post_title{
+	padding: 4px 0px 20px 0px;
+	margin: 0px 0px 0px 0px;
+	line-height: 1.5;
+}
+
+/*- Paging ---------------------------------------------------------------------- */
+ul.recipes_pagination {
+	display: inline-block;
+}
+
+.recipes_pagination a {
+	color: #337ab7;
+	float: left;
+	padding: 8px 12px;
+	text-decoration: none;
+	transition: background-color .3s;
+	border: 1px solid #ddd;
+}
+.recipes_pagination a.first {
+	border-radius: 5px 0px 0px 5px;
+}
+.recipes_pagination a.last {
+	border-radius: 0px 5px 5px 0px;
+}
+
+.recipes_pagination a.active {
+	background-color: #eeeeee;
+	color: white;
+	border: 1px solid #dddddd;
+	color: #23528a;
+}
+
+.recipes_pagination a:hover:not(.active) {
+	background-color: #fff;
+}

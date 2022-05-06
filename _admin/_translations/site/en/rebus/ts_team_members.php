@@ -1,0 +1,32 @@
+<?php
+$l_teams = "Teams";
+$l_rebus = "Rebus";
+$l_team_members = "Team members";
+$l_username = "Username";
+$l_status = "Status";
+$l_admin = "Admin";
+$l_moderator = "Moderator";
+$l_member = "Member";
+$l_invite_member = "Invite member";
+$l_username_or_email = "Username or email";
+$l_rebus_invite_at = "Rebus invite at";
+$l_hello = "Hello";
+$l_has_invited_you_to_rebus_lowercase = "has invited you to rebus";
+$l_join_the_team_by_following_the_link_below = "Join the team by following the link below";
+$l_accept = "Accept";
+$l_your_information = "Your information";
+$l_email = "Email";
+$l_password = "Password";
+$l_best_regards = "Best regards";
+$l_waiting_for_user_to_accept_invitation = "Wating for user to accept invitation";
+$l_not_verified_by_moderator = "Not verified by moderator";
+$l_verify_user = "Verify user";
+$l_edit_member = "Edit member";
+$l_yes = "Yes";
+$l_no = "No";
+$l_delete = "Delete";
+$l_are_you_sure = "Are you sure?";
+$l_confirm = "Confirm";
+$l_here_you_can_invite_family_friends_and_colleagues_to_your_team = "Here you can invite family, friends and collegues to your team";
+$l_invited_people_will_get_an_email_with_a_link_that_they_have_to_click_on_to_accept_the_invite = "Invited people will get an email with a link that they have to click to accept the invite";
+?>

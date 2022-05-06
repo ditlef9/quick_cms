@@ -1,0 +1,12 @@
+
+/*- Dashboard Row Two (4)  ----------------------------------------------- */
+div.row{
+	display: flex;
+	flex-wrap: wrap;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+div.columns_two{
+	flex: 50%;
+	max-width: 50%;
+}

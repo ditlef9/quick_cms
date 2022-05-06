@@ -1,0 +1,236 @@
+/**
+*
+* File: users/_css/view_profile.css
+* Version 1.0.0
+* Date 11:55 11.03.2018
+* Copyright (c) 2008-2018 Sindre Andre Ditlefsen
+* License: http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
+
+
+/*- Profile headline --------------------------------------------------------- */
+div.view_profile_headline_desktop {
+}
+@media screen and (max-width: 52.375em) {
+	div.view_profile_headline_desktop {
+		display: none;
+	}
+
+
+	.show_hide_main_sub_menu {
+		display: inline;  /* Make visible on mobile phones */
+		position: relative;
+		z-index: 1;
+	}
+
+
+}
+div.view_profile_headline_mobile {
+	display: none;
+}
+@media screen and (max-width: 52.375em) {
+	div.view_profile_headline_mobile {
+		clear: both;
+		display: unset;
+		text-align: center;
+	}
+	div.view_profile_headline_mobile > h2 {
+		margin: 0px 0px 15px 0px;
+		padding: 0;
+	}
+}
+
+
+/*- Profile wrap -------------------------------------------------------- */
+.profile_wrap{
+	display: flex; /* equal height of the children */
+}
+@media screen and (max-width: 52.375em) {
+	.profile_wrap{
+		display: inline;
+	}
+}
+
+/*- Profile left --------------------------------------------------------- */
+.view_profile_left{
+	float: left;
+	width: 200px;
+}
+
+@media screen and (max-width: 52.375em) {
+	.view_profile_left{
+		width: 100%;	
+		position:relative;
+		margin: 20px 0px 0px 0px;
+	}
+}
+
+	/* Profile image */
+	div.view_profile_image_frame{
+		width: 175px;
+		height: 175px;
+		border-radius: 11px;
+		background-size: cover;
+	}
+	@media screen and (max-width: 52.375em) {
+		div.view_profile_image_frame {
+			width: 100%;
+			position: relative;
+			margin: 0px 0px 0px 0px;
+			height: 300px;
+			border-radius: 0px;
+		}
+	}
+
+	/* Add friend */
+	div.view_profile_add_friend_button{
+		width: 175px;
+		text-align: center;	
+		margin: -25px 0px 0px 0px;
+	}
+
+
+	@media screen and (max-width: 52.375em) {
+		div.view_profile_add_friend_button{
+			width: 100%;
+			margin: -25px 0px 0px 0px;
+			position: relative;
+		}
+	}
+
+	/* Cool stats */
+	div.cool_stats {
+	}
+	@media screen and (max-width: 52.375em) {
+		div.cool_stats {
+			display: none;
+		}
+	}
+
+/*- Profile right -------------------------------------------------------- */
+.view_profile_right{
+	flex: 1; /* additionally, equal width */
+	width: auto;
+}
+@media screen and (max-width: 52.375em) {
+	.view_profile_right{
+		margin-left: 0px;
+		position:relative;
+    		z-index: 100;
+		width: auto;
+		margin: 0px 10px 0px 10px;
+	}
+
+}
+
+
+	/* View profile navigaiton */
+	div.view_profile_navigation {
+	}
+	div.view_profile_navigation > ul {
+		margin:0;
+		padding: 0;
+		list-style:none;
+	}
+	div.view_profile_navigation > ul > li {
+		float: left;
+		margin: 0px 1px 0px 0px;
+	}
+	div.view_profile_navigation > ul > li > a {
+		display: block;
+		font: normal 15px 'Open Sans',sans-serif;
+		background: #f2f0f0;
+		color: #333;
+		border: #c9c9c9 1px solid;
+		border-bottom: #c9c9c9 0px solid;
+		border-top-right-radius: 5px;
+		border-top-left-radius: 5px;
+		padding: 5px 9px 5px 9px;
+	}
+	div.view_profile_navigation > ul > li > a:hover {
+		background: #faf4f2;
+		text-decoration: none;
+	}
+	div.view_profile_navigation > ul > li > a.active {
+		background: #fff;
+		font-weight: bold;
+	}
+	view_profile_navigation.tabs > ul > li > a.selected {
+		background: #fff;
+		font-weight: bold;
+	}
+
+
+
+
+/*- Friends list -------------------------------------------------------- */
+div.friends_list_image {
+	float: left;
+	width: 90px;
+}
+div.friends_list_text {
+	display: inline-block;
+	margin:0 auto;
+	width: 300px;
+}
+@media screen and (max-width: 52.375em) {
+	div.friends_list_text {
+		display: inline-block;
+		margin:0 auto;
+		width: 200px;
+	}
+}
+
+
+/*- View photo  -------------------------------------------------------- */
+.photo_header_left {
+	float: left;
+}
+.photo_header_center {
+	display: inline-block;
+	margin:0 auto;
+	margin: 0px 10px 0px 10px;
+	width: 31%;
+	text-align: center;
+}
+.photo_header_right {
+	float: right;
+}
+
+
+
+/*- Status --------------------------------------------------------- */
+td.status{
+}
+td.status > p {
+	line-height: 1;
+}
+
+
+div.ic_more_horiz_div_status{
+	float: right;
+	padding: 0px 0px 0px 0px;
+	background: #fff;
+	border: #dcdcdc 1px solid;
+	z-index: 1;
+}
+div.ic_more_horiz_div_status > ul{
+		list-style:none;
+		padding: 0;
+		margin: 0;
+	}
+div.ic_more_horiz_div_status > ul > li {
+		padding: 0;
+		margin: 0;
+	}
+div.ic_more_horiz_div_status > ul > li > a { 
+		color: #282828;	
+		display:block;
+		padding: 6px 20px 6px 20px;
+	}
+div.ic_more_horiz_div_status > ul > li > a:hover { 
+		color: #246ada;
+		background: #f1f1f2;
+	}

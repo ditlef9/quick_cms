@@ -1,0 +1,63 @@
+/*- Download info ------------------------------------------------------------- */
+#download_info_left{
+	
+}
+#download_info_right{
+	float: right;
+	width: 240px;
+}
+
+/*- Download now button ------------------------------------------------------- */
+#download_actions{
+	text-align: center;
+}
+a.btn_download_now{
+	background: #4caf50 url("../_gfx/icons/18x18/round_save_alt_white_18dp.png") 10px center no-repeat;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	padding: 8px 16px 8px 35px;
+	cursor: pointer;
+	font-size: 20px;
+
+	-webkit-animation-name: test;
+	-webkit-animation-duration: 0.8s;
+	-webkit-animation-iteration-count: 20;
+  	-webkit-animation-direction: normal;
+	-webkit-animation-timing-function: linear;
+}
+a.btn_download_now:hover {
+	background-color: #43a347;
+}
+
+@-webkit-keyframes test {
+  0% {
+	background: #4caf50 url("../_gfx/icons/18x18/round_save_alt_white_18dp_1.png") 10px center no-repeat;
+  }
+  25% {
+	background: #4caf50 url("../_gfx/icons/18x18/round_save_alt_white_18dp_2.png") 10px center no-repeat;
+  }
+  50% {
+	background: #4caf50 url("../_gfx/icons/18x18/round_save_alt_white_18dp_3.png") 10px center no-repeat;
+  }
+  75% {
+	background: #4caf50 url("../_gfx/icons/18x18/round_save_alt_white_18dp_4.png") 10px center no-repeat;
+  }
+  100% {
+	background: #4caf50 url("../_gfx/icons/18x18/round_save_alt_white_18dp_4.png") 10px center no-repeat;
+  }
+}
+
+
+
+/*- Download images ----------------------------------------------------------- */
+#download_images{
+	clear: both;
+	margin-top: 20px;
+}
+#thumbs > img, #largeImage { 
+	border: 1px solid gray;
+	padding: 4px;	
+	background-color: white;
+	cursor: pointer; 
+}

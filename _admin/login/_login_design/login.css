@@ -1,0 +1,326 @@
+﻿/**
+*
+* File: _admin/css/login.css
+* Version 16:05 25.08.2011
+* Copyright (c) 2008-2011 Sindre Andre Ditlefsen
+* License: http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
+/*- Reset ---------------------------------------------------------------------------- */
+html, body, div, span, object, iframe, img {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+
+/*- Body -------------------------------------------------------------------------- */
+html{
+	height: 100%;
+}
+body {
+	background: #1d2531;
+	color: #000;
+	font: normal 16px 'Open Sans',sans-serif;
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	margin: 0;
+}
+
+
+/*- Nullstilling ------------------------------------------------------------------ */
+div.clear{
+	clear: both;
+}
+
+/*- Bilder ----------------------------------------------------------------------- */
+img{
+	max-width: 100%;
+}
+
+
+/*- Overskrifter ----------------------------------------------------------------- */
+h1 {
+	font: normal 20px 'Open Sans',sans-serif;
+    	color: #292625;
+	padding: 12px 0px 12px 0px;
+	margin: 0;
+}
+
+/*- Paragrafer og span ----------------------------------------------------------- */
+p{
+	font: normal 16px 'Open Sans',sans-serif;
+        color: #000;
+	padding: 12px 0px 12px 0px;
+	margin: 0;
+}
+span{
+        color: #000;
+}
+
+/*- Linker ------------------------------------------------------------------ */
+a {
+	color: #44a8ec;
+	font: normal 16px 'Open Sans',sans-serif;
+	text-decoration: none;
+}
+a:hover {
+	color: #48b0f7;
+	text-decoration: none;
+}
+
+
+/*- Input ------------------------------------------------------------------------ */
+input {  /* Submit button */
+	padding: 3px;
+	border: 1px solid #BBB;
+	font: normal 16px 'Open Sans',sans-serif;
+	background-color: #FFF; 
+}
+textarea { 
+	padding: 3px; border: 1px solid #BBB; 
+	font: normal 16px 'Open Sans',sans-serif;
+	background-color: #FFF; 
+}
+select  { border: 1px solid #BBB; padding: 2px; }
+.checkbox { border: none;}
+input.submit { background-color: #8EAF0D;  border: none; color: #FFF; padding: 3px 5px; margin: 0 3px; font-size: 12px; }
+button { background-color: #8EAF0D;  border: 1px solid #698208; color: #FFF; padding: 3px 5px; margin: 0 3px; font-size: 12px; }
+.radio {border: 0; margin: 0 3px -3px 0; background: transparent; }
+label { width: 150px; height: 20px; float: left;}
+.bredlabel { width: 550px; height: 20px; margin: 0 5px 0 0; float: none;}
+
+.inp_email_registration{ display: none; }
+
+@media screen and (max-width: 52.375em) {
+	input.textarea,.uneditable-input{
+		width: 206px; 
+	}
+}
+
+
+/*- Basic Structure ------------------------------------------------------------------- */
+article,aside,details,figcaption,figure, footer,header,hgroup,menu,nav,section {
+	display: block;
+}
+table{
+	border-spacing:0px; 
+}
+td{
+	padding: 0px;
+}
+
+
+
+/*- Lists ------------------------------------------------------------------------------ */
+ul {
+	padding: 10px 0px 10px 0px;
+}
+ol {
+	padding: 10px 0px 10px 0px;
+}
+
+/*- Line ------------------------------------------------------------------------------- */
+hr{
+	display:block;
+	height:1px;
+	border:0;   
+	border-top:1px solid #cccccc;
+	margin:1em 0;
+	padding:0;
+}
+
+/*- Smal -------------------------------------------------------------------------------- */
+.smal{
+	font-size: 10px;
+}
+.smal_grey{
+	font-size: 10px;
+	color: #444444;
+}
+
+
+/*- Mark, Ins and Del ------------------------------------------------------------------- */
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+
+/*- Abbr ---------------------------------------------------------------------------------- */
+abbr[title], dfn[title] {
+    border-bottom: #000 1px dotted;
+    cursor:help;
+}
+
+
+/*- Feedback boxes ------------------------------------------------------------------------- */
+.info, .success, .warning, .error, .validation {
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	font-family:Arial, Helvetica, sans-serif; 
+	font-size:13px;
+}
+.info {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url("images/dialog-information.png");
+}
+.success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image:url("images/dialog-information.png");
+}
+.warning {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url("images/dialog-warning.png");
+}
+.error {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url("images/dialog-error.png");
+}
+
+
+
+/*- Wrapper ------------------------------------------------------------------ */
+div.body_bg {
+	margin: 0;
+	padding: 0;
+	background: url('images/bg/04.jpg') no-repeat center center fixed; 
+	background-size: cover;
+	height: 100%;
+}
+div.wrapper { 
+	width: 550px; 
+	margin: 0px auto; 
+	padding-top: 6%;
+}
+@media screen and (max-width: 52.375em) {
+	div.wrapper {
+		width: 95%; 
+		margin: 0px auto; 
+		padding-top: 10%;
+	}
+}
+
+
+/*- Header ---------------------------------------------------------------- */
+header{
+	background: #263544;
+	border-radius: 5px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	padding: 20px 30px 20px 30px;
+}
+
+
+
+header p{
+	padding: 0px 0px 0px 0px;
+	margin: 0;	
+}
+header a{
+	color: #fff;
+	font: bold 20px 'Open Sans',sans-serif;
+	padding: 0;
+	margin: 0;
+}
+header a:hover{
+	color: #fff;
+}
+header span{
+	color: #fff;
+	font: bold 12px 'Open Sans',sans-serif;
+	vertical-align: super;
+	margin-top: 10px;
+}
+/*- Main --------------------------------------------------------------- */
+#main{
+	background: #fff; 
+	padding: 20px 30px 20px 30px;
+	border-top: #000 1px solid;
+	border-bottom: #e5e5e5 1px solid;
+}
+
+
+/*- Login ------------------------------------------------------------------------ */
+input.inp_email, input.inp_password{
+	background: url("images/login_email.png") no-repeat 5px center;
+	padding: 5px 5px 5px 30px;
+	font: normal 16px 'Open Sans',sans-serif;
+	color: #292625;
+	border-radius: 5px;
+	border: #bbbbbb 1px solid;
+	margin-top: 4px;
+}
+input.inp_email:active, input.inp_email:focus, input.inp_password:active, input.inp_password:focus {
+	border: #bbbbbb 1px solid;
+	
+}
+
+input.inp_password{
+	background: url("images/login_password.png") no-repeat 5px center;
+}
+.inp_submit {
+	background: #44a8ec;
+	border: #44a8ec 1px solid; 
+	color: #fff;
+	padding: 6px 30px 6px 30px; 
+	margin: 0 3px; 
+	font: normal 16px 'Open Sans',sans-serif;
+	border-radius: 5px;
+	text-align: right;
+	
+}
+input.inp_submit:hover {
+	background: #48b0f7;
+	border: #48b0f7 1px solid; 
+	color: #fff;
+}
+
+
+/*- Footer ------------------------------------------------------------------------ */
+footer{
+	background: #f2f0f0;
+	border-radius: 5px;
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+	padding: 5px 30px 5px 30px;
+	text-align: right;
+}
+
+footer a{
+	background: url("images/footer_go_right.png") no-repeat right 0px;
+	color: #4f4846;
+	padding: 0px 18px 0px 0px;
+}
+footer a:hover{
+	background: url("images/footer_go_right_hover.png") no-repeat right 0px;
+	color: #000;
+}
