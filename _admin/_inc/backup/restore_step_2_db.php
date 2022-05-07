@@ -198,8 +198,6 @@ Now looking for SQL files to process.
 
 			unlink("$selected_sql_file");
 
-			
-
 			// Refresh
 			$rand = rand(0,2);
 			echo"
@@ -244,7 +242,7 @@ Now looking for SQL files to process.
 				\$(document).ready(function(){
 					window.setTimeout(function(){
 						// Move to a new location or you can do something else
-						window.location.href = \"index.php?open=$open&page=restore&editor_language=$editor_language&l=$l&ft=success&fm=backup_restored\";
+						window.location.href = \"index.php?open=$open&page=restore_step_3_users&editor_language=$editor_language&l=$l\";
 					}, 10000);
 				});
 				</script>

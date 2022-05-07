@@ -159,17 +159,23 @@ else{
 							$query = "SELECT * FROM $tables_backup_array[$x] LIMIT 1";
 							$result = mysqli_query($link, $query);
 							if($result !== FALSE){
-
+								
 
 								// Head
 								// Ready create table
+								$create_table_name = "$tables_backup_array[$x]";
+								if($tables_backup_array[$x] == "$t_users"){
+									$create_table_name = $t_users . "_tmp";
+								}
+
 								$create_table = "-- SQL BACKUP $get_current_backup_created_date ($mysqlPrefixSav)
 
-DROP TABLE IF EXISTS $tables_backup_array[$x];
+DROP TABLE IF EXISTS $create_table_name;
 
 -- SQL BACKUP $get_current_backup_created_date ($mysqlPrefixSav)
-CREATE TABLE $tables_backup_array[$x](
+CREATE TABLE $create_table_name(
 ";
+
 								// Fields
 								$y = 0;
 								$query = "SHOW COLUMNS FROM $tables_backup_array[$x]";
@@ -348,10 +354,14 @@ CREATE TABLE $tables_backup_array[$x](
 					$result = mysqli_query($link, $query);
 					if($result !== FALSE){
 
+						$insert_table_name = "$tables_backup_array[$table_no]";
+						if($tables_backup_array[$x] == "$t_users"){
+							$insert_table_name = $t_users . "_tmp";
+						}
 
 						// Insert header :: Ready create table
 						$insert_statement_header = "-- SQL BACKUP $get_current_backup_created_date ($mysqlPrefixSav)
-INSERT INTO $tables_backup_array[$table_no](
+INSERT INTO $insert_table_name(
 ";
 						// Fields
 						$count_fields = 0;

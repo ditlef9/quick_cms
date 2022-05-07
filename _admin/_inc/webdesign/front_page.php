@@ -15,18 +15,17 @@ if(!(isset($define_access_to_control_panel))){
 
 
 /*- Tables ---------------------------------------------------------------------------- */
-$t_front_page_boxes 	= $mysqlPrefixSav . "front_page_boxes";
+$t_webdesign_front_page_items	= $mysqlPrefixSav . "webdesign_front_page_items";
 
-/*- Check for setup ------------------------------------------------------------------- */
-$query = "SELECT * FROM $t_front_page_boxes LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
-
+/*- Scriptstart ----------------------------------------------------------------------- */
+if($action == ""){
 	echo"
 	<h1>Front page</h1>
 
-
+	<p>
+	<a href=\"index.php?open=$open&amp;page=$page&amp;action=new_item&amp;weight=0&amp;editor_language=$editor_language&amp;l=$l\" class=\"btn_default\">New item</a>
+	</p>
 
 	";
-} // setup ok
+} // action == ""
 ?>

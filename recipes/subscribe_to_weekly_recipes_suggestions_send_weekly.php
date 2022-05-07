@@ -55,6 +55,7 @@ if(isset($day_of_week)){
 div.clear{
 	clear: both;
 }
+* {box-sizing: border-box;}
 p{
 	font-size: 110%;
 	margin: 8px 0px 8px 0px;
@@ -82,21 +83,25 @@ h2.recipes_day_title{
 	margin-bottom: 0;
 	padding-bottom: 0;
 }
+h3.recipes_category_title{
+}
 
 	/*- Recipes content --------------------------------------- */
 	div.recipes_day_row{
-		display: flex;
-		flex-wrap: wrap;
+		display : flex;
 	}
 	div.recipes_day_column_left{
-		flex: 20%;
-		padding: 0px 10px 0px 0px;
+		display : flex;
+		flex-shrink: 2;
+		justify-content: flex-start;
 	}
 	div.recipes_day_column_left > p > a > img{
 		border-radius: 5%;
+		padding: 0px 10px 0px 0px;
 	}
 	div.recipes_day_column_right{
-		flex: 80%;
+		display : flex;
+		
 	}
 	a.recipe_title{
 		text-decoration: none;
@@ -106,8 +111,9 @@ h2.recipes_day_title{
 	
 	
 	@media screen and (max-width: 52.375em) {
-		div.recipes_day_row{
-			display: inline;
+		div.recipes_day_column_left{
+		}
+		div.recipes_day_column_right{
 		}
 		p.recipe_introduction{
 			padding-bottom: 15px;
@@ -126,10 +132,11 @@ h2.recipes_day_title{
 			<div class=\"recipes_header\">\n";
 
 			if($logoFileSav != "" && file_exists("$root/$logoPathSav/$logoFileSav")){
+				$message = $message . "				";
 				$message = $message . "<p><a href=\"$configSiteURLSav\"><img src=\"$configSiteURLSav/$logoPathSav/$logoFileSav\" alt=\"($configWebsiteTitleSav logo)\" /></a></p>\n\n";
 			}
 			$message = $message . "
-			<h2>$l_dear $get_subscription_user_name</h2>
+				<h2>$l_dear $get_subscription_user_name</h2>
 				<p>$l_here_are_your_recipe_suggestions_for $next_week_year.</p>
 			</div>
 		<!-- Header -->\n";
@@ -176,8 +183,7 @@ h2.recipes_day_title{
 				} // ingredients unique
 
 				// Find 2 unique recipes per category (example 2 for breakfast and two for dinner)
-				$query_r = "SELECT recipe_id, recipe_title, recipe_introduction, recipe_image_path, recipe_image_h_a, recipe_thumb_h_a_278x156 FROM $t_recipes WHERE recipe_category_id=$get_category_id AND recipe_language=$subscription_language_mysql AND recipe_ingredient_id IN ($ingredients_ids) AND recipe_published=1 ORDER BY rand() LIMIT 2";
-				
+				$query_r = "SELECT recipe_id, recipe_title, recipe_introduction, recipe_image_path, recipe_image_h_a, recipe_thumb_h_a_278x156 FROM $t_recipes WHERE recipe_category_id=$get_checked_category_id AND recipe_language=$subscription_language_mysql AND recipe_ingredient_id IN ($ingredients_ids) AND recipe_published=1 ORDER BY rand() LIMIT 2";
 				$result_r = mysqli_query($link, $query_r);
 				while($row_r = mysqli_fetch_row($result_r)) {
 					list($get_recipe_id, $get_recipe_title, $get_recipe_introduction, $get_recipe_image_path, $get_recipe_image_h_a, $get_recipe_thumb_h_a_278x156) = $row_r;
@@ -225,7 +231,6 @@ h2.recipes_day_title{
 		$message = $message . "</p>\n";
 		$message = $message. "</body>\n";
 		$message = $message. "</html>\n";
-
 
 		// Preferences for Subject field
 		$headers[] = 'MIME-Version: 1.0';
