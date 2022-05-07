@@ -586,7 +586,7 @@ else{
 	<h1>
 	<img src=\"_gfx/loading_22.gif\" alt=\"loading_22.gif\" style=\"float:left;padding: 1px 5px 0px 0px;\" />
 	Loading...</h1>
-	<meta http-equiv=\"refresh\" content=\"1;url=$root/users/login.php?l=$l&amp;referer=$root/recipes/submit_recipe.php\">
+	<meta http-equiv=\"refresh\" content=\"1;url=$root/users/login.php?l=$l&amp;referer=recipes/submit_recipe.php\">
 	";
 }
 
