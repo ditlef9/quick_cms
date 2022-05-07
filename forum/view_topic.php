@@ -601,7 +601,7 @@ else{
 					else{
 						echo"
 						<p>
-						<a href=\"$root/users/login.php?l=$l&amp;refer=$root/forum/reply_add_a_comment.php?reply_id=$get_reply_id&amp;topic_id=$topic_id&amp;l=$l\" class=\"small\">$l_add_a_comment</a>
+						<a href=\"$root/users/login.php?l=$l&amp;refer=forum/reply_add_a_comment.php?reply_id=$get_reply_id&amp;topic_id=$topic_id&amp;l=$l\" class=\"small\">$l_add_a_comment</a>
 						</p>
 						";
 					}
@@ -635,7 +635,7 @@ else{
 		else{
 			echo"
 			<p>
-			<a href=\"$root/users/login.php?l=$l&amp;refer=$root/forum/view_topic.php?topic_id=$topic_id\" class=\"btn_default\">$l_reply</a>
+			<a href=\"$root/users/login.php?l=$l&amp;refer=forum/view_topic.php?topic_id=$topic_id\" class=\"btn_default\">$l_reply</a>
 			</p>
 			";
 		}
