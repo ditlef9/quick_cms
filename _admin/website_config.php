@@ -279,10 +279,10 @@ else{
 
 			if(!(isset($l))) {
 				// Find the pre defined language
-				$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag_path_16x16, language_active_flag_16x16 FROM $t_languages_active WHERE language_active_default='1'";
+				$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_default='1'";
 				$result = mysqli_query($link, $query);
 				$row = mysqli_fetch_row($result);
-				list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two, $get_current_language_active_flag_path_16x16, $get_current_language_active_flag_16x16) = $row;
+				list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two) = $row;
 				if($get_current_language_active_iso_two == ""){
 					$l = "en";
 				}

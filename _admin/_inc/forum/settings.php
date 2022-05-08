@@ -26,6 +26,7 @@ if(!(file_exists("_data/forum.php"))){
 \$forumFromEmailSav 		= \"$configFromEmailSav\";
 \$forumFromNameSav 		= \"$configFromEmailSav\";
 \$forumEmailSendingOnOffSav 	= \"1\";
+\$forumWritingMethodSav 	= \"bbcode\";
 ?>";
 
 	$fh = fopen("_data/forum.php", "w+") or die("can not open file");
@@ -51,10 +52,18 @@ if($process == "1"){
 	$inp_email_sending_on_off = $_POST['inp_email_sending_on_off'];
 	$inp_email_sending_on_off = output_html($inp_email_sending_on_off);
 
+	$inp_email_sending_on_off = $_POST['inp_email_sending_on_off'];
+	$inp_email_sending_on_off = output_html($inp_email_sending_on_off);
+
+	$inp_writing_method = $_POST['inp_writing_method'];
+	$inp_writing_method= output_html($inp_writing_method);
+
+
 	$update_file="<?php
-\$forumFromEmailSav 	= \"$inp_from_email\";
-\$forumFromNameSav 	= \"$inp_from_name\";
-\$forumEmailSendingOnOffSav = \"$inp_email_sending_on_off\";
+\$forumFromEmailSav 		= \"$inp_from_email\";
+\$forumFromNameSav 		= \"$inp_from_name\";
+\$forumEmailSendingOnOffSav 	= \"$inp_email_sending_on_off\";
+\$forumWritingMethodSav 	= \"$inp_writing_method\";
 ?>";
 
 	$fh = fopen("_data/forum.php", "w+") or die("can not open file");
@@ -117,6 +126,14 @@ On
 <input type=\"radio\" name=\"inp_email_sending_on_off\" value=\"0\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\""; if($forumEmailSendingOnOffSav == "0"){ echo" checked=\"checked\""; } echo" />
 Off
 </p>
+
+<p><b>Writing method:</b><br />
+<select name=\"inp_writing_method\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">
+	<option value=\"what_you_see_is_what_you_get\""; if($forumWritingMethodSav == "what_you_see_is_what_you_get"){ echo" selected=\"selected\""; } echo">WYSIWYG (What you see is what you get)</option>
+	<option value=\"bbcode\""; if($forumWritingMethodSav == "bbcode"){ echo" selected=\"selected\""; } echo">BBCode (Bulletin Board Code)</option>
+</select>
+</p>
+
 
 <p><input type=\"submit\" value=\"$l_save_changes\" class=\"submit\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" /></p>
 

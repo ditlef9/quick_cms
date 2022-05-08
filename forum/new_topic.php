@@ -212,33 +212,47 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 		$row = mysqli_fetch_row($result);
 		list($get_topic_id, $get_topic_title) = $row;
 
-		require_once "$root/_admin/_functions/htmlpurifier/HTMLPurifier.auto.php";
-		$config = HTMLPurifier_Config::createDefault();
-		$purifier = new HTMLPurifier($config);
+		if($forumWritingMethodSav == "what_you_see_is_what_you_get"){
 
-	
-		if($get_my_user_rank == "admin" OR $get_my_user_rank == "moderator" OR $get_my_user_rank == "editor"){
-		}
-		elseif($get_my_user_rank == "trusted"){
-		}
-		else{
-			// a b c d e f g h i j k l m n o p q r s t u v w x y z
-			// Updated: 19:16 26.04.2019
-			// Files:
-			// edit_reply.php, reply.php, edit_topic.php, new_topic.php
-			$config->set('HTML.Allowed', 'a[href],b,code,img[src],i,ul,li,p,pre,pre[class]');
-		}
+			require_once "$root/_admin/_functions/htmlpurifier/HTMLPurifier.auto.php";
+			$config = HTMLPurifier_Config::createDefault();
+			$purifier = new HTMLPurifier($config);
 
-		// Inp text
-		$inp_text = $purifier->purify($inp_text);
-		$inp_text = encode_national_letters($inp_text);
+			if($get_my_user_rank == "admin" OR $get_my_user_rank == "moderator" OR $get_my_user_rank == "editor"){
+			}
+			elseif($get_my_user_rank == "trusted"){
+			}
+			else{
+				// a b c d e f g h i j k l m n o p q r s t u v w x y z
+				// Updated: 19:16 26.04.2019
+				// Files:
+				// edit_reply.php, reply.php, edit_topic.php, new_topic.php
+				$config->set('HTML.Allowed', 'a[href],b,code,img[src],i,ul,li,p,pre,pre[class]');
+			}
+
+			// Inp text
+			$inp_text = $purifier->purify($inp_text);
+			$inp_text = encode_national_letters($inp_text);
 			
-		$sql = "UPDATE $t_forum_topics SET topic_text=? WHERE topic_id=$get_topic_id";
-		$stmt = $link->prepare($sql);
-		$stmt->bind_param("s", $inp_text);
-		$stmt->execute();
-		if ($stmt->errno) {
-			echo "FAILURE!!! " . $stmt->error; die;
+			$sql = "UPDATE $t_forum_topics SET topic_text=? WHERE topic_id=$get_topic_id";
+			$stmt = $link->prepare($sql);
+			$stmt->bind_param("s", $inp_text);
+			$stmt->execute();
+			if ($stmt->errno) {
+				echo "FAILURE!!! " . $stmt->error; die;
+			}
+		} // what you see is what you get
+		else{
+			// BBcode
+			$inp_text = output_html($inp_text);
+			$sql = "UPDATE $t_forum_topics SET topic_text=? WHERE topic_id=$get_topic_id";
+			$stmt = $link->prepare($sql);
+			$stmt->bind_param("s", $inp_text);
+			$stmt->execute();
+			if ($stmt->errno) {
+				echo "FAILURE!!! " . $stmt->error; die;
+			}
+			
 		}
 
 		// Subscription
@@ -781,50 +795,8 @@ div.topics_chat_view_text {
 	<!-- //Feedback -->
 
 
-	<!-- TinyMCE -->
-		<script type=\"text/javascript\" src=\"$root/_admin/_javascripts/tinymce/tinymce.min.js\"></script>
-		<script>
-		tinymce.init({
-			selector: 'textarea.editor',
-			plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
-			toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media pageembed | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
-			image_advtab: true,
-			content_css: [
-				'$root/_admin/_javascripts/tinymce_includes/fonts/lato/lato_300_300i_400_400i.css',
-				'$root/_admin/_javascripts/tinymce_includes/codepen.min.css'
-			],
-			link_list: [
-				{ title: 'My page 1', value: 'http://www.tinymce.com' },
-				{ title: 'My page 2', value: 'http://www.moxiecode.com' }
-			],
-			image_list: [
-				{ title: 'My page 1', value: 'http://www.tinymce.com' },
-				{ title: 'My page 2', value: 'http://www.moxiecode.com' }
-			],
-				image_class_list: [
-				{ title: 'None', value: '' },
-				{ title: 'Some class', value: 'class-name' }
-			],
-			importcss_append: true,
-			height: 500,
-			file_picker_callback: function (callback, value, meta) {
-				/* Provide file and text for the link dialog */
-				if (meta.filetype === 'file') {
-					callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
-				}
-				/* Provide image and alt text for the image dialog */
-				if (meta.filetype === 'image') {
-					callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
-				}
-				/* Provide alternative source and posted for the media dialog */
-				if (meta.filetype === 'media') {
-					callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
-				}
-			}
-		});
-		</script>
-	<!-- //TinyMCE -->
-	
+
+
 	<!-- Form -->
 		<script>
 		\$(document).ready(function(){
@@ -859,15 +831,105 @@ div.topics_chat_view_text {
 		echo"\" size=\"25\" style=\"width: 99%;\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
 		</p>
 
-		<p><b>$l_post:</b><br />
-		<textarea name=\"inp_text\" rows=\"5\" cols=\"50\" class=\"editor\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">";
-		if(isset($_GET['inp_text'])){
-			$inp_text = $_GET['inp_text'];
-			$inp_text = output_html($inp_text);
-			echo"$inp_text";
-		}
-		echo"</textarea>
-		</p>
+		";
+		if($forumWritingMethodSav == "what_you_see_is_what_you_get"){
+			echo"
+			<!-- TinyMCE -->
+				<script type=\"text/javascript\" src=\"$root/_admin/_javascripts/tinymce/tinymce.min.js\"></script>
+				<script>
+				tinymce.init({
+					selector: 'textarea.editor',
+					plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
+					toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media pageembed | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
+					image_advtab: true,
+					content_css: [
+						'$root/_admin/_javascripts/tinymce_includes/fonts/lato/lato_300_300i_400_400i.css',
+						'$root/_admin/_javascripts/tinymce_includes/codepen.min.css'
+					],
+					link_list: [
+						{ title: 'My page 1', value: 'http://www.tinymce.com' },
+						{ title: 'My page 2', value: 'http://www.moxiecode.com' }
+					],
+					image_list: [
+						{ title: 'My page 1', value: 'http://www.tinymce.com' },
+						{ title: 'My page 2', value: 'http://www.moxiecode.com' }
+					],
+					image_class_list: [
+						{ title: 'None', value: '' },
+						{ title: 'Some class', value: 'class-name' }
+					],
+					importcss_append: true,
+					height: 500,
+					file_picker_callback: function (callback, value, meta) {
+					/* Provide file and text for the link dialog */
+					if (meta.filetype === 'file') {
+						callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+					}
+					/* Provide image and alt text for the image dialog */
+					if (meta.filetype === 'image') {
+						callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+					}
+					/* Provide alternative source and posted for the media dialog */
+					if (meta.filetype === 'media') {
+						callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+					}
+				}
+			});
+			</script>
+			<!-- //TinyMCE -->
+			<p><b>$l_post:</b><br />
+			<textarea name=\"inp_text\" rows=\"5\" cols=\"50\" class=\"editor\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">";
+			if(isset($_GET['inp_text'])){
+				$inp_text = $_GET['inp_text'];
+				$inp_text = output_html($inp_text);
+				echo"$inp_text";
+			}
+			echo"</textarea>
+			</p>
+		
+			";
+		} // what_you_see_is_what_you_get
+		else{
+			echo"
+			<p><b>$l_post:</b><br />
+			<input type=\"button\" value=\"b\" onclick=\"formatText ('[b][/b]');\" class=\"btn_bbcode\" style=\"font-weight: bold;\" /> 
+			<input type=\"button\" value=\"i\" onclick=\"formatText ('[i][/i]');\" class=\"btn_bbcode\" style=\"font-style: italic;\" /> 
+			<input type=\"button\" value=\"u\" onclick=\"formatText ('[u][/u]');\" class=\"btn_bbcode\" style=\"text-decoration: underline;\" /> 
+			<input type=\"button\" value=\"URL\" onclick=\"formatText ('[url][/url]');\" class=\"btn_bbcode\" /> 
+			<input type=\"button\" value=\"Code\" onclick=\"formatText ('[code][/code]');\" class=\"btn_bbcode\" /> 
+			<input type=\"button\" value=\"Image\" onclick=\"formatText ('[img][/img]');\" class=\"btn_bbcode\" /> 
+			<br />
+			<textarea name=\"inp_text\" id=\"inp_text\" rows=\"20\" cols=\"50\" style=\"width: 100%;\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">";
+			if(isset($_GET['inp_text'])){
+				$inp_text = $_GET['inp_text'];
+				$inp_text = output_html($inp_text);
+				echo"$inp_text";
+			}
+			echo"</textarea>
+			</p>
+
+			<!-- Javascript insert bb code -->
+				<script type=\"text/javascript\"> 
+				function formatText(tag) {
+					// BBCode
+					var Field = document.getElementById('inp_text');
+					var val = Field.value;
+					var selected_txt = val.substring(Field.selectionStart, Field.selectionEnd);
+					var before_txt = val.substring(0, Field.selectionStart);
+					var after_txt = val.substring(Field.selectionEnd, val.length);
+					Field.value += tag;
+
+
+					// Focus
+					document.getElementById(\"inp_text\").focus();
+				}
+				</script>
+			<!-- //Javascript insert bb code -->
+			
+			";
+		} // BBCode
+		echo"
+
 		
 		<p>
 		<input type=\"checkbox\" name=\"inp_notify_me_when_a_reply_is_posted\" "; if($get_es_on_off == "1"){ echo" checked=\"checked\""; } echo"  tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" /> $l_notify_me_when_a_reply_is_posted

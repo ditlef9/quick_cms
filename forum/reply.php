@@ -119,6 +119,7 @@ else{
 
 		if($process == "1"){
 	
+
 			// Text
 			$inp_text = $_POST['inp_text'];
 			if(empty($inp_text)){
@@ -206,35 +207,49 @@ else{
 			$row = mysqli_fetch_row($result);
 			list($get_reply_id) = $row;
 
-			require_once "$root/_admin/_functions/htmlpurifier/HTMLPurifier.auto.php";
-			$config = HTMLPurifier_Config::createDefault();
-			$purifier = new HTMLPurifier($config);
+			if($forumWritingMethodSav == "what_you_see_is_what_you_get"){
+				require_once "$root/_admin/_functions/htmlpurifier/HTMLPurifier.auto.php";
+				$config = HTMLPurifier_Config::createDefault();
+				$purifier = new HTMLPurifier($config);
 
 	
-			if($get_my_user_rank == "admin" OR $get_my_user_rank == "moderator" OR $get_my_user_rank == "editor"){
-			}
-			elseif($get_my_user_rank == "trusted"){
-			}
-			else{
-				// a b c d e f g h i j k l m n o p q r s t u v w x y z
-				// Updated: 19:16 26.04.2019
-				// Files:
-				// edit_reply.php, reply.php, edit_topic.php, new_topic.php
-				$config->set('HTML.Allowed', 'a[href],b,code,img[src],i,ul,li,p,pre,pre[class]');
-			}
+				if($get_my_user_rank == "admin" OR $get_my_user_rank == "moderator" OR $get_my_user_rank == "editor"){
+				}
+				elseif($get_my_user_rank == "trusted"){
+				}
+				else{
+					// a b c d e f g h i j k l m n o p q r s t u v w x y z
+					// Updated: 19:16 26.04.2019
+					// Files:
+					// edit_reply.php, reply.php, edit_topic.php, new_topic.php
+					$config->set('HTML.Allowed', 'a[href],b,code,img[src],i,ul,li,p,pre,pre[class]');
+				}
 
-			// Inp text
-			$inp_text = $purifier->purify($inp_text);
-			$inp_text = encode_national_letters($inp_text);
+				// Inp text
+					$inp_text = $purifier->purify($inp_text);
+				$inp_text = encode_national_letters($inp_text);
 			
-			$sql = "UPDATE $t_forum_replies SET reply_text=? WHERE reply_id=$get_reply_id";
-			$stmt = $link->prepare($sql);
-			$stmt->bind_param("s", $inp_text);
-			$stmt->execute();
-			if ($stmt->errno) {
-				echo "FAILURE!!! " . $stmt->error; die;
+				$sql = "UPDATE $t_forum_replies SET reply_text=? WHERE reply_id=$get_reply_id";
+				$stmt = $link->prepare($sql);
+				$stmt->bind_param("s", $inp_text);
+				$stmt->execute();
+				if ($stmt->errno) {
+					echo "FAILURE!!! " . $stmt->error; die;
+				}
+			} // what you see is what you get
+			else{
+				// BBcode
+				$inp_text = output_html($inp_text);
+			
+				$sql = "UPDATE $t_forum_replies SET reply_text=? WHERE reply_id=$get_reply_id";
+				$stmt = $link->prepare($sql);
+				$stmt->bind_param("s", $inp_text);
+				$stmt->execute();
+				if ($stmt->errno) {
+					echo "FAILURE!!! " . $stmt->error; die;
+				}
+			
 			}
-	
 
 
 			// E-mail subscribers
@@ -456,11 +471,23 @@ else{
 			<a id=\"answer_form\"></a>
 			<h2>$l_your_answer</h2>
 
-			
-			<!-- TinyMCE -->
-				<script type=\"text/javascript\" src=\"$root/_admin/_javascripts/tinymce/tinymce.min.js\"></script>
+			<!-- Form -->
 				<script>
-				tinymce.init({
+				\$(document).ready(function(){
+					\$('[name=\"inp_text\"]').focus();
+				});
+				</script>
+	
+				<form method=\"post\" action=\"reply.php?l=$l&amp;topic_id=$topic_id&amp;process=1\" enctype=\"multipart/form-data\">
+
+
+				";
+				if($forumWritingMethodSav == "what_you_see_is_what_you_get"){
+					echo"
+					<!-- TinyMCE -->
+					<script type=\"text/javascript\" src=\"$root/_admin/_javascripts/tinymce/tinymce.min.js\"></script>
+					<script>
+					tinymce.init({
 					selector: 'textarea.editor',
 					plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
 					toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media pageembed | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
@@ -497,21 +524,53 @@ else{
 							callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
 						}
 					}
-				});
-				</script>
-			<!-- //TinyMCE -->
-	
-			<!-- Form -->
-				<script>
-				\$(document).ready(function(){
-					\$('[name=\"inp_text\"]').focus();
-				});
-				</script>
-	
-				<form method=\"post\" action=\"reply.php?l=$l&amp;topic_id=$topic_id&amp;process=1\" enctype=\"multipart/form-data\">
-				<p>
-				<textarea name=\"inp_text\" rows=\"5\" cols=\"50\" class=\"editor\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\"></textarea>
-				</p>
+					});
+					</script>
+					<!-- //TinyMCE -->
+					<p>
+					<textarea name=\"inp_text\" rows=\"5\" cols=\"50\" class=\"editor\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\"></textarea>
+					</p>
+					";
+				}
+				else{
+					echo"
+					<p>
+					<input type=\"button\" value=\"b\" onclick=\"formatText ('[b][/b]');\" class=\"btn_bbcode\" style=\"font-weight: bold;\" /> 
+					<input type=\"button\" value=\"i\" onclick=\"formatText ('[i][/i]');\" class=\"btn_bbcode\" style=\"font-style: italic;\" /> 
+					<input type=\"button\" value=\"u\" onclick=\"formatText ('[u][/u]');\" class=\"btn_bbcode\" style=\"text-decoration: underline;\" /> 
+					<input type=\"button\" value=\"URL\" onclick=\"formatText ('[url][/url]');\" class=\"btn_bbcode\" /> 
+					<input type=\"button\" value=\"Code\" onclick=\"formatText ('[code][/code]');\" class=\"btn_bbcode\" /> 
+					<input type=\"button\" value=\"Image\" onclick=\"formatText ('[img][/img]');\" class=\"btn_bbcode\" /> 
+					<br />
+					<textarea name=\"inp_text\" id=\"inp_text\" rows=\"20\" cols=\"50\" style=\"width: 100%;\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">";
+					if(isset($_GET['inp_text'])){
+						$inp_text = $_GET['inp_text'];
+						$inp_text = output_html($inp_text);
+						echo"$inp_text";
+					}
+					echo"</textarea>
+					</p>
+
+					<!-- Javascript insert bb code -->
+					<script type=\"text/javascript\"> 
+					function formatText(tag) {
+						// BBCode
+						var Field = document.getElementById('inp_text');
+						var val = Field.value;
+						var selected_txt = val.substring(Field.selectionStart, Field.selectionEnd);
+						var before_txt = val.substring(0, Field.selectionStart);
+						var after_txt = val.substring(Field.selectionEnd, val.length);
+						Field.value += tag;
+
+
+						// Focus
+						document.getElementById(\"inp_text\").focus();
+					}
+					</script>
+					<!-- //Javascript insert bb code -->
+					";
+				} // BBCode
+				echo"
 		
 				<p>
 				<input type=\"checkbox\" name=\"inp_notify_me_when_a_reply_is_posted\" "; if($get_es_on_off == "1"){ echo" checked=\"checked\""; } echo"  tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" /> $l_notify_me_when_a_reply_is_posted
@@ -519,7 +578,7 @@ else{
 
 				<p><input type=\"submit\" value=\"$l_post_your_answer\" class=\"btn btn_default\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" /></p>
 				</form>
-				<!-- //Form -->
+			<!-- //Form -->
 			";
 	}
 	else{

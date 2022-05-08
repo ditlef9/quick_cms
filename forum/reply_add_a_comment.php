@@ -334,7 +334,7 @@ else{
 					
 		
 				<p><b>$l_comment:</b><br />
-				<textarea name=\"inp_text\" rows=\"5\" cols=\"50\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\"></textarea>
+				<textarea name=\"inp_text\" rows=\"20\" cols=\"50\" style=\"width: 100%;\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\"></textarea>
 				</p>
 		
 

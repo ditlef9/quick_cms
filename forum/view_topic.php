@@ -29,6 +29,14 @@ include("$root/_admin/website_config.php");
 include("$root/_admin/_data/forum.php");
 include("_include_tables.php");
 
+
+if($forumWritingMethodSav == "bbcode"){
+	// BBCode
+	include("$root/_admin/_functions/bbcode.php");
+	include("$root/_admin/_functions/bbcode_tag.php");
+}
+
+
 /*- Translation ------------------------------------------------------------------------ */
 include("$root/_admin/_translations/site/$l/forum/ts_index.php");
 
@@ -227,9 +235,10 @@ else{
 		echo"	
 	<!-- //Feedback -->
 
-	<!-- Prism Javascript -->
+	<!-- Prism Javascript>
 		<script type=\"text/javascript\" src=\"_css/prism.js\"></script>
-	<!-- //jQuery -->
+	<!-- //Prism Javascript>
+
 
 	<!-- Topic -->
 		<table style=\"width: 100%;\">
@@ -370,7 +379,18 @@ else{
 			<!-- //Topic header -->
 
 			<!-- Topic text -->
-				$get_current_topic_text
+				";
+				if($forumWritingMethodSav == "what_you_see_is_what_you_get"){
+					echo"
+					$get_current_topic_text
+					";
+				} // What you see is what you get
+				else{
+					$bbcode = new ChrisKonnertz\BBCode\BBCode();
+					$rendered = $bbcode->render($get_current_topic_text);
+					echo $rendered;
+				} // BBCode
+				echo"
 			<!-- //Topic -->
 		  </td>
 		 </tr>
@@ -551,8 +571,20 @@ else{
 					</p>
 				<!-- //Tools -->
 				<!-- Reply -->
-					$get_reply_text
+					";
+					if($forumWritingMethodSav == "what_you_see_is_what_you_get"){
+						echo"
+						$get_reply_text
+						";
+					} // What you see is what you get
+					else{
+						$bbcode = new ChrisKonnertz\BBCode\BBCode();
+						$rendered = $bbcode->render($get_reply_text);
+						echo $rendered;
+					} // BBCode
+					echo"
 				<!-- //Reply -->
+
 				<!-- View reply comments -->";
 					$reply_comments_count = 0;
 					$query_c = "SELECT reply_comment_id, reply_comment_user_id, reply_comment_user_alias, reply_comment_user_image, reply_comment_topic_id, reply_comment_reply_id, reply_comment_text, reply_comment_created, reply_comment_updated, reply_comment_updated_translated, reply_comment_likes, reply_comment_dislikes, reply_comment_rating, reply_comment_likes_ip_block, reply_comment_user_ip, reply_comment_reported, reply_comment_reported_by_user_id, reply_comment_reported_reason, reply_comment_reported_checked FROM $t_forum_replies_comments WHERE reply_comment_topic_id=$get_current_topic_id AND reply_comment_reply_id=$get_reply_id ORDER BY reply_comment_id ASC";
