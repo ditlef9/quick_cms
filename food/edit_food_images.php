@@ -192,6 +192,16 @@ else{
 						}
 						echo"<div class=\"$ft\"><span>$fm</span></div>";
 					}
+					if(isset($_GET['ft_image_a']) && isset($_GET['fm_image_a'])){
+						$ft_image_a = $_GET['ft_image_a'];
+						$ft_image_a = output_html($ft_image_a);
+
+						$fm_image_a = $_GET['fm_image_a'];
+						$fm_image_a = output_html($fm_image_a);
+						$fm_image_a = ucfirst(str_replace("_", " ", $fm_image_a));
+
+						echo"<div class=\"$ft_image_a\"><span>$fm_image_a</span></div>";
+					}
 					echo"	
 				<!-- //Feedback -->
 
@@ -386,6 +396,7 @@ else{
 				// Delete all old thumbnails
 				if(file_exists("../$get_current_food_image_path/$get_current_food_thumb_a_small") && $get_current_food_thumb_a_small != ""){
 					unlink("../$get_current_food_image_path/$get_current_food_thumb_a_small");
+
 				}
 				if(file_exists("../$get_current_food_image_path/$get_current_food_thumb_a_medium") && $get_current_food_thumb_a_medium != ""){
 					unlink("../$get_current_food_image_path/$get_current_food_thumb_a_medium");
@@ -393,6 +404,7 @@ else{
 				if(file_exists("../$get_current_food_image_path/$get_current_food_thumb_a_large") && $get_current_food_thumb_a_large != ""){
 					unlink("../$get_current_food_image_path/$get_current_food_thumb_a_large");
 				}
+
 
 				if(file_exists("../$get_current_food_image_path/$get_current_food_thumb_b_small") && $get_current_food_thumb_b_small != ""){
 					unlink("../$get_current_food_image_path/$get_current_food_thumb_b_small");
@@ -806,18 +818,18 @@ else{
 								// Give new name
 								$food_manufacturer_name_clean = clean($get_current_food_manufacturer_name);
 
-
+								$rand = rand(0, 1000);
 								if($inp_names_array[$x] == "inp_food_image_a"){
-									$new_name = $food_manufacturer_name_clean . "_" . $food_name_clean . "_a." . $extension;
+									$new_name = $food_manufacturer_name_clean . "_" . $food_name_clean . "_a_$rand." . $extension;
 								}
 								elseif($inp_names_array[$x] == "inp_food_image_b"){
-									$new_name = $food_manufacturer_name_clean . "_" . $food_name_clean . "_b." . $extension;
+									$new_name = $food_manufacturer_name_clean . "_" . $food_name_clean . "_b_$rand." . $extension;
 								}
 								elseif($inp_names_array[$x] == "inp_food_image_c"){
-									$new_name = $food_manufacturer_name_clean . "_" . $food_name_clean . "_c." . $extension;
+									$new_name = $food_manufacturer_name_clean . "_" . $food_name_clean . "_c_$rand." . $extension;
 								}
 								elseif($inp_names_array[$x] == "inp_food_image_d"){
-									$new_name = $food_manufacturer_name_clean . "_" . $food_name_clean . "_d." . $extension;
+									$new_name = $food_manufacturer_name_clean . "_" . $food_name_clean . "_d_$rand." . $extension;
 								}
 								else{
 									echo"image number?";
@@ -871,13 +883,13 @@ else{
 
 										// Thumb small
 										$inp_thumb_name = str_replace(".$extension", "", $new_name);
-										$inp_thumb_small = $inp_thumb_name . "_thumb_132x132." . $extension;
+										$inp_thumb_small = $inp_thumb_name . "_thumb_132x132_$rand." . $extension;
 										$inp_thumb_small_mysql = quote_smart($link, $inp_thumb_small);
 										resize_crop_image(132, 132, "$root/_uploads/food/_img/$l/$get_current_food_id/$new_name", "$root/_uploads/food/_img/$l/$get_current_food_id/$inp_thumb_small");
 							
 
 										// Thumb medium
-										$inp_thumb_medium = $inp_thumb_name . "_thumb_200x200." . $extension;
+										$inp_thumb_medium = $inp_thumb_name . "_thumb_200x200_$rand." . $extension;
 										$inp_thumb_medium_mysql = quote_smart($link, $inp_thumb_medium);
 										resize_crop_image(200, 200, "$root/_uploads/food/_img/$l/$get_current_food_id/$new_name", "$root/_uploads/food/_img/$l/$get_current_food_id/$inp_thumb_medium");
 							

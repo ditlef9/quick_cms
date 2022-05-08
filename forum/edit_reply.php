@@ -418,7 +418,7 @@ else{
 			<h1>
 			<img src=\"$root/_webdesign/images/loading_22.gif\" alt=\"loading_22.gif\" style=\"float:left;padding: 1px 5px 0px 0px;\" />
 			Loading...</h1>
-			<meta http-equiv=\"refresh\" content=\"1;url=$root/users/index.php?page=login&amp;l=$l&amp;refer=$root/forum/edit_reply.php?topic_id=$topic_id&amp;reply_id=$reply_id\">
+			<meta http-equiv=\"refresh\" content=\"1;url=$root/users/index.php?page=login&amp;l=$l&amp;refer=forum/edit_reply.php?topic_id=$topic_id&amp;reply_id=$reply_id\">
 			";
 		}
 	} // reply found
