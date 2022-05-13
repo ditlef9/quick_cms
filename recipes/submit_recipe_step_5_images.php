@@ -198,7 +198,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 								}
 								else{
 
-									// Resize to 1920x1080 OR 1080x1920 
+									// Resize to 1920x1080 OR 1080x1440
 									if($inp_names_array[$x] == "inp_image_h_a"){
 										$uploaded_file_new = $uploaded_file;
 										if($width > 1920 OR $height > 1080){
@@ -207,8 +207,8 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 									}
 									elseif($inp_names_array[$x] == "inp_image_v_a"){
 										$uploaded_file_new = $uploaded_file;
-										if($width > 1080 OR $height > 1920){
-											resize_crop_image(1080, 1920, $uploaded_file, $uploaded_file_new, $quality = 80);
+										if($width > 1080 OR $height > 1440){
+											resize_crop_image(1080, 1440, $uploaded_file, $uploaded_file_new, $quality = 80);
 										}
 									}
 
@@ -443,7 +443,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 
 					<!-- Image V -->
 						<p><a id=\"image_v_a\"></a>
-						<b>$l_mobile_image (1080x1920 jpg):</b><br />
+						<b>$l_mobile_image (1080x1440 jpg):</b><br />
 						<input type=\"file\" name=\"inp_image_v_a\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
 						</p>
 						";

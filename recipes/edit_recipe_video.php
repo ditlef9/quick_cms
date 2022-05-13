@@ -31,6 +31,7 @@ include("_tables.php");
 
 /*- Translation ------------------------------------------------------------------------ */
 include("$root/_admin/_translations/site/$l/recipes/ts_index.php");
+include("$root/_admin/_translations/site/$l/recipes/ts_edit_recipe.php");
 
 /*- Variables ------------------------------------------------------------------------- */
 if(isset($_GET['recipe_id'])) {
@@ -52,10 +53,6 @@ $query = "SELECT recipe_id, recipe_user_id, recipe_title, recipe_category_id, re
 $result = mysqli_query($link, $query);
 $row = mysqli_fetch_row($result);
 list($get_recipe_id, $get_recipe_user_id, $get_recipe_title, $get_recipe_category_id, $get_recipe_language, $get_recipe_country, $get_recipe_introduction, $get_recipe_directions, $get_recipe_image_path, $get_recipe_image_h_a, $get_recipe_image_h_b, $get_recipe_image_v_a, $get_recipe_thumb_h_a_278x156, $get_recipe_thumb_h_b_278x156, $get_recipe_video_h, $get_recipe_video_v, $get_recipe_date, $get_recipe_date_saying, $get_recipe_time, $get_recipe_cusine_id, $get_recipe_season_id, $get_recipe_occasion_id, $get_recipe_marked_as_spam, $get_recipe_unique_hits, $get_recipe_unique_hits_ip_block, $get_recipe_comments, $get_recipe_times_favorited, $get_recipe_user_ip, $get_recipe_notes, $get_recipe_password, $get_recipe_last_viewed, $get_recipe_age_restriction, $get_recipe_published) = $row;
-
-// Translations
-include("$root/_admin/_translations/site/$l/recipes/ts_submit_recipe_step_5_video.php");
-include("$root/_admin/_translations/site/$l/recipes/ts_edit_recipe.php");
 
 /*- Headers ---------------------------------------------------------------------------------- */
 if($get_recipe_id == ""){

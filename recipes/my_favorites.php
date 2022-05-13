@@ -109,10 +109,10 @@ if($action == ""){
 
 		// Get recipe
 
-		$query_recipe = "SELECT recipe_id, recipe_title, recipe_introduction, recipe_image_path, recipe_image, recipe_date, recipe_unique_hits FROM $t_recipes WHERE recipe_id=$get_recipe_favorite_recipe_id";
+		$query_recipe = "SELECT recipe_id, recipe_title, recipe_introduction, recipe_image_path, recipe_image_h_a, recipe_thumb_h_a_278x156, recipe_date, recipe_unique_hits FROM $t_recipes WHERE recipe_id=$get_recipe_favorite_recipe_id";
 		$result_recipe = mysqli_query($link, $query_recipe);
 		$row_recipe = mysqli_fetch_row($result_recipe);
-		list($get_recipe_id, $get_recipe_title, $get_recipe_introduction, $get_recipe_image_path, $get_recipe_image, $get_recipe_date, $get_recipe_unique_hits) = $row_recipe;
+		list($get_recipe_id, $get_recipe_title, $get_recipe_introduction, $get_recipe_image_path, $get_recipe_image_h_a, $get_recipe_thumb_h_a_278x156, $get_recipe_date, $get_recipe_unique_hits) = $row_recipe;
 
 
 		// Get rating
@@ -163,7 +163,7 @@ if($action == ""){
 			   <td style=\"padding-right: 10px;\">
 				";
 				if($get_recipe_image != ""){
-					echo"<a href=\"$root/recipes/view_recipe.php?recipe_id=$get_recipe_id\"><img src=\"$root/image.php?width=100&amp;height=71&amp;image=/$get_recipe_image_path/$get_recipe_image\" alt=\"$get_recipe_image\" /></a>";
+					echo"<a href=\"$root/recipes/view_recipe.php?recipe_id=$get_recipe_id\"><img src=\"$root/$get_recipe_image_path/$get_recipe_thumb_h_a_278x156\" alt=\", $get_recipe_image_h_a\" /></a>";
 				}
 				echo"
 			   </td>
