@@ -110,11 +110,11 @@ if($result !== FALSE){
 			<p>
 			";
 			$found_editor_language = "";
-			$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag_path_16x16, language_active_flag_16x16, language_active_default FROM $t_languages_active";
+			$query = "SELECT language_active_id, language_active_name, language_active_slug, language_active_native_name, language_active_iso_two, language_active_iso_three, language_active_iso_four, language_active_flag_path_16x16, language_active_flag_active_16x16, language_active_flag_inactive_16x16, language_active_flag_path_18x18, language_active_flag_active_18x18, language_active_flag_inactive_18x18, language_active_flag_path_24x24, language_active_flag_active_24x24, language_active_flag_inactive_24x24, language_active_flag_path_32x32, language_active_flag_active_32x32, language_active_flag_inactive_32x32, language_active_charset, language_active_default FROM $t_languages_active";
 			$result = mysqli_query($link, $query);
 			while($row = mysqli_fetch_row($result)) {
-				list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_flag_path_16x16, $get_language_active_flag_16x16, $get_language_active_default) = $row;
-				echo"	<a href=\"index.php?open=$open&amp;editor_language=$get_language_active_iso_two&amp;l=$l\"><img src=\"../$get_language_active_flag_path_16x16/$get_language_active_flag_16x16\" alt=\"$get_language_active_flag_16x16\" /></a>\n";
+				list($get_language_active_id, $get_language_active_name, $get_language_active_slug, $get_language_active_native_name, $get_language_active_iso_two, $get_language_active_iso_three, $get_language_active_iso_four, $get_language_active_flag_path_16x16, $get_language_active_flag_active_16x16, $get_language_active_flag_inactive_16x16, $get_language_active_flag_path_18x18, $get_language_active_flag_active_18x18, $get_language_active_flag_inactive_18x18, $get_language_active_flag_path_24x24, $get_language_active_flag_active_24x24, $get_language_active_flag_inactive_24x24, $get_language_active_flag_path_32x32, $get_language_active_flag_active_32x32, $get_language_active_flag_inactive_32x32, $get_language_active_charset, $get_language_active_default) = $row;
+				echo"	<a href=\"index.php?open=$open&amp;editor_language=$get_language_active_iso_two&amp;l=$l\"><img src=\"../$get_language_active_flag_path_16x16/$get_language_active_flag_active_16x16\" alt=\"$get_language_active_flag_active_16x16\" /></a>\n";
 
 				if($editor_language == "$get_language_active_iso_two"){
 					$found_editor_language = "1";
