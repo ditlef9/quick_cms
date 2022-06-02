@@ -634,14 +634,14 @@ if(\$get_current_course_id != \"\"){
 
 			echo\"					\";
 			echo\"<li><a href=\\\"\$root/\$get_current_course_title_clean/\$get_module_title_clean/\$get_lesson_title_clean.php?course_id=\$get_current_course_id&amp;module_id=\$get_module_id&amp;lesson_id=\$get_lesson_id&amp;l=\$l\\\" \"; if(\$get_lesson_id == \"\$lesson_id\"){ echo\" class=\\\"navigation_active\\\"\"; } echo\" id=\\\"navigation_lesson_id_\$get_lesson_id\\\"\";
-			if(\$get_lesson_title_length  > 30){
+			if(\$get_lesson_title_length  > 27){
 				echo\" title=\\\"\$get_lesson_title\\\"\"; 
 			}
 			echo\">\";
 			if(\$get_lesson_read_id != \"\"){ 
 				echo\"<img src=\\\"\$root/courses/_images/icons/navigation_lesson_read.png\\\" alt=\\\"navigation_lesson_read.png\\\" />\"; 
 			}
-			if(\$get_lesson_title_length  > 30){
+			if(\$get_lesson_title_length  > 27){
 				echo\"\$get_lesson_title_short\";
 			}
 			else{

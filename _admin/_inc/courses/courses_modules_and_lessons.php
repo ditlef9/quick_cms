@@ -874,7 +874,7 @@ else{
 				$inp_title_length_mysql = quote_smart($link, $inp_title_length);
 
 				if($inp_title_length  > 27){
-					$inp_title_short = substr($inp_title, 0, 27);
+					$inp_title_short = substr($inp_title, 0, 24);
 					$inp_title_short = $inp_title_short . "...";
 				}
 				else{
@@ -1310,7 +1310,7 @@ else{
 				$inp_title_length_mysql = quote_smart($link, $inp_title_length);
 
 				if($inp_title_length  > 27){
-					$inp_title_short = substr($inp_title, 0, 27);
+					$inp_title_short = substr($inp_title, 0, 24);
 					$inp_title_short = $inp_title_short . "...";
 				}
 				else{

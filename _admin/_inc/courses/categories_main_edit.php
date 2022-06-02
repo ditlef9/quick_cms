@@ -121,8 +121,14 @@ if($action == ""){
 
 
 	
-			$ft_icon = "info";
-           		$fm_icon = "nothing";
+			$ft_icon_16 = "info";
+           		$fm_icon_16 = "nothing";
+
+			$ft_icon_32 = "info";
+           		$fm_icon_32 = "nothing";
+
+			$ft_icon_192 = "info";
+           		$fm_icon_192 = "nothing";
 			$icon_sizes = array('16', '32', '192');
 			for($x=0;$x<sizeof($icon_sizes);$x++){
 		
@@ -136,8 +142,19 @@ if($action == ""){
 	
 				if($image_name){
 					if (($extension != "jpg") && ($extension != "jpeg") && ($extension != "png") && ($extension != "gif")) {
-						$ft_icon = "warning";
-						$fm_icon = "unknown_file_extension_$extension";
+
+						if($icon_sizes[$x] == "16"){
+							$ft_icon_16 = "warning";
+							$fm_icon_16 = "unknown_file_extension_$extension";	
+						}
+						elseif($icon_sizes[$x] == "32"){
+							$ft_icon_32 = "warning";
+							$fm_icon_32 = "unknown_file_extension_$extension";	
+						}
+						elseif($icon_sizes[$x] == "192"){
+							$ft_icon_192 = "warning";
+							$fm_icon_192 = "unknown_file_extension_$extension";	
+						}
 					}
 					else{
 						// Give new name
@@ -147,7 +164,7 @@ if($action == ""){
 						// Upload file
 						if (move_uploaded_file($_FILES["inp_icon_$icon_size"]['tmp_name'], $uploaded_file)) {
 
-							$inp_icon_path = "$inp_title_clean/_gfx/icons";
+							$inp_icon_path = "_uploads/courses/main/$inp_title_clean/_gfx/icons";
 
 
 							// Get image size
@@ -158,8 +175,18 @@ if($action == ""){
 	
 							if($width == "" OR $height == ""){
 								unlink("$uploaded_file");
-								$ft_icon = "warning";
-								$fm_icon = "getimagesize_failed";
+								if($icon_sizes[$x] == "16"){
+									$ft_icon_16 = "warning";
+									$fm_icon_16 = "getimagesize_failed";	
+								}
+								elseif($icon_sizes[$x] == "32"){
+									$ft_icon_32 = "warning";
+									$fm_icon_32 = "getimagesize_failed";	
+								}
+								elseif($icon_sizes[$x] == "192"){
+									$ft_icon_192 = "warning";
+									$fm_icon_192 = "getimagesize_failed";
+								}
 							}
 							else{
 								// All ok
@@ -170,6 +197,9 @@ if($action == ""){
 										main_category_icon_path='$inp_icon_path', 
 										main_category_icon_16x16=$inp_icon_mysql
 										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+
+									$ft_icon_16 = "success";
+									$fm_icon_16 = "icon_uploaded";
 								}
 								if($icon_sizes[$x] == "18"){
 									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
@@ -188,6 +218,9 @@ if($action == ""){
 										main_category_icon_path='$inp_icon_path', 
 										main_category_icon_32x32=$inp_icon_mysql
 										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+
+									$ft_icon_32 = "success";
+									$fm_icon_32 = "icon_uploaded";
 								}
 								if($icon_sizes[$x] == "36"){
 									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
@@ -212,6 +245,9 @@ if($action == ""){
 										main_category_icon_path='$inp_icon_path', 
 										main_category_icon_192x192=$inp_icon_mysql
 										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+
+									$ft_icon_192 = "success";
+									$fm_icon_192 = "icon_uploaded";
 								}
 								if($icon_sizes[$x] == "260"){
 									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
@@ -220,11 +256,11 @@ if($action == ""){
 										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
 								}
 
-								$ft_icon = "success";
-								$fm_icon = "icon_uploaded";
+
 							}
 						}
 						else{
+							$fm_icon = "";
 							switch ($_FILES['inp_food_image']['error']) {
 								case UPLOAD_ERR_OK:
           								$fm_icon = "There is no error, the file uploaded with success.";
@@ -241,8 +277,20 @@ if($action == ""){
 								default:
           								$fm_icon = "unknown_error";
 									break;
-							}	
-							$ft_icon = "warning";
+							}
+							if($icon_sizes[$x] == "16"){
+								$ft_icon_16 = "warning";
+								$fm_icon_16 = "$fm_icon";	
+							}
+							elseif($icon_sizes[$x] == "32"){
+								$ft_icon_32 = "warning";
+								$fm_icon_32 = "$fm_icon";	
+							}
+							elseif($icon_sizes[$x] == "192"){
+								$ft_icon_192 = "warning";
+								$fm_icon_192 = "$fm_icon";
+							}
+
 					
 						}
 					}
@@ -330,7 +378,9 @@ if($action == ""){
 
 
 			// Header
-			$url = "index.php?open=$open&page=categories_main_edit&main_category_id=$get_current_main_category_id&editor_language=$editor_language&ft=success&fm=changes_saved&ft_icon=$ft_icon&fm_icon=$fm_icon&ft_header_logo=$ft_header_logo&fm_header_logo=$fm_header_logo";
+			$url = "index.php?open=$open&page=categories_main_edit&main_category_id=$get_current_main_category_id&editor_language=$editor_language&ft=success&fm=changes_saved&ft_icon_16=$ft_icon_16&fm_icon_16=$fm_icon_16";
+			$url = $url . "&ft_icon_32=$ft_icon_32&fm_icon_32=$fm_icon_32";
+			$url = $url . "&ft_icon_192=$ft_icon_192&fm_icon_192=$fm_icon_192&ft_header_logo=$ft_header_logo&fm_header_logo=$fm_header_logo";
 			header("Location: $url");
 			exit;
 		}
@@ -424,13 +474,58 @@ if($action == ""){
 			$icon_sizes = array('16', '32', '192');
 			for($x=0;$x<sizeof($icon_sizes);$x++){
 				$icon_size = $icon_sizes[$x] . "x" . $icon_sizes[$x];
+
 				echo"
 				<!-- Icon x -->
 					
 					<table>
 					 <tr>
 					  <td style=\"vertical-align:top;padding-right: 20px;\">
-						<p><b>New icon ($icon_size)</b><br />
+						<p style=\"padding-bottom:0;margin-bottom:0;\"><b>New icon ($icon_size)</b></p>\n";
+						if($icon_sizes[$x] == "16"){
+							if(isset($_GET['ft_icon_16']) && isset($_GET['fm_icon_16'])){
+								$ft = $_GET['ft_icon_16'];
+								$ft = strip_tags(stripslashes($ft));
+								if($ft != "error" && $ft != "warning" && $ft != "success" && $ft != "info"){
+									echo"Server error 403 feedback error";die;
+								}
+								$fm = $_GET['fm_icon_16'];
+								$fm = str_replace("_", " ", $fm);
+								$fm = ucfirst($fm);
+								$fm = output_html($fm);
+								echo"<div class=\"$ft\"><span>$fm</span></div>";
+							}
+						}
+						elseif($icon_sizes[$x] == "32"){
+							if(isset($_GET['ft_icon_32']) && isset($_GET['fm_icon_32'])){
+								$ft = $_GET['ft_icon_32'];
+								$ft = strip_tags(stripslashes($ft));
+								if($ft != "error" && $ft != "warning" && $ft != "success" && $ft != "info"){
+									echo"Server error 403 feedback error";die;
+								}
+								$fm = $_GET['fm_icon_32'];
+								$fm = str_replace("_", " ", $fm);
+								$fm = ucfirst($fm);
+								$fm = output_html($fm);
+								echo"<div class=\"$ft\"><span>$fm</span></div>";
+							}
+						}
+						elseif($icon_sizes[$x] == "192"){
+							if(isset($_GET['ft_icon_192']) && isset($_GET['fm_icon_192'])){
+								$ft = $_GET['ft_icon_192'];
+								$ft = strip_tags(stripslashes($ft));
+								if($ft != "error" && $ft != "warning" && $ft != "success" && $ft != "info"){
+									echo"Server error 403 feedback error";die;
+								}
+								$fm = $_GET['fm_icon_192'];
+								$fm = str_replace("_", " ", $fm);
+								$fm = ucfirst($fm);
+								$fm = output_html($fm);
+								echo"<div class=\"$ft\"><span>$fm</span></div>";
+							}
+						}
+						echo"
+						<p style=\"padding-top:0;margin-top:0;\">
 						<input type=\"file\" name=\"inp_icon_$icon_size\"  tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
 						</p>
 					  </td>
