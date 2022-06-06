@@ -634,7 +634,7 @@ $l_web: $configWebsiteTitleSav
 				// Recipes Stats Comments per Month
 				$inp_recipe_title_mysql = quote_smart($link, $get_recipe_title);
 				$inp_recipe_image_path_mysql = quote_smart($link, $get_recipe_image_path);
-				$inp_recipe_thumb_278x156_mysql = quote_smart($link, $get_recipe_thumb_278x156);
+				$inp_recipe_thumb_278x156_mysql = quote_smart($link, $get_recipe_thumb_h_a_278x156);
 				$inp_recipe_language_mysql = quote_smart($link, $get_recipe_language);
 				
 				
