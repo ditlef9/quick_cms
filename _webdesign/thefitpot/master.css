@@ -160,6 +160,10 @@ input {
 	background: #e6e6e6;
 	color: #333333;
 }
+.btn > img, .btn_default > img, .btn_warning > img, .btn_danger > img{
+	vertical-align: middle;
+	margin-bottom: 2px;
+}
 
 .btn_default_small {
 	padding: 4px 10px 4px 10px; 

@@ -181,7 +181,7 @@ echo"
 		";
 	}
 	echo"
-	<p><a href=\"subscribe_to_weekly_recipes_suggestions.php?l=$l\">$l_subscribe_to_weekly_recipes_suggestions</a></p>
+	<p><a href=\"subscribe_to_weekly_recipes_suggestions.php?l=$l\" class=\"btn_default\"><img src=\"_gfx/icons/email_outline_black_18x18.png\" alt=\"email_outline_black_18x18.png\" /> $l_subscribe_to_weekly_recipes_suggestions</a></p>
 <!-- //Welcome text -->
 
 <!-- Tag cloud -->
