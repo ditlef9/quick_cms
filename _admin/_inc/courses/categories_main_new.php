@@ -136,7 +136,7 @@ if($action == ""){
 					// Upload file
 					if (move_uploaded_file($_FILES["inp_icon_$icon_size"]['tmp_name'], $uploaded_file)) {
 
-						$inp_icon_path = "$inp_title_clean/_gfx/icons";
+						$inp_icon_path = "_uploads/courses/main/$inp_title_clean/_gfx/icons";
 
 
 						// Get image size
