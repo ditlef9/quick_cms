@@ -1024,27 +1024,7 @@ echo"
 
 		// Age limit?
 
-		if($get_food_age_restriction == "1"){
-			if($get_current_restriction_show_food == "1"){
-				$show_food = 1;
-			}
-			else{
-				$show_food = 0;
-			}
-			if($get_current_restriction_show_image_a == "1"){
-				$show_image_a      = 1;
-			}
-			else{
-				$show_image_a      = 0;
-			}
-		}
-		else{
-			$show_food 	= 1;
-			$show_image_a	= 1;
-		}
-
-
-		if($show_food == "1" && $get_food_image_a != "" && file_exists("../$get_food_image_path/$get_food_image_a")){	
+		if($get_food_image_a != "" && file_exists("../$get_food_image_path/$get_food_image_a")){	
 			// Name saying
 			$title = "$get_food_manufacturer_name $get_food_name";
 			$check = strlen($title);

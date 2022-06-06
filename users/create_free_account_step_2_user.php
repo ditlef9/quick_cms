@@ -164,6 +164,12 @@ if(!(isset($_SESSION['user_id']))){
 				$inp_mesurment = "$get_last_user_measurement";
 				$inp_timezone_utc_diff = "$get_user_timezone_utc_diff";
 				$inp_timezone_value = "$get_user_timezone_value";
+
+				if($inp_timezone_utc_diff == ""){
+					$inp_mesurment = "metric";
+					$inp_timezone_utc_diff = "2";
+					$inp_timezone_value = "(GMT+02:00) Europe, Oslo";
+				}
 			}
 			else{
 				$inp_mesurment = "metric";

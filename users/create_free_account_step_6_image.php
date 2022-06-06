@@ -37,8 +37,6 @@ include("$root/_webdesign/header.php");
 /*- Content --------------------------------------------------------------------------- */
 
 /*- Translations -------------------------------------------------------------------- */
-include("$root/_admin/_translations/site/$l/users/ts_create_free_account_step_6_image.php");
-include("$root/_admin/_translations/site/$l/users/ts_photo.php");
 
 
 // Get extention

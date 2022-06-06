@@ -141,7 +141,7 @@ if(isset($_SESSION['user_id'])){
 		}
 		else{
 			echo"
-			<a href=\"create_free_account_step_5_gender.php?user_id=$my_user_id&amp;l=$l"; if($referer != ""){ echo"&amp;referer=$referer"; } echo"\" class=\"btn btn_default\">$l_skip_this_step</a>
+			<a href=\"create_free_account_step_6_image.php?user_id=$my_user_id&amp;l=$l"; if($referer != ""){ echo"&amp;referer=$referer"; } echo"\" class=\"btn btn_default\">$l_skip_this_step</a>
 			";
 		}
 		echo"

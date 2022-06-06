@@ -42,7 +42,8 @@ if(isset($day_of_week)){
 		$subscription_language_mysql = quote_smart($link, $get_subscription_language);
 		include("$root/_admin/_translations/site/$get_subscription_language/recipes/ts_subscribe_to_weekly_recipes_suggestions_send_weekly.php");
 		
-
+		// Recipes sent array
+		$recipes_sent_array = array();
 
 
 		$subject = decode_national_letters("$l_recipes_suggestions_for $next_week_year");
@@ -182,13 +183,22 @@ h3.recipes_category_title{
 
 				} // ingredients unique
 
-				// Find 2 unique recipes per category (example 2 for breakfast and two for dinner)
-				$query_r = "SELECT recipe_id, recipe_title, recipe_introduction, recipe_image_path, recipe_image_h_a, recipe_thumb_h_a_278x156 FROM $t_recipes WHERE recipe_category_id=$get_checked_category_id AND recipe_language=$subscription_language_mysql AND recipe_ingredient_id IN ($ingredients_ids) AND recipe_published=1 ORDER BY rand() LIMIT 2";
+				// Find 10 unique recipes per category (example 2 for breakfast and two for dinner)
+				$number_of_recipes_found_for_this_day_and_category = 0;
+				$query_r = "SELECT recipe_id, recipe_title, recipe_introduction, recipe_image_path, recipe_image_h_a, recipe_thumb_h_a_278x156 FROM $t_recipes WHERE recipe_category_id=$get_checked_category_id AND recipe_language=$subscription_language_mysql AND recipe_ingredient_id IN ($ingredients_ids) AND recipe_published=1 ORDER BY rand() LIMIT 10";
 				$result_r = mysqli_query($link, $query_r);
 				while($row_r = mysqli_fetch_row($result_r)) {
 					list($get_recipe_id, $get_recipe_title, $get_recipe_introduction, $get_recipe_image_path, $get_recipe_image_h_a, $get_recipe_thumb_h_a_278x156) = $row_r;
 	
-					if($get_recipe_image_h_a != ""){
+
+					// Check if it is sent before (we dont want duplicates per week)
+					if (in_array($get_recipe_id, $recipes_sent_array)){
+						
+					}
+					else{
+						if($number_of_recipes_found_for_this_day_and_category < 2){
+					
+							if($get_recipe_image_h_a != ""){
 								$message = $message. "		<div class=\"recipes_day_row\">\n";
 								$message = $message. "			<div class=\"recipes_day_column_left\">\n";
 								$message = $message. "				<p>\n";
@@ -203,7 +213,14 @@ h3.recipes_category_title{
 								$message = $message. "				</p>\n";
 								$message = $message. "			</div> <!-- //recipes_day_column_right -->\n";
 								$message = $message. "		</div> <!-- //recipes_day_row -->\n";
-							$message = $message . "		<div class=\"clear\"></div>";
+								$message = $message . "		<div class=\"clear\"></div>";
+
+								// Append to array
+								array_push($recipes_sent_array, $get_recipe_id);
+								$number_of_recipes_found_for_this_day_and_category++;
+
+							} // has image
+						} // $number_of_recipes_found_for_this_day_and_category > 3
 					}
 				}
 
