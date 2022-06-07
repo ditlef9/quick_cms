@@ -218,7 +218,7 @@ if($get_current_course_id != ""){
 
 			echo"
 			<div class=\"course_module\">
-				<a href=\"$root/$get_current_course_title_clean/$get_module_title_clean/index.php?course_id=$get_current_course_id&amp;module_id=$get_module_id&amp;l=$l\">
+				<a href=\"$root/$get_current_course_title_clean/$get_module_title_clean/index.php?course_id=$get_current_course_id&amp;main_category_id=$get_current_course_main_category_id&amp;module_id=$get_module_id&amp;l=$l\">
 				<div class=\"module_left\">
 					<p><span>$l_module $get_module_number:</span> $get_module_title</p>
 				</div>
@@ -258,7 +258,7 @@ if($get_current_course_id != ""){
 
 				echo"
 				<div class=\"course_content\">
-                        		<a href=\"$root/$get_current_course_title_clean/$get_module_title_clean/$get_lesson_title_clean.php?course_id=$get_current_course_id&amp;module_id=$get_module_id&amp;lesson_id=$get_lesson_id&amp;l=$l\">
+                        		<a href=\"$root/$get_current_course_title_clean/$get_module_title_clean/$get_lesson_title_clean.php?course_id=$get_current_course_id&amp;main_category_id=$get_current_course_main_category_id&amp;module_id=$get_module_id&amp;lesson_id=$get_lesson_id&amp;l=$l\">
 					<div class=\"course_content_left\">
                                			 <span class=\"course_content_number\">$get_lesson_number</span> <span class=\"course_content_title\">$get_lesson_title</span>
 					</div>
@@ -292,7 +292,7 @@ if($get_current_course_id != ""){
 
 			echo"
 			<div class=\"course_module\">
-				<a href=\"exam.php?course_id=$get_current_course_id&amp;l=$l\">
+				<a href=\"exam.php?course_id=$get_current_course_id&amp;main_category_id=$get_current_course_main_category_id&amp;l=$l\">
 				<div class=\"module_left\">
 					<p><span></span> $l_exam</span></p>
 				</div>

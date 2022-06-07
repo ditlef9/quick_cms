@@ -556,7 +556,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 						<a href=\"#\" class=\"insert_striketrough\">s</a>
 						<a href=\"#\" class=\"insert_img\"><img src=\"_gfx/bb/image.png\" alt=\"image.png\"></a>
 						<a href=\"#\" class=\"insert_link\"><img src=\"_gfx/bb/link.png\" alt=\"link.png\"></a>
-						<a href=\"#\" class=\"insert_bullet\"><img src=\"_gfx/bb/text_list_bullets\" alt=\"text_list_bullets\"></a>
+						<a href=\"#\" class=\"insert_bullet\"><img src=\"_gfx/bb/text_list_bullets.png\" alt=\"text_list_bullets\"></a>
 						</p>
 						<p style=\"padding-top:0;margin-top:0;\">
 						<textarea name=\"inp_text\" class=\"inp_text\" rows=\"25\" cols=\"50\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" style=\"width: 100%;\">$get_current_blog_post_text</textarea>

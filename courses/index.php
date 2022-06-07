@@ -97,7 +97,7 @@ while($row = mysqli_fetch_row($result)) {
 		echo"
 		   <td style=\"width: 210px;vertical-align:top;padding-right: 15px;\">
 			<p>
-			<a href=\"$root/$get_course_title_clean/index.php?l=$l\"><img src=\"$root/$get_course_title_clean/_gfx/$get_course_image_thumb\" alt=\"$get_course_image_thumb\" class=\"courses_img_thumb\" /></a>
+			<a href=\"$root/$get_course_title_clean/index.php?course_id=$get_course_id&amp;main_category_id=$get_course_main_category_id&amp;l=$l\"><img src=\"$root/$get_course_title_clean/_gfx/$get_course_image_thumb\" alt=\"$get_course_image_thumb\" class=\"courses_img_thumb\" /></a>
 			</p>
 		   </td>
 		";
@@ -109,7 +109,7 @@ while($row = mysqli_fetch_row($result)) {
 			</p>
 
 			<p class=\"courses_course_title\">
-			<a href=\"$root/$get_course_title_clean/index.php?l=$l\">$get_course_title</a>
+			<a href=\"$root/$get_course_title_clean/index.php?course_id=$get_course_id&amp;main_category_id=$get_course_main_category_id&amp;l=$l\">$get_course_title</a>
 			</p>
 
 			<p class=\"courses_course_numbers\">

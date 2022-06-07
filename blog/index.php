@@ -90,6 +90,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 
 echo"
 <!-- Headline, menu, rss -->
+
 	<div class=\"blog_headline_left\">
 		<h1>$get_current_title_value</h1>
 	</div>
