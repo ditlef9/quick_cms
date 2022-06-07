@@ -570,7 +570,7 @@ if(\$get_current_course_id != \"\"){
 		echo\"					\";
 
 		if(\$get_module_number == \"1\"){
-			echo\"<li class=\\\"header_home\\\"><a href=\\\"\$root/\$get_current_course_title_clean/\$get_module_title_clean/index.php?course_id=\$get_current_course_id&amp;module_id=\$get_module_id&amp;l=\$l\\\" id=\\\"navigation_module_id_\$get_module_id\\\">\$get_module_course_title</a></li>\n\";
+			echo\"<li class=\\\"header_home\\\"><a href=\\\"\$root/\$get_current_course_title_clean/\$get_module_title_clean/index.php?course_id=\$get_current_course_id&amp;main_category_id=\$get_current_course_main_category_id&amp;module_id=\$get_module_id&amp;l=\$l\\\" id=\\\"navigation_module_id_\$get_module_id\\\">\$get_module_course_title</a></li>\n\";
 
 
 			echo\"					\";
@@ -581,7 +581,7 @@ if(\$get_current_course_id != \"\"){
 			echo\"\$l_index</a></li>\n\";
 		}
 		else{
-			echo\"<li class=\\\"header_up\\\"><a href=\\\"\$root/\$get_current_course_title_clean/\$get_module_title_clean/index.php?course_id=\$get_current_course_id&amp;module_id=\$get_module_id&amp;l=\$l\\\" id=\\\"navigation_module_id_\$get_module_id\\\">\$get_module_title</a></li>\n\";
+			echo\"<li class=\\\"header_up\\\"><a href=\\\"\$root/\$get_current_course_title_clean/\$get_module_title_clean/index.php?course_id=\$get_current_course_id&amp;main_category_id=\$get_current_course_main_category_id&amp;module_id=\$get_module_id&amp;l=\$l\\\" id=\\\"navigation_module_id_\$get_module_id\\\">\$get_module_title</a></li>\n\";
 
 
 		}
@@ -633,7 +633,7 @@ if(\$get_current_course_id != \"\"){
 
 
 			echo\"					\";
-			echo\"<li><a href=\\\"\$root/\$get_current_course_title_clean/\$get_module_title_clean/\$get_lesson_title_clean.php?course_id=\$get_current_course_id&amp;module_id=\$get_module_id&amp;lesson_id=\$get_lesson_id&amp;l=\$l\\\" \"; if(\$get_lesson_id == \"\$lesson_id\"){ echo\" class=\\\"navigation_active\\\"\"; } echo\" id=\\\"navigation_lesson_id_\$get_lesson_id\\\"\";
+			echo\"<li><a href=\\\"\$root/\$get_current_course_title_clean/\$get_module_title_clean/\$get_lesson_title_clean.php?course_id=\$get_current_course_id&amp;main_category_id=\$get_current_course_main_category_id&amp;module_id=\$get_module_id&amp;lesson_id=\$get_lesson_id&amp;l=\$l\\\" \"; if(\$get_lesson_id == \"\$lesson_id\"){ echo\" class=\\\"navigation_active\\\"\"; } echo\" id=\\\"navigation_lesson_id_\$get_lesson_id\\\"\";
 			if(\$get_lesson_title_length  > 27){
 				echo\" title=\\\"\$get_lesson_title\\\"\"; 
 			}
@@ -672,7 +672,7 @@ if(\$get_current_course_id != \"\"){
 		echo\"
 \";
 		echo\"					\";
-		echo\"<li class=\\\"header_up\\\"><a href=\\\"\$root/\$get_current_course_title_clean/exam.php?course_id=\$get_current_course_id&amp;module_id=\$get_module_id&amp;l=\$l\\\">\$l_exam</a></li>\n\";
+		echo\"<li class=\\\"header_up\\\"><a href=\\\"\$root/\$get_current_course_title_clean/exam.php?course_id=\$get_current_course_id&amp;main_category_id=\$get_current_course_main_category_id&amp;module_id=\$get_module_id&amp;l=\$l\\\">\$l_exam</a></li>\n\";
 
 		// Take exam
 		echo\"					\";
