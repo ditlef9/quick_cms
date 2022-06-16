@@ -17,6 +17,17 @@ if(!(isset($define_access_to_control_panel))){
 /*- Tables ---------------------------------------------------------------------------- */
 $t_webdesign_front_page_items	= $mysqlPrefixSav . "webdesign_front_page_items";
 
+/*- Config ---------------------------------------------------------------------------- */
+if(!(file_exists("_data/front_page.php"))){
+	$inp_config="<?php
+\$editorModeSav = \"wyciwug\";
+?>";
+	$fh = fopen("_data/front_page.php", "w+") or die("can not open file");
+	fwrite($fh, $inp_config);
+	fclose($fh);
+}
+include("_data/front_page.php");
+
 /*- Scriptstart ----------------------------------------------------------------------- */
 if($action == ""){
 	echo"
@@ -44,6 +55,7 @@ if($action == ""){
 		  <td>
 			<p>
 			<a href=\"index.php?open=$open&amp;page=$page&amp;action=new_item&amp;weight=0&amp;editor_language=$editor_language&amp;l=$l\" class=\"btn_default\">New item</a>
+			<a href=\"index.php?open=$open&amp;page=$page&amp;action=settings&amp;editor_language=$editor_language&amp;l=$l\" class=\"btn_default\">Settings</a>
 			</p>
 		  </td>
 		 </tr>
@@ -94,7 +106,84 @@ if($action == ""){
 	<!-- //Items -->
 	";
 } // action == ""
+elseif($action == "settings"){
+
+	if(isset($_GET['mode'])) {
+		$mode = $_GET['mode'];
+		$mode = strip_tags(stripslashes($mode));
+	}
+	else{
+		$mode = "";
+	}
+	if($mode == "save"){
+		$inp_editor_mode = $_POST['inp_editor_mode'];
+		$inp_editor_mode = output_html($inp_editor_mode);
+		
+		
+		$inp_config="<?php
+\$editorModeSav = \"$inp_editor_mode\";
+?>";
+		$fh = fopen("_data/front_page.php", "w+") or die("can not open file");
+		fwrite($fh, $inp_config);
+		fclose($fh);
+
+
+		echo"
+		<h1>Front page settings</h1>
+		<h2><img src=\"_design/gfx/loading_22.gif\" alt=\"loading_22.gif\" /> Saving...</h2>
+		<meta http-equiv=refresh content=\"3; url=index.php?open=$open&page=$page&action=$action&ft=success&fm=changes_saved\">
+		";
+	}
+	else{
+		echo"
+		<h1>Front page settings</h1>
+
+		<!-- Where am I ? -->
+		<p><b>You are here:</b><br />
+		<a href=\"index.php?open=$open&amp;page=$page&amp;editor_language=$editor_language&amp;l=$l\">Front page</a>
+		&gt;
+		<a href=\"index.php?open=$open&amp;page=$page&amp;action=$action&amp;editor_language=$editor_language&amp;l=$l\">Settings</a>
+		</p>
+		<!-- //Where am I ? -->
+
+
+		<!-- Focus -->
+		<script>
+		window.onload = function() {
+			document.getElementById(\"inp_type\").focus();
+		}
+		</script>
+		<!-- //Focus -->
+
+		<!-- Front page settings -->
+		<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;action=$action&amp;editor_language=$editor_language&amp;l=$l&amp;mode=save\" enctype=\"multipart/form-data\">
+
+		<p><b>Editor mode:</b><br />
+		<select name=\"inp_editor_mode\">
+			<option value=\"wyciwug\""; if($editorModeSav == "wyciwug"){ echo" selected=\"selected\""; } echo">What you see is what you get</option>
+			<option value=\"bbcode\""; if($editorModeSav == "bbcode"){ echo" selected=\"selected\""; } echo">BBCode</option>
+		</select>
+		</p>
+
+		<p>
+		<input type=\"submit\" value=\"Save\" class=\"btn_default\" />
+		</p>
+
+		</form>
+		<!-- //Front page settings -->
+		";
+	} // mode == ""
+} // settings
 elseif($action == "new_item"){
+	if($process == "1"){
+		$inp_type = $_POST['inp_type'];
+		$inp_type = output_html($inp_type);
+		$inp_type_mysql = quote_smart($link, $inp_type);
+		
+		
+	}
+
+
 	if(isset($_GET['weight'])) {
 		$weight = $_GET['weight'];
 		$weight = strip_tags(stripslashes($weight));
@@ -122,7 +211,7 @@ elseif($action == "new_item"){
 	<!-- Focus -->
 		<script>
 		window.onload = function() {
-			document.getElementById(\"inp_title\").focus();
+			document.getElementById(\"inp_type\").focus();
 		}
 		</script>
 	<!-- //Focus -->
@@ -130,28 +219,40 @@ elseif($action == "new_item"){
 	<!-- New item form -->
 		<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;action=new_item&amp;weight=$weight&amp;editor_language=$editor_language&amp;l=$l&amp;process=1\" enctype=\"multipart/form-data\">
 
-		<p><b>Title:</b><br />
-		<input type=\"text\" name=\"inp_title\" value=\"\" id=\"inp_title\" size=\"25\" />
-		</p>
-
-		<p><b>Language:</b><br />
-		<select name=\"inp_language\">\n";
-		$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_default FROM $t_languages_active";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
-			list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_default) = $row;
-			echo"	<option value=\"$get_language_active_iso_two\"";if($editor_language == "$get_language_active_iso_two"){ echo" selected=\"selected\"";}echo">$get_language_active_name</option>\n";
-						
-		}
-		echo"
-		</select>
-		</p>
-	
+		<!-- Load modules -->
+			";
+			$dir = "_inc/";
+			$modules = array();   
+			if ($handle = opendir($dir)) {
+				while (false !== ($file = readdir($handle))) {
+					if ($file === '.') continue;
+					if ($file === '..') continue;
+					if ($file === "admin_cms") continue;
+					if ($file === "backup") continue;
+					if ($file === "crypto_analyzer") continue;
+					if ($file === "dashboard") continue;
+					if ($file === "domains_monitoring") continue;
+					if ($file === "hash_db") continue;
+					if ($file === "knowledge") continue;
+					if ($file === "music_sheets") continue;
+					if ($file === "office_calendar") continue;
+					if ($file === "settings") continue;
+					if ($file === "throw_the_dice") continue;
+					if ($file === "webdesign") continue;
+					array_push($modules, $file);
+				}
+				
+				sort($modules);
+			}
+			closedir($handle);
+			echo"
+		<!-- //Load modules -->
+		
 		<!-- Type -->
 			<p><b>Type:</b><br />
 			<select name=\"inp_type\" id=\"inp_type\">
+				<option value=\"module\" selected=\"selected\">Module</option>
 				<option value=\"text\">Text</option>
-				<option value=\"module\">Module</option>
 			</select>
 			</p>
 
@@ -163,6 +264,12 @@ elseif($action == "new_item"){
 					
 					\$(\"#new_edit_item_text\").toggle();
 					\$(\"#new_edit_item_module\").toggle();
+
+					// Autoadd title
+					if(selected == \"module\"){
+						// Set to first title available
+						\$(\"#inp_title\").val(\""; echo ucfirst($modules[0]); echo"\");
+					}
 				});
 
 				
@@ -171,8 +278,10 @@ elseif($action == "new_item"){
 			<!-- //Select type javascript -->
 		<!-- //Type -->
 
+	
+
 		<!-- Text -->
-			<div id=\"new_edit_item_text\">
+			<div id=\"new_edit_item_text\" style=\"display: none;\">
 				<!-- TinyMCE -->
 				<script type=\"text/javascript\" src=\"_javascripts/tinymce/tinymce.min.js\"></script>
 				<script>
@@ -227,45 +336,19 @@ elseif($action == "new_item"){
 		<!-- //Text -->
 
 		<!-- Module -->
-			<div id=\"new_edit_item_module\" style=\"display: none;\">
+			<div id=\"new_edit_item_module\">
 				
 				<p><b>Module:</b><br />
 				<select name=\"inp_module_name\" id=\"inp_module_name\">";
 
-				$filenames = "";
-				$dir = "_inc/";
-				if ($handle = opendir($dir)) {
-					$files = array();   
-					while (false !== ($file = readdir($handle))) {
-						if ($file === '.') continue;
-						if ($file === '..') continue;
-						if ($file === "admin_cms") continue;
-						if ($file === "backup") continue;
-						if ($file === "crypto_analyzer") continue;
-						if ($file === "dashboard") continue;
-						if ($file === "domains_monitoring") continue;
-						if ($file === "hash_db") continue;
-						if ($file === "knowledge") continue;
-						if ($file === "music_sheets") continue;
-						if ($file === "office_calendar") continue;
-						if ($file === "settings") continue;
-						if ($file === "throw_the_dice") continue;
-						if ($file === "webdesign") continue;
-
-						array_push($files, $file);
-					}
 				
-					sort($files);
-					foreach ($files as $file){
-					
-						$title = ucfirst($file);
-						$title = str_replace("_", " ", $title);
-
-						echo"				";
-						echo"<option value=\"$file\">$title</option>\n";
-					}
-					closedir($handle);
+				foreach ($modules as $file){
+					$title = ucfirst($file);
+					$title = str_replace("_", " ", $title);
+					echo"				";
+					echo"<option value=\"$file\">$title</option>\n";
 				}
+				
 
 				echo"
 				</select>
@@ -274,12 +357,15 @@ elseif($action == "new_item"){
 				<!-- Select module javascript -->
 				<script>
 				\$(document).ready(function(){
+				
 					\$(\"#inp_module_name\").change(function(){
-						var selected = \$(this).children(\"option:selected\").val();
+						var selected_value = \$(this).children(\"option:selected\").val();
+						var selected_text = \$(this).children(\"option:selected\").text();
 						
+						// Set to first title available
+						\$(\"#inp_title\").val(selected_text);
 					});
 
-				
 				});
 				</script>
 				<!-- //Select module javascript -->
@@ -292,8 +378,32 @@ elseif($action == "new_item"){
 
 			</div> <!-- //new_edit_item_module -->
 		<!-- //Module -->
+
+
+		<p><b>Title:</b><br />
+		<input type=\"text\" name=\"inp_title\" value=\"\" id=\"inp_title\" size=\"25\" />
+		</p>
+
+		<p><b>Language:</b><br />
+		<select name=\"inp_language\">\n";
+		$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_default FROM $t_languages_active";
+		$result = mysqli_query($link, $query);
+		while($row = mysqli_fetch_row($result)) {
+			list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_default) = $row;
+			echo"	<option value=\"$get_language_active_iso_two\"";if($editor_language == "$get_language_active_iso_two"){ echo" selected=\"selected\"";}echo">$get_language_active_name</option>\n";
+						
+		}
+		echo"
+		</select>
+		</p>
+
+
 		<p><b>Weight:</b><br />
 
+		</p>
+
+		<p>
+		<input type=\"submit\" value=\"Save\" class=\"btn_default\" />
 		</p>
 
 		</form>
