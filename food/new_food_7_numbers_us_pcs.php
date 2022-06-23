@@ -564,7 +564,8 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 									&nbsp;
 									<a href=\"new_food_7_numbers_us_pcs.php?food_id=$food_id&amp;l=$l\" style=\"font-weight:bold;\"><img src=\"_gfx/flags/united_states_16x16.png\" alt=\"united_states_16x16.png\" /> USA</a>
 									<br />
-						
+									<a href=\"new_food_7_numbers_us_hundred_metric.php?food_id=$food_id&amp;l=$l\">$l_per_100</a>
+									&middot;
 									<a href=\"new_food_7_numbers_us_pcs.php?food_id=$food_id&amp;l=$l\" style=\"font-weight:bold;\">$get_current_food_serving_size_pcs $get_current_food_serving_size_pcs_measurement</a>
 									</span>
 								</div>
@@ -823,41 +824,6 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 							   </td>
 							   <td style=\"text-align: center;padding: 0px 4px 0px 4px;\">
 								<span><input type=\"text\" name=\"inp_food_proteins_calculated\" value=\"$get_current_food_proteins_calculated_us\" size=\"3\" /></span>
-							   </td>
-							  </tr>
-
-							  <tr>
-							   <td style=\"padding: 8px 4px 6px 8px;\">
-								<span>$l_salt_in_g</span>
-							   </td>
-							   <td style=\"text-align: center;padding: 0px 4px 0px 4px;\">
-								<span class=\"food_salt_hundred\">$get_current_food_salt_us</span>
-								<!-- On change salt calculate -->
-								<script>
-								\$(document).ready(function(){
-									\$('[name=\"inp_food_salt_calculated\"]').on(\"change paste keyup\", function() {
-
-										// Calculate salt pr pc
-										var food_salt_calculated = \$('[name=\"inp_food_salt_calculated\"]').val();
-										food_salt_calculated = food_salt_calculated.replace(\",\", \".\");
-										food_salt_hundred = ((food_salt_calculated/$get_current_food_serving_size_us)*8);
-										food_salt_hundred = food_salt_hundred.toFixed(2)
-										\$(\".food_salt_hundred\").text(food_salt_hundred);
-
-										// Calculate sodium (Sodium is 40 % of salt)
-										// var sodium_off = food_salt_hundred*0.40; // g
-										// food_sodium_hundred = food_salt_hundred-sodium_off; // g
-										// food_sodium_hundred = food_sodium_hundred*1000; // mg
-										// food_sodium_calculated = Math.round((food_sodium_hundred*$get_current_food_serving_size_us)*8);
-										// \$(\".food_sodium_hundred\").text(Math.round(food_sodium_hundred));
-										// \$('[name=\"inp_food_sodium_calculated\"]').val(Math.round(food_sodium_calculated));
-									});
-								});
-								</script>
-								<!-- On change salt calculate -->
-							   </td>
-							   <td style=\"text-align: center;padding: 0px 4px 0px 4px;\">
-								<span><input type=\"text\" name=\"inp_food_salt_calculated\" value=\"$get_current_food_salt_calculated_us\" size=\"3\" /></span>
 							   </td>
 							  </tr>
 

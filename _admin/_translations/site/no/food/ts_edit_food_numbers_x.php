@@ -8,6 +8,7 @@ $l_dash_monounsaturated_fat = "- enumettet fett";
 $l_dash_of_which_sugars = "- hvorav sukker";
 $l_dash_polyunsaturated_fat = "- flerumettet fett";
 $l_dash_saturated_fat = "- mettet fett";
+$l_dash_total_sugars = "- totalt sukker";
 $l_dash_trans_fat = "- transfett";
 $l_dietary_fiber = "Kostfiber";
 $l_edit = "Rediger";
@@ -22,5 +23,6 @@ $l_protein = "Protein";
 $l_salt_in_g = "Salt i g";
 $l_save = "Lagre";
 $l_serving = "Servering";
+$l_sodium = "Sodium";
 $l_sodium_in_mg = "Sodium mg";
 ?>

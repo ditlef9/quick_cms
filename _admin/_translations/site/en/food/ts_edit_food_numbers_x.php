@@ -6,6 +6,7 @@ $l_serving = "Serving";
 $l_calories = "Calories";
 $l_fat = "Fat";
 $l_sodium_in_mg = "Sodium in mg";
+$l_sodium = "Sodium";
 $l_carbs = "Carbs";
 $l_dash_of_which_sugars = "- of which sugars";
 $l_dash_added_sugars = "- added sugars";
@@ -22,5 +23,6 @@ $l_dash_polyunsaturated_fat = "- polyunsaturated fat";
 $l_dash_dietary_fiber = "- dietary fiber";
 $l_dietary_fiber = "Dietary fiber";
 $l_cholesterol_in_mg = "Cholesterol in mg";
+$l_dash_total_sugars = "- total sugars";
 $l_save = "Save";
 ?>

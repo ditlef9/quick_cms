@@ -31,4 +31,6 @@ $l_serving = "Serving";
 $l_sodium_in_mg = "Sodium in mg";
 $l_sugars_lowercase = "sugars";
 $l_us = "US";
+$l_sodium = "Sodium";
+$l_dash_total_sugars = "- total sugars";
 ?>

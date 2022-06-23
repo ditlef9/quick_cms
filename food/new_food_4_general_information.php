@@ -375,6 +375,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 
 
 				// Check if food country is used
+				// echo "inp_country=$inp_country";
 				$query_t = "SELECT food_country_id, food_country_count_food FROM $t_food_countries_used WHERE food_country_name=$inp_country_mysql";
 				$result_t = mysqli_query($link, $query_t);
 				$row_t = mysqli_fetch_row($result_t);
@@ -384,7 +385,7 @@ if(isset($_SESSION['user_id']) && isset($_SESSION['security'])){
 					mysqli_query($link, "INSERT INTO $t_food_countries_used 
 					(food_country_id, food_country_name, food_country_count_food) 
 					VALUES 
-					(NULL, $inp_food_country_mysql, '1')")
+					(NULL, $inp_country_mysql, '1')")
 					or die(mysqli_error($link));
 				}
 				else{
