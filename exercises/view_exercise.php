@@ -39,7 +39,6 @@ function getExtension($str) {
 	return $ext;
 }
 
-
 /*- Variables ------------------------------------------------------------------------- */
 $l_mysql = quote_smart($link, $l);
 if(isset($_GET['exercise_id'])){

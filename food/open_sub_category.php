@@ -34,9 +34,15 @@ $l_mysql = quote_smart($link, $l);
 if(isset($_GET['sub_category_id'])){
 	$sub_category_id= $_GET['sub_category_id'];
 	$sub_category_id = strip_tags(stripslashes($sub_category_id));
+	if(!(is_numeric($sub_category_id))){
+		echo"sub_category_id has to be numeric";
+		die;
+	}
 }
 else{
 	$sub_category_id = "";
+	echo"sub_category_id missing";
+	die;
 }
 
 if(isset($_GET['order_by'])) {

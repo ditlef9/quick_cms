@@ -58,10 +58,15 @@ $l_mysql = quote_smart($link, $l);
 if(isset($_GET['food_id'])){
 	$food_id = $_GET['food_id'];
 	$food_id = strip_tags(stripslashes($food_id));
-	
+	if(!(is_numeric($food_id))){
+		echo"food_id has to be numeric";
+		die;
+	}
 }
 else{
 	$food_id = "";
+	echo"food_id missing";
+	die;
 }
 $food_id_mysql = quote_smart($link, $food_id);
 

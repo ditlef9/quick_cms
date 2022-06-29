@@ -84,14 +84,23 @@ if($include_as_navigation_main_mode == 0){
 }
 
 
-// Sub Categories
-$query_sub = "SELECT sub_category_id, sub_category_title, sub_category_main_category_id FROM $t_courses_categories_sub ORDER BY sub_category_title ASC";
-$result_sub = mysqli_query($link, $query_sub);
+// Main Categories
+$query_main = "SELECT main_category_id, main_category_title FROM $t_courses_categories_main  ORDER BY main_category_title ASC";
+$result_sub = mysqli_query($link, $query_main);
 while($row_sub = mysqli_fetch_row($result_sub)) {
-	list($get_sub_category_id, $get_sub_category_title, $get_sub_category_main_category_id) = $row_sub;
+	list($get_main_category_id, $get_main_category_title) = $row_sub;
 	echo"		";
-	echo"<li><a href=\"$root/courses/open_sub_category.php?main_category_id=$get_sub_category_main_category_id&amp;sub_category_id=$get_sub_category_id&amp;l=$l\""; if($sub_category_id == "$get_sub_category_id"){ echo" class=\"navigation_active\"";}echo">$get_sub_category_title</a></li>\n";
+	echo"<li><a href=\"$root/courses/open_main_category.php?main_category_id=$get_main_category_id&amp;l=$l\""; if($get_main_category_id == "$main_category_id"){ echo" class=\"navigation_active\"";}echo">$get_main_category_title</a></li>\n";
 } // while sub categories
+
+// Sub Categories
+// $query_sub = "SELECT sub_category_id, sub_category_title, sub_category_main_category_id FROM $t_courses_categories_sub ORDER BY sub_category_title ASC";
+// $result_sub = mysqli_query($link, $query_sub);
+// while($row_sub = mysqli_fetch_row($result_sub)) {
+// 	list($get_sub_category_id, $get_sub_category_title, $get_sub_category_main_category_id) = $row_sub;
+// 	echo"		";
+// 	echo"<li><a href=\"$root/courses/open_sub_category.php?main_category_id=$get_sub_category_main_category_id&amp;sub_category_id=$get_sub_category_id&amp;l=$l\""; if($sub_category_id == "$get_sub_category_id"){ echo" class=\"navigation_active\"";}echo">$get_sub_category_title</a></li>\n";
+// } // while sub categories
 
 
 
