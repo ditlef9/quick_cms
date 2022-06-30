@@ -581,6 +581,11 @@ if(\$get_current_course_id != \"\"){
 			echo\"\$l_index</a></li>\n\";
 		}
 		else{
+			\$get_module_title_len = strlen(\$get_module_title);
+			if(\$get_module_title_len > 20){
+				\$get_module_title = substr(\$get_module_title, 0, 17);
+				\$get_module_title = \$get_module_title . \"...\";
+			}
 			echo\"<li class=\\\"header_up\\\"><a href=\\\"\$root/\$get_current_course_title_clean/\$get_module_title_clean/index.php?course_id=\$get_current_course_id&amp;main_category_id=\$get_current_course_main_category_id&amp;module_id=\$get_module_id&amp;l=\$l\\\" id=\\\"navigation_module_id_\$get_module_id\\\">\$get_module_title</a></li>\n\";
 
 
