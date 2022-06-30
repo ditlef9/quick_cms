@@ -66,6 +66,10 @@ $t_stats_tracker_index = $mysqlPrefixSav . "stats_tracker_index";
 /*- Translation ----------------------------------------------------------------------- */
 include("_translations/admin/$l/dashboard/t_default.php");
 
+
+/*- Functions -------------------------------------------------------------------------- */
+include("_functions/get_between.php");
+
 /*- Variables -------------------------------------------------------------------------- */
 if(isset($_GET['stats_year'])) {
 	$stats_year = $_GET['stats_year'];
@@ -86,6 +90,8 @@ else{
 $stats_month_mysql = quote_smart($link, $stats_month);
 
 $editor_language_mysql = quote_smart($link, $editor_language);
+
+$test = 0;
 
 /*- Functions ----------------------------------------------------------------------- */
 function get_title($url) {
