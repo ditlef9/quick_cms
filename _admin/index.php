@@ -401,9 +401,8 @@ echo"<!DOCTYPE html>
 
 
 	<!-- CSS -->";
-		$rand = date("ymdhis");
 		echo"
-		<link rel=\"stylesheet\" href=\"_design/admin.css?rand=$rand\" type=\"text/css\" />
+		<link rel=\"stylesheet\" href=\"_design/admin.css?filesize="; echo filesize("_design/admin.css"); echo"\" type=\"text/css\" />
 	<!-- //CSS -->
 
 	<!-- Special CSS -->
@@ -415,7 +414,7 @@ echo"<!DOCTYPE html>
 			$special_css = "_inc/$open/_stylesheets/default.css";
 		}
 		if(file_exists("$special_css")){
-			echo"<link rel=\"stylesheet\" type=\"text/css\" href=\"$special_css?rand=$rand\" />";
+			echo"<link rel=\"stylesheet\" type=\"text/css\" href=\"$special_css?filesize="; echo filesize("$special_css"); echo"\" />";
 		}
 		else{
 			echo"<!-- $special_css doesnt exists -->";

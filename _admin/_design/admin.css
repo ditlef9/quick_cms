@@ -642,6 +642,18 @@ table.hor-zebra>tbody>tr:hover td {
 }
 
 
+/*- Bodycell and subcell ------------------------------------------------------------ */
+.bodycell {
+	background: #f3f3f3;
+	border-radius: 5px;
+	padding: 0px 10px 0px 10px;
+
+}
+.subcell {
+	background: #f8f8f8;
+	border-radius: 5px;
+	padding: 0px 10px 0px 10px;
+
 
 	
 /*- Tabs ----------------------------------------------------------------------------- */

@@ -64,42 +64,56 @@ if($action == ""){
 
 	<!-- Items -->
 		";
+		$style = "";
 		$editor_language_mysql = quote_smart($link, $editor_language);
 		$query = "SELECT item_id, item_type, item_title, item_connected_to_module_name, item_connected_to_module_part_name, item_text, item_weight, item_language, item_updated_by_user_id, item_updated_by_user_name, item_updated_datetime, item_updated_datetime_saying FROM $t_webdesign_front_page_items WHERE item_language=$editor_language_mysql ORDER BY item_weight ASC";
 		$result = mysqli_query($link, $query);
 		while($row = mysqli_fetch_row($result)) {
 			list($get_item_id, $get_item_type, $get_item_title, $get_item_connected_to_module_name, $get_item_connected_to_module_part_name, $get_item_text, $get_item_weight, $get_item_language, $get_item_updated_by_user_id, $get_item_updated_by_user_name, $get_item_updated_datetime, $get_item_updated_datetime_saying) = $row;
-			echo"
-			<!-- Item info -->
-				<div class=\"item_info_wrapper\">
-					<div class=\"item_info_title\">
-						<h2>$get_item_title</h2>
-					</div>
-					<div class=\"item_info_actions\">
-						<p>
-						<a href=\"index.php?open=$open&amp;page=$page&amp;action=move_item_up&amp;item_id=$get_item_id&amp;editor_language=$editor_language&amp;l=$l&amp;process=1\"><img src=\"_design/gfx/icons/18x18/arrow_upward_round_black_18x18.png\" alt=\"arrow_upward_round_black_18x18.png\" /></a>
-						<a href=\"index.php?open=$open&amp;page=$page&amp;action=move_item_down&amp;item_id=$get_item_id&amp;editor_language=$editor_language&amp;l=$l&amp;process=1\"><img src=\"_design/gfx/icons/18x18/arrow_downward_round_black_18x18.png\" alt=\"arrow_downard_round_black_18x18.png\" /></a>
-						<a href=\"index.php?open=$open&amp;page=$page&amp;action=edit_item&amp;item_id=$get_item_id&amp;editor_language=$editor_language&amp;l=$l\"><img src=\"_design/gfx/icons/18x18/edit_round_black_18x18.png\" alt=\"edit_round_black_18x18.png\" /></a>
-						<a href=\"index.php?open=$open&amp;page=$page&amp;action=delete_item&amp;item_id=$get_item_id&amp;editor_language=$editor_language&amp;l=$l\"><img src=\"_design/gfx/icons/18x18/delete_round_black_18x18.png\" alt=\"delete_round_black_18x18.png\" /></a>
-						<a href=\"index.php?open=$open&amp;page=$page&amp;action=new_item&amp;weight=$get_item_weight&amp;editor_language=$editor_language&amp;l=$l\"><img src=\"_design/gfx/icons/18x18/add_outline_black_18x18.png\" alt=\"add_outline_black_18x18.png\" /></a>
-						</p>
-					</div>
-				</div>
-			<!-- //Item info -->
 
-			<!-- Item data -->
-				";
-				if($get_item_type == "text"){
-					echo"
-					$get_item_text
+			// Style
+			if($style == "bodycell"){
+				$style = "subcell";
+			}
+			else{
+				$style = "bodycell";
+			}
+
+			echo"
+			<div class=\"$style\">
+				<!-- Item info -->
+					<a id=\"item$get_item_id\"></a>
+					<div class=\"item_info_wrapper\">
+						<div class=\"item_info_title\">
+							<h2>$get_item_title</h2>
+						</div>
+						<div class=\"item_info_actions\">
+							<p>
+							<a href=\"index.php?open=$open&amp;page=$page&amp;action=move_item_up&amp;item_id=$get_item_id&amp;editor_language=$editor_language&amp;l=$l&amp;process=1\"><img src=\"_design/gfx/icons/18x18/arrow_upward_round_black_18x18.png\" alt=\"arrow_upward_round_black_18x18.png\" /></a>
+							<a href=\"index.php?open=$open&amp;page=$page&amp;action=move_item_down&amp;item_id=$get_item_id&amp;editor_language=$editor_language&amp;l=$l&amp;process=1\"><img src=\"_design/gfx/icons/18x18/arrow_downward_round_black_18x18.png\" alt=\"arrow_downard_round_black_18x18.png\" /></a>
+							<a href=\"index.php?open=$open&amp;page=$page&amp;action=edit_item&amp;item_id=$get_item_id&amp;editor_language=$editor_language&amp;l=$l\"><img src=\"_design/gfx/icons/18x18/edit_round_black_18x18.png\" alt=\"edit_round_black_18x18.png\" /></a>
+							<a href=\"index.php?open=$open&amp;page=$page&amp;action=delete_item&amp;item_id=$get_item_id&amp;editor_language=$editor_language&amp;l=$l\"><img src=\"_design/gfx/icons/18x18/delete_round_black_18x18.png\" alt=\"delete_round_black_18x18.png\" /></a>
+							<a href=\"index.php?open=$open&amp;page=$page&amp;action=new_item&amp;weight=$get_item_weight&amp;editor_language=$editor_language&amp;l=$l\"><img src=\"_design/gfx/icons/18x18/add_outline_black_18x18.png\" alt=\"add_outline_black_18x18.png\" /></a>
+							</p>
+						</div>
+					</div>
+				<!-- //Item info -->
+
+				<!-- Item data -->
 					";
-				}
-				else{
-					echo"Unknown type";
-				}
-				echo"
-				$get_item_connected_to_module_name, $get_item_connected_to_module_part_name
-			<!-- //Item data -->
+					if($get_item_type == "text"){
+						echo"
+						$get_item_text
+						";
+					}
+					else{
+						echo"Unknown type";
+					}
+					echo"
+					$get_item_connected_to_module_name, $get_item_connected_to_module_part_name
+				<!-- //Item data -->
+			</div> <!-- Item -->
+			<p></p>
 			";
 		}
 		echo"
@@ -180,10 +194,98 @@ elseif($action == "new_item"){
 		$inp_type = output_html($inp_type);
 		$inp_type_mysql = quote_smart($link, $inp_type);
 		
+		$inp_text = $_POST['inp_text'];
+
+		$inp_module_name = "";
+		if($item_type != "text"){
+			$inp_module_name = $_POST['inp_module_name'];
+		}
+		$inp_module_name = output_html($inp_module_name);
+		$inp_module_name_mysql = quote_smart($link, $inp_module_name);
+
+
+		$inp_module_name_part = $_POST['inp_module_name_part'];
+		$inp_module_name_part = output_html($inp_module_name_part);
+		$inp_module_name_part_mysql = quote_smart($link, $inp_module_name_part);
+
+		$inp_title = $_POST['inp_title'];
+		$inp_title = output_html($inp_title);
+		$inp_title_mysql = quote_smart($link, $inp_title);
+
+		$inp_language = $_POST['inp_language'];
+		$inp_language = output_html($inp_language);
+		$inp_language_mysql = quote_smart($link, $inp_language);
+
+		$inp_weight = $_POST['inp_weight'];
+		$inp_weight = output_html($inp_weight);
+		$inp_weight = $inp_weight+1;
+		$inp_weight_mysql = quote_smart($link, $inp_weight);
+
+		// Me
+		$datetime = date("Y-m-d H:i:s");
+		$datetime_saying = date("j M Y H:i:s");
+
+		$my_user_id = $_SESSION['admin_user_id'];
+		$my_user_id = output_html($my_user_id);
+		$my_user_id_mysql = quote_smart($link, $my_user_id);
+
+
+		$query = "SELECT user_id, user_name FROM $t_users WHERE user_id=$my_user_id_mysql";
+		$result = mysqli_query($link, $query);
+		$row = mysqli_fetch_row($result);
+		list($get_my_user_id, $get_my_user_name) = $row;
+
+		$inp_my_user_name_mysql = quote_smart($link, $get_my_user_name);
+
+		// Insert
+		mysqli_query($link, "INSERT INTO $t_webdesign_front_page_items 
+		(item_id, item_type, item_title, item_connected_to_module_name, item_connected_to_module_part_name, 
+		item_text, item_weight, item_language, item_updated_by_user_id, item_updated_by_user_name, 
+		item_updated_datetime, item_updated_datetime_saying) 
+		VALUES 
+		(NULL, $inp_type_mysql, $inp_title_mysql, $inp_module_name_mysql, $inp_module_name_part_mysql, 
+		'', $inp_weight_mysql, $inp_language_mysql, $my_user_id_mysql, $inp_my_user_name_mysql, 
+		'$datetime', '$datetime_saying')")
+		or die(mysqli_error($link));
+
+		// Get item id
+		$query = "SELECT item_id FROM $t_webdesign_front_page_items WHERE item_updated_datetime='$datetime'";
+		$result = mysqli_query($link, $query);
+		$row = mysqli_fetch_row($result);
+		list($get_current_item_id) = $row;
 		
-	}
+		// Text
+		if($editorModeSav == "wyciwug"){
+			$sql = "UPDATE $t_webdesign_front_page_items SET item_text=? WHERE item_id='$get_item_id'";
+			$stmt = $link->prepare($sql);
+			$stmt->bind_param("s", $inp_text);
+			$stmt->execute();
+			if ($stmt->errno) {
+				echo "FAILURE!!! " . $stmt->error; die;
+			}		
+		}
+		elseif($editorModeSav == "bbcode"){
+			// BBcode
+			$inp_text = output_html($inp_text);
+			$sql = "UPDATE $t_webdesign_front_page_items SET item_text=? WHERE item_id='$get_item_id'";
+			$stmt = $link->prepare($sql);
+			$stmt->bind_param("s", $inp_text);
+			$stmt->execute();
+			if ($stmt->errno) {
+				echo "FAILURE!!! " . $stmt->error; die;
+			}
+		}
 
 
+		// Header
+		$url = "index.php?open=webdesign&page=front_page&editor_language=$editor_language&l=$l&ft=success&fm=added#item$get_current_item_id";
+		header("Location: $url");
+		exit;
+	} // process == 1
+
+
+	// Get variables
+	$editor_language_mysql = quote_smart($link, $editor_language);
 	if(isset($_GET['weight'])) {
 		$weight = $_GET['weight'];
 		$weight = strip_tags(stripslashes($weight));
@@ -282,56 +384,91 @@ elseif($action == "new_item"){
 
 		<!-- Text -->
 			<div id=\"new_edit_item_text\" style=\"display: none;\">
-				<!-- TinyMCE -->
-				<script type=\"text/javascript\" src=\"_javascripts/tinymce/tinymce.min.js\"></script>
-				<script>
-				tinymce.init({
-					selector: 'textarea.editor',
-					plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
-					toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media pageembed | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
-					image_advtab: true,
-					content_css: [
-						'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-						'//www.tiny.cloud/css/codepen.min.css'
-					],
-					link_list: [
-						{ title: 'My page 1', value: 'http://www.tinymce.com' },
-						{ title: 'My page 2', value: 'http://www.moxiecode.com' }
-					],
-					image_list: [
-						{ title: 'My page 1', value: 'http://www.tinymce.com' },
-						{ title: 'My page 2', value: 'http://www.moxiecode.com' }
-					],
+				";
+				if($editorModeSav == "wyciwug"){
+					echo"
+					<!-- TinyMCE -->
+					<script type=\"text/javascript\" src=\"_javascripts/tinymce/tinymce.min.js\"></script>
+					<script>
+					tinymce.init({
+						selector: 'textarea.editor',
+						plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
+						toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media pageembed | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | addcomment',
+						image_advtab: true,
+						content_css: [
+							'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+							'//www.tiny.cloud/css/codepen.min.css'
+						],
+						link_list: [
+							{ title: 'My page 1', value: 'http://www.tinymce.com' },
+							{ title: 'My page 2', value: 'http://www.moxiecode.com' }
+						],
+						image_list: [
+							{ title: 'My page 1', value: 'http://www.tinymce.com' },
+							{ title: 'My page 2', value: 'http://www.moxiecode.com' }
+						],
 						image_class_list: [
-						{ title: 'None', value: '' },
-						{ title: 'Some class', value: 'class-name' }
-					],
-					importcss_append: true,
-					height: 500,
-					file_picker_callback: function (callback, value, meta) {
-						/* Provide file and text for the link dialog */
-						if (meta.filetype === 'file') {
-							callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+							{ title: 'None', value: '' },
+							{ title: 'Some class', value: 'class-name' }
+						],
+						importcss_append: true,
+						height: 500,
+						file_picker_callback: function (callback, value, meta) {
+							/* Provide file and text for the link dialog */
+							if (meta.filetype === 'file') {
+								callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+							}
+							/* Provide image and alt text for the image dialog */
+							if (meta.filetype === 'image') {
+								callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+							}
+							/* Provide alternative source and posted for the media dialog */
+							if (meta.filetype === 'media') {
+								callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+							}
 						}
-						/* Provide image and alt text for the image dialog */
-						if (meta.filetype === 'image') {
-							callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+					});
+					</script>
+					<!-- //TinyMCE -->
+
+					<p>
+					<textarea name=\"inp_text\" rows=\"40\" cols=\"120\" class=\"editor\"></textarea>
+					</p>
+					";
+				} // Editor mode 
+				elseif($editorModeSav == "bbcode"){
+					echo"
+					<p>
+					<input type=\"button\" value=\"b\" onclick=\"formatText ('[b][/b]');\" class=\"btn_bbcode\" style=\"font-weight: bold;\" /> 
+					<input type=\"button\" value=\"i\" onclick=\"formatText ('[i][/i]');\" class=\"btn_bbcode\" style=\"font-style: italic;\" /> 
+					<input type=\"button\" value=\"u\" onclick=\"formatText ('[u][/u]');\" class=\"btn_bbcode\" style=\"text-decoration: underline;\" /> 
+					<input type=\"button\" value=\"URL\" onclick=\"formatText ('[url][/url]');\" class=\"btn_bbcode\" /> 
+					<input type=\"button\" value=\"Code\" onclick=\"formatText ('[code][/code]');\" class=\"btn_bbcode\" /> 
+					<input type=\"button\" value=\"Image\" onclick=\"formatText ('[img][/img]');\" class=\"btn_bbcode\" /> 
+					<br />
+					<textarea name=\"inp_text\" id=\"inp_text\" rows=\"20\" cols=\"50\" style=\"width: 100%;\"></textarea>
+					</p>
+					
+					<!-- Javascript insert bb code -->
+						<script type=\"text/javascript\"> 
+						function formatText(tag) {
+							// BBCode
+							var Field = document.getElementById('inp_text');
+							var val = Field.value;
+							var selected_txt = val.substring(Field.selectionStart, Field.selectionEnd);
+							var before_txt = val.substring(0, Field.selectionStart);
+							var after_txt = val.substring(Field.selectionEnd, val.length);
+							Field.value += tag;
+
+
+							// Focus
+							document.getElementById(\"inp_text\").focus();
 						}
-						/* Provide alternative source and posted for the media dialog */
-						if (meta.filetype === 'media') {
-							callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
-						}
-					}
-				});
-				</script>
-				<!-- //TinyMCE -->
-
-
-				<p>
-				<textarea name=\"inp_text\" rows=\"40\" cols=\"120\" class=\"editor\"></textarea>
-				</p>
-
-
+						</script>
+					<!-- //Javascript insert bb code -->
+					";
+				}
+				echo"
 			</div> <!-- //new_edit_item_text -->
 		<!-- //Text -->
 
@@ -399,7 +536,26 @@ elseif($action == "new_item"){
 
 
 		<p><b>Weight:</b><br />
+		<select name=\"inp_weight\">\n";
+		$x = 1;
+		$query = "SELECT item_id, item_title, item_weight FROM $t_webdesign_front_page_items WHERE item_language=$editor_language_mysql ORDER BY item_weight ASC";
+		$result = mysqli_query($link, $query);
+		while($row = mysqli_fetch_row($result)) {
+			list($get_item_id, $get_item_title, $get_item_weight) = $row;
+			echo"	<option value=\"$get_item_weight\"";if($get_item_weight == "$weight"){ echo" selected=\"selected\"";}echo">After $get_item_title</option>\n";
 
+			// Weight check
+			if($x != "$get_item_weight"){
+				$result = mysqli_query($link, "UPDATE $t_webdesign_front_page_items SET item_weight=$x WHERE item_id=$get_item_id") or die(mysqli_error($link));
+
+			}
+			$x++;
+		}
+		if($x == "1"){
+			echo"	<option value=\"0\">First</option>\n";
+		}
+		echo"
+		</select>
 		</p>
 
 		<p>
