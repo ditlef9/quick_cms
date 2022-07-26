@@ -87,6 +87,9 @@ else{
 }
 $year_mysql = quote_smart($link, $year);
 
+
+$rand = date("ymdhis");
+
 if($action == ""){
 	echo"
 
