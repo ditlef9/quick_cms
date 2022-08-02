@@ -245,11 +245,13 @@ echo"</h1>
 
 if($q != ""){
 	// Check for hacker
-	$search_query  = "$q";
+	$variable = "$q";
+	$is_numeric = false;
 	include("$root/_admin/_functions/look_for_hacker_in_string.php");
 
 
 
+	$search_query  = "$q";
 	$search_results_count = 0;
 
 	$q = "%" . $q . "%";
