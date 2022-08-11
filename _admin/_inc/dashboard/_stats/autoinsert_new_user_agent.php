@@ -20,7 +20,7 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 	// Visitor type
 	$visitor_type = "";
 
-	// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Æ Ø Å
+	// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ï¿½ ï¿½ ï¿½
 	$robots = array(
 		'Apache-HttpClient', 'archive.org_bot', 'AhrefsBot', 'AlphaBot', 'aboundex', 'altavista', 'appengine-google',
 		'Baiduspider', 'browsershot', 'botje.com', 'bing', 'bingbot', 
@@ -73,7 +73,7 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 			}
 			$inp_stats_user_agent_bot_version = str_replace("/", "", $inp_stats_user_agent_bot_version);
 			$inp_stats_user_agent_bot_version = output_html($inp_stats_user_agent_bot_version);
-			if($inp_stats_user_agent_bot_version < 10){
+			if($inp_stats_user_agent_bot_version > 10){
 				$inp_stats_user_agent_bot_version = substr($inp_stats_user_agent_bot_version, 0, 10);
 			}
 			$inp_stats_user_agent_bot_version_mysql = quote_smart($link, $inp_stats_user_agent_bot_version);
@@ -164,7 +164,7 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				if($inp_stats_user_agent_browser != ""){
 					$inp_stats_user_agent_browser_version = substr($my_user_agent, strrpos($my_user_agent, '/') + 1);
 					$inp_stats_user_agent_browser_version_len = strlen($inp_stats_user_agent_browser_version);
-					if($inp_stats_user_agent_browser_version_len < 10){
+					if($inp_stats_user_agent_browser_version_len > 10){
 						$inp_stats_user_agent_browser_version = substr($inp_stats_user_agent_browser_version, 0, 10);
 					}
 				}
@@ -241,7 +241,7 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				}
 
 				$inp_stats_user_agent_os_version_len = strlen($inp_stats_user_agent_os_version);
-				if($inp_stats_user_agent_os_version_len < 10){
+				if($inp_stats_user_agent_os_version_len > 10){
 					$inp_stats_user_agent_os_version = substr($inp_stats_user_agent_os_version, 0, 10);
 				}
 				if($inp_stats_user_agent_os_version == ""){
@@ -302,7 +302,7 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 	if($visitor_type == ""){
 
 
-		// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Æ Ø Å
+		// A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ï¿½ ï¿½ ï¿½
 		$desktop_os = array('CrOS', 'Freebsd', 'Fedora', 'Linux x86.64', 'Linux x86_64', 'Linux i686', 'linux-gnu', 'Mac OS X', 'SunOS', 'Windows NT', 'Ubuntu', 'X11');
 		foreach($desktop_os as $os){
 			$os_position = stripos($my_user_agent, $os);
@@ -339,7 +339,7 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 					$os_version_explode = explode(")", $inp_stats_user_agent_os_version);
 					$inp_stats_user_agent_os_version = $os_version_explode[0];
 				}
-				if($inp_stats_user_agent_os_version < 10){
+				if($inp_stats_user_agent_os_version > 10){
 					$inp_stats_user_agent_os_version = substr($inp_stats_user_agent_os_version, 0, 10);
 				}
 				if($inp_stats_user_agent_os_version == ""){
@@ -371,7 +371,7 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				if($inp_stats_user_agent_browser != ""){
 					$inp_stats_user_agent_browser_version = substr($my_user_agent, strrpos($my_user_agent, '/') + 1);
 					$inp_stats_user_agent_browser_version_len = strlen($inp_stats_user_agent_browser_version);
-					if($inp_stats_user_agent_browser_version_len < 10){
+					if($inp_stats_user_agent_browser_version_len > 10){
 						$inp_stats_user_agent_browser_version = substr($inp_stats_user_agent_browser_version, 0, 10);
 					}
 				}
