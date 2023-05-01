@@ -366,7 +366,11 @@ if($process == "1"){
 
 	
 		// Header
-		header("Location: index.php?ft=error&fm=wrong_password_please_enter_your_password&inp_mail=$inp_mail&l=$l");
+		$url = "index.php?ft=error&fm=wrong_password_please_enter_your_password&l=$l";
+		if(isset($inp_email)){
+			$url = $url . "&inp_email=$inp_email";
+		}
+		header("Location: index.php?ft=error&fm=wrong_password_please_enter_your_password&inp_email=$inp_email&l=$l");
 		exit;
 	}
 

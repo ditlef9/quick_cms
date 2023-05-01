@@ -39,7 +39,7 @@ if($process == "1"){
 	if($get_user_id == ""){
 		$ft = "warning";
 		$fm = "email_not_found";
-		$url ="login.php?go=forgot_password&ft=$ft&fm=$fm&l=$l"; 
+		$url ="index.php?page=forgot_password&ft=$ft&fm=$fm&l=$l"; 
 		header("Location: $url");
 		exit;
 	}
@@ -64,7 +64,7 @@ if($process == "1"){
 
 	$to      = "$get_user_email";
 	$subject = "New password for $host";
-	$message = "Hello $get_user_name\n\nThis is a link where you can change your password to the control panel: $link\nIP: $ip\n\n--\n$configWebsiteWebmasterSav\n$configWebsiteTitleSav\n$configSiteURLServerNameSav";
+	$message = "Hello $get_user_name\n\nThis is a link where you can change your password to the control panel: $link\nIP: $ip\n\n--\n$configWebsiteWebmasterSav\n$configWebsiteTitleSav\n$configSiteURLSav";
 		
 	$headers = "From: $configFromEmailSav" . "\r\n" .
 	    "Reply-To: $configFromEmailSav" . "\r\n" .
