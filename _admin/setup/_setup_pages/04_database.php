@@ -31,20 +31,20 @@ if($action == "test_connection"){
 	$inp_mysql_prefix = output_html($inp_mysql_prefix);
 		
 	// Try connection
-	$link = @mysqli_connect($inp_mysql_host, $inp_mysql_user_name, $inp_mysql_password, $inp_mysql_database_name);
-	if (!$link) {
-		$error = mysqli_connect_error();
-		$error_no = mysqli_connect_error() . PHP_EOL;
-		$error_or = mysqli_connect_error() . PHP_EOL;
-		$url = "index.php?page=04_database&language=$language&inp_mysql_host=$inp_mysql_host&inp_mysql_user_name=$inp_mysql_user_name&inp_mysql_database_name=$inp_mysql_database_name&inp_mysql_prefix=$inp_mysql_prefix&ft=error&fm=$error&error_no=$error_no&error_or=$error_or";
+	$mysqli = new mysqli($inp_mysql_host, $inp_mysql_user_name, $inp_mysql_password, $inp_mysql_database_name);
+	
+	if ($mysqli -> connect_errno) {
+		$error = $mysqli -> connect_error;
+		$url = "index.php?page=04_database&language=$language&inp_mysql_host=$inp_mysql_host&inp_mysql_user_name=$inp_mysql_user_name&inp_mysql_database_name=$inp_mysql_database_name&inp_mysql_prefix=$inp_mysql_prefix&ft=error&fm=$error&error=$error";
 		echo"
 		<h1>MySQL Connection failed</h1>
+		<p>$error</p>
 		<meta http-equiv=refresh content=\"1; url=$url\">";
 		exit;
 	}
-	else{
-		// Write DB file
-		$update_file="<?php
+	
+	// Write DB file
+	$update_file="<?php
 // Database
 \$mysqlHostSav   	= \"$inp_mysql_host\";
 \$mysqlUserNameSav   	= \"$inp_mysql_user_name\";
@@ -97,14 +97,14 @@ if($action == "test_connection"){
 \$webdesignSav = \"$webdesignSav\";
 
 ?>";
-		$fh = fopen("../../_cache/setup_data.php", "w+") or die("can not open file");
-		fwrite($fh, $update_file);
-		fclose($fh);
-	
-		$url = "index.php?page=05_site&language=$language";
-		header("Location: $url");
-		exit;
-	}
+	$fh = fopen("../../_cache/setup_data.php", "w+") or die("can not open file");
+	fwrite($fh, $update_file);
+	fclose($fh);
+
+	echo"
+	<h1>MySQL test in progress..</h1>
+	<meta http-equiv=refresh content=\"2; url=index.php?page=05_site&language=$language\">";
+	exit;
 }
 
 echo"

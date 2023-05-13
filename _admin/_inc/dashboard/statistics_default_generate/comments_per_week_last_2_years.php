@@ -79,7 +79,7 @@ for($x=0;$x<12;$x++){
 	$result = mysqli_query($link, $query);
 	while($row = mysqli_fetch_row($result)) {
 		list($get_last_stats_comments_id, $get_last_stats_comments_week, $get_last_stats_comments_month, $get_last_stats_comments_year, $get_last_stats_comments_comments_written, $get_last_stats_comments_comments_written_diff_from_last_week) = $row;
-		$comments_written_last_year_for_week = $comments_written_this_month + $get_last_stats_comments_comments_written;
+		$comments_written_last_year_for_week = $comments_written_last_year_for_week + $get_last_stats_comments_comments_written;
 	}
 
 

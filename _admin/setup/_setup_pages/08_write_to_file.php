@@ -21,30 +21,27 @@ else{
 
 
 // 1. Write to MySQL
-$mysql_config_file = "../_data/mysql_" . $server_name . ".php";
-
 $update_file="<?php
 // Database
-\$mysqlHostSav   	= \"$mysqlHostSav\";
+\$mysqlHostSav   		= \"$mysqlHostSav\";
 \$mysqlUserNameSav   	= \"$mysqlUserNameSav\";
-\$mysqlPasswordSav	= \"$mysqlPasswordSav\";
+\$mysqlPasswordSav		= \"$mysqlPasswordSav\";
 \$mysqlDatabaseNameSav 	= \"$mysqlDatabaseNameSav\";
-\$mysqlPrefixSav 	= \"$mysqlPrefixSav\";
+\$mysqlPrefixSav 		= \"$mysqlPrefixSav\";
 ?>";
 
-$fh = fopen("$mysql_config_file", "w+") or die("can not open file");
+$fh = fopen("../_data/mysql_" . $server_name . ".php", "w+") or die("can not open file");
 fwrite($fh, $update_file);
 fclose($fh);
 
 // 2. Connect to MySQL
-$link = mysqli_connect($mysqlHostSav, $mysqlUserNameSav, $mysqlPasswordSav, $mysqlDatabaseNameSav);
-if (!$link) {
+$mysqli = new mysqli($mysqlHostSav, $mysqlUserNameSav, $mysqlPasswordSav, $mysqlDatabaseNameSav);
+
+if ($mysqli -> connect_errno) {
+	$error = $mysqli -> connect_error;
 	echo "
-	<div class=\"alert alert-danger\"><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span><strong>MySQL connection error</strong>"; 
-	echo PHP_EOL;
-	echo "<br />Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-	echo "<br />Debugging error: " . mysqli_connect_error() . PHP_EOL;
-   	echo"
+	<div class=\"error\"><p><b>MySQL connection error</b>: $error</p>
+	mysqlHostSav, $mysqlUserNameSav, $mysqlPasswordSav, $mysqlDatabaseNameSav
 	</div>
 	";
 }
@@ -54,7 +51,7 @@ include("_setup_pages/08_write_to_file_include_database_setup_tables.php");
 
 // 4. Create meta
 if(!(is_dir("../_data/config/"))){ mkdir("../_data/config/"); } 
-
+	$configSecurityCodeSav = time();
 $input_meta="<?php
 // General
 // General
@@ -169,11 +166,11 @@ $salt = '';
 for ($i = 0; $i < 6; $i++) {
       	$salt .= $characters[rand(0, $charactersLength - 1)];
 }
-$inp_user_salt_mysql = quote_smart($link, $salt);
+$inp_user_salt = "$salt";
 
 // 8.2 user and assword
-$inp_user_email_mysql = quote_smart($link, $adminEmailSav);
-$inp_user_password_mysql = quote_smart($link, $adminPasswordSav);
+$inp_user_email = "$adminEmailSav";
+$inp_user_password = "$adminPasswordSav";
 
 // 8.3 Security
 $year = date("Y");
@@ -183,7 +180,7 @@ $inp_user_security = $year . $pin;
 
 // 8.4 Language
 $inp_user_language = output_html($language);
-$inp_user_language_mysql = quote_smart($link, $inp_user_language);
+// Old: $inp_user_language_mysql = quote_smart($link, $inp_user_language);
 
 // 8.5 Registered
 $datetime = date("Y-m-d H:i:s");
@@ -197,7 +194,7 @@ if($language == "no"){
 else{
 	$inp_user_date_format = "l jS \of F Y";
 }
-$inp_user_date_format_mysql = quote_smart($link, $inp_user_date_format);
+// Old: $inp_user_date_format_mysql = quote_smart($link, $inp_user_date_format);
 
 // 8.7 Mesurment
 if($language == "en"){
@@ -208,31 +205,65 @@ else{
 }
 
 // 8.8 Insert user
-mysqli_query($link, "INSERT INTO $t_users
-(user_id, user_email, user_name, user_alias, user_password, user_salt, user_security, user_language, user_measurement, user_date_format, user_registered, user_registered_time, user_registered_date_saying, user_last_online, user_last_online_time, user_rank, user_points, user_points_rank, user_likes, user_dislikes, user_verified_by_moderator, user_marked_as_spammer) 
-VALUES 
-(NULL, $inp_user_email_mysql, 'Admin', 'Admin', $inp_user_password_mysql, $inp_user_salt_mysql, '$inp_user_security', $inp_user_language_mysql, '$inp_profile_mesurment', $inp_user_date_format_mysql, '$datetime', '$time', '$date_saying', '$datetime', '$time', 'admin', '0', 'Newbie', '0', '0', '1', 0)")
-or die(mysqli_error($link));
+$stmt = $mysqli->prepare("SELECT user_id FROM $t_users WHERE user_email=?"); 
+$stmt->bind_param("s", $inp_user_email);
+$stmt->execute();
+$result = $stmt->get_result(); // get the mysqli result
+$row = $result->fetch_row(); // fetch data
+list($sql_user_id) = $row;
+if($sql_user_id == ""){
+
+	$inp_user_name = "quick";
+	$inp_user_rank = "admin";
+	$inp_user_points = 0;
+	$inp_user_points_rank = "Newbie";
+	$inp_user_likes = 0;
+	$inp_user_dislikes = 0; 
+	$inp_user_verified_by_moderator = 1;  
+	$inp_user_marked_as_spammer = 0;
+
+	$stmt = $mysqli->prepare("INSERT INTO $t_users
+							(user_id, user_email, user_name, user_alias, user_password, user_salt, user_security, user_language, user_measurement, user_date_format, user_registered, user_registered_time, user_registered_date_saying, user_last_online, user_last_online_time, user_rank, user_points, user_points_rank, user_likes, user_dislikes, user_verified_by_moderator, user_marked_as_spammer) 
+							VALUES 
+							(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	$stmt->bind_param("sssssssssssssssssssss", $inp_user_email, $inp_user_name, $inp_user_name, $inp_user_password, $inp_user_salt, $inp_user_security, $inp_user_language, $inp_profile_mesurment, $inp_user_date_format, $datetime, $time, $date_saying, $datetime, $time, $inp_user_rank, $inp_user_points, $inp_user_points_rank, $inp_user_likes, $inp_user_dislikes, $inp_user_verified_by_moderator, $inp_user_marked_as_spammer); 
+	$stmt->execute();
+}
 
 // 8.9 Get user id
-$query = "SELECT user_id FROM $t_users WHERE user_email=$inp_user_email_mysql";
-$result = mysqli_query($link, $query);
-$row = mysqli_fetch_row($result);
-list($get_user_id) = $row;
+$stmt = $mysqli->prepare("SELECT user_id FROM $t_users WHERE user_email=?"); 
+$stmt->bind_param("s", $inp_user_email);
+$stmt->execute();
+$result = $stmt->get_result(); // get the mysqli result
+$row = $result->fetch_row(); // fetch data
+list($sql_user_id) = $row;
+
+
 
 // 8.10 Setup email notifications
-$inp_es_user_id = quote_smart($link, $get_user_id);
-mysqli_query($link, "INSERT INTO $t_users_email_subscriptions
-(es_id, es_user_id, es_type, es_on_off) 
-VALUES 
-(NULL, $inp_es_user_id, 'friend_request', '1'),
-(NULL, $inp_es_user_id, 'status_comments', '1')")
-or die(mysqli_error($link));
+$inp_type = "friend_request";
+$stmt = $mysqli->prepare("INSERT INTO $t_users_email_subscriptions
+						(es_id, es_user_id, es_type, es_on_off) 
+						VALUES 
+						(NULL, ?, ?, 1)");
+$stmt->bind_param("ss", $sql_user_id, $inp_type); 
+$stmt->execute();
+
+$inp_type = "status_comments";
+$stmt = $mysqli->prepare("INSERT INTO $t_users_email_subscriptions
+						(es_id, es_user_id, es_type, es_on_off) 
+						VALUES 
+						(NULL, ?, ?, 1)");
+$stmt->bind_param("ss", $sql_user_id, $inp_type); 
+$stmt->execute();
+
+
+
 
 // 9. Login user
-$_SESSION['user_id'] = "$get_user_id";
+$_SESSION['user_id'] = "$sql_user_id";
 $_SESSION['security'] = "$inp_user_security";
-$_SESSION['admin_user_id']  = "$get_user_id";
+$_SESSION['admin_user_id']  = "$sql_user_id";
 $_SESSION['admin_security'] = "$inp_user_security";
 
 // 10. Write setup finished

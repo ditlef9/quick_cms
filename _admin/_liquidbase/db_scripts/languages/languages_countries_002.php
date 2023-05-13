@@ -320,6 +320,7 @@ if(isset($_SESSION['admin_user_id'])){
 
 
 	$datetime = date("Y-m-d H:i:s");
+	echo"<p>Starting insertion of language countries at $datetime</p>\n";
 
 	$my_user_id = $_SESSION['admin_user_id'];
 	$my_user_id = output_html($my_user_id);

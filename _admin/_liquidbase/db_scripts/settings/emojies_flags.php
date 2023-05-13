@@ -338,7 +338,17 @@ if(isset($_SESSION['admin_user_id'])){
 		}
 
 		// Convert chunks array back to a string
-		return implode($chunks, ' ');
+		$chunks_size = sizeof($chunks);
+		$chunks_string = "";
+		for($x=0;$x<$chunks_size;$x++){
+			if($chunks_string == ""){
+				$chunks_string = $chunks[$x];
+			}
+			else{
+				$chunks_string = $chunks_string . " " . $chunks[$x];
+			}
+		}
+		return $chunks_string;
 	}
 
 	function emoji_to_hex($emoji) {
