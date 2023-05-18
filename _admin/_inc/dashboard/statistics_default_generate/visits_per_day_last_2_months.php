@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/dashboard/visits_per_day_last_2_months
-* Version 1
-* Date 12:04 18.10.2021
-* Copyright (c) 2021 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2021-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -156,8 +155,8 @@ for($i = $loop_begin; $i <= $loop_end; $i->modify('+1 day')){
 	$get_last_stats_visit_per_day_day_three = "";
 	$visit_per_day_human_unique_this_year_month_for_day = 0;
 	$query = "SELECT stats_visit_per_day_id, stats_visit_per_day_day, stats_visit_per_day_day_three, stats_visit_per_day_day_single, stats_visit_per_day_month, stats_visit_per_day_month_short, stats_visit_per_day_human_unique FROM $t_stats_visists_per_day WHERE stats_visit_per_day_day=$this_day AND stats_visit_per_day_month=$this_month AND stats_visit_per_day_year=$this_year";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
 		list($get_this_stats_visit_per_day_id, $get_this_stats_visit_per_day_day, $get_this_stats_visit_per_day_day_three, $get_this_stats_visit_per_day_day_single, $get_this_stats_visit_per_day_month, $get_this_stats_visit_per_day_month_short, $get_this_stats_visit_per_day_human_unique) = $row;
 		$visit_per_day_human_unique_this_year_month_for_day = $visit_per_day_human_unique_this_year_month_for_day + $get_this_stats_visit_per_day_human_unique;
 	}
@@ -168,8 +167,8 @@ for($i = $loop_begin; $i <= $loop_end; $i->modify('+1 day')){
 	// Fetch day last month
 	$visit_per_day_human_unique_last_year_month_for_day = 0;
 	$query = "SELECT stats_visit_per_day_id, stats_visit_per_day_day, stats_visit_per_day_day_three, stats_visit_per_day_day_single, stats_visit_per_day_month, stats_visit_per_day_month_short, stats_visit_per_day_human_unique FROM $t_stats_visists_per_day WHERE stats_visit_per_day_day=$last_day AND stats_visit_per_day_month=$last_month AND stats_visit_per_day_year=$last_year";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
 		list($get_last_stats_visit_per_day_id, $get_last_stats_visit_per_day_day, $get_last_stats_visit_per_day_day_three, $get_last_stats_visit_per_day_day_single, $get_last_stats_visit_per_day_month, $get_last_stats_visit_per_day_month_short, $get_last_stats_visit_per_day_human_unique) = $row;
 		$visit_per_day_human_unique_last_year_month_for_day = $visit_per_day_human_unique_last_year_month_for_day + $get_last_stats_visit_per_day_human_unique;
 	}

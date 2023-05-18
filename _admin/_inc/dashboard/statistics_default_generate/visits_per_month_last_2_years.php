@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/_dashboard/visits_per_day_last_2_months.php
-* Version 1
-* Date 12:04 18.10.2021
-* Copyright (c) 2021 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2021-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -68,8 +67,8 @@ for($x=0;$x<12;$x++){
 	$get_this_stats_visit_per_month_month_short = "$month_lookup";
 	$visit_per_month_human_unique_this_year_for_month = 0;
 	$query = "SELECT stats_visit_per_month_id, stats_visit_per_month_month, stats_visit_per_month_month_short, stats_visit_per_month_year, stats_visit_per_month_human_unique, stats_visit_per_month_human_unique_diff_from_last_month, stats_visit_per_month_human_average_duration, stats_visit_per_month_human_new_visitor_unique, stats_visit_per_month_human_returning_visitor_unique, stats_visit_per_month_unique_desktop, stats_visit_per_month_unique_mobile, stats_visit_per_month_unique_bots, stats_visit_per_month_hits_total, stats_visit_per_month_hits_human, stats_visit_per_month_hits_desktop, stats_visit_per_month_hits_mobile, stats_visit_per_month_hits_bots FROM $t_stats_visists_per_month WHERE stats_visit_per_month_month=$month_lookup AND stats_visit_per_month_year=$this_year_lookup";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+  $result = $mysqli->query($query);
+  while($row = $result->fetch_row()) {
 		list($get_this_stats_visit_per_month_id, $get_this_stats_visit_per_month_month, $get_this_stats_visit_per_month_month_short, $get_this_stats_visit_per_month_year, $get_this_stats_visit_per_month_human_unique, $get_this_stats_visit_per_month_human_unique_diff_from_last_month, $get_this_stats_visit_per_month_human_average_duration, $get_this_stats_visit_per_month_human_new_visitor_unique, $get_this_stats_visit_per_month_human_returning_visitor_unique, $get_this_stats_visit_per_month_unique_desktop, $get_this_stats_visit_per_month_unique_mobile, $get_this_stats_visit_per_month_unique_bots, $get_this_stats_visit_per_month_hits_total, $get_this_stats_visit_per_month_hits_human, $get_this_stats_visit_per_month_hits_desktop, $get_this_stats_visit_per_month_hits_mobile, $get_this_stats_visit_per_month_hits_bots) = $row;
 		$visit_per_month_human_unique_this_year_for_month = $visit_per_month_human_unique_this_year_for_month + $get_this_stats_visit_per_month_human_unique;
 	}
@@ -77,8 +76,8 @@ for($x=0;$x<12;$x++){
 	// Fetch last year
 	$visit_per_month_human_unique_last_year_for_month = 0;
 	$query = "SELECT stats_visit_per_month_id, stats_visit_per_month_month, stats_visit_per_month_month_short, stats_visit_per_month_year, stats_visit_per_month_human_unique, stats_visit_per_month_human_unique_diff_from_last_month, stats_visit_per_month_human_average_duration, stats_visit_per_month_human_new_visitor_unique, stats_visit_per_month_human_returning_visitor_unique, stats_visit_per_month_unique_desktop, stats_visit_per_month_unique_mobile, stats_visit_per_month_unique_bots, stats_visit_per_month_hits_total, stats_visit_per_month_hits_human, stats_visit_per_month_hits_desktop, stats_visit_per_month_hits_mobile, stats_visit_per_month_hits_bots FROM $t_stats_visists_per_month WHERE stats_visit_per_month_month=$month_lookup AND stats_visit_per_month_year=$last_year_lookup";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+  $result = $mysqli->query($query);
+  while($row = $result->fetch_row()) {
 		list($get_last_stats_visit_per_month_id, $get_last_stats_visit_per_month_month, $get_last_stats_visit_per_month_month_short, $get_last_stats_visit_per_month_year, $get_last_stats_visit_per_month_human_unique, $get_last_stats_visit_per_month_human_unique_diff_from_last_month, $get_last_stats_visit_per_month_human_average_duration, $get_last_stats_visit_per_month_human_new_visitor_unique, $get_last_stats_visit_per_month_human_returning_visitor_unique, $get_last_stats_visit_per_month_unique_desktop, $get_last_stats_visit_per_month_unique_mobile, $get_last_stats_visit_per_month_unique_bots, $get_last_stats_visit_per_month_hits_total, $get_last_stats_visit_per_month_hits_human, $get_last_stats_visit_per_month_hits_desktop, $get_last_stats_visit_per_month_hits_mobile, $get_last_stats_visit_per_month_hits_bots) = $row;
 		$visit_per_month_human_unique_last_year_for_month = $visit_per_month_human_unique_last_year_for_month + $get_last_stats_visit_per_month_human_unique;
 	}

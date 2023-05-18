@@ -107,7 +107,7 @@ elseif($action == "view_webdesign"){
 	else{
 		$webdesign_name = "";
 	}
-	if(is_dir("../_webdesign/$webdesign_name") && file_exists("../_webdesign/$webdesign_name/webdesign_preview_$webdesign_name.jpg")){
+	if(is_dir("../_webdesign/$webdesign_name")){
 		echo"
 		<h1>$webdesign_name</h1>
 
@@ -120,14 +120,19 @@ elseif($action == "view_webdesign"){
 		<!-- //Where am I? -->
 
 		<!-- Design info -->
-			<div style=\"float: left;\">
-				<img src=\"../_webdesign/$webdesign_name/webdesign_preview_$webdesign_name.jpg\" alt=\"webdesign_preview_$webdesign_name.jpg\" style=\"border: #ccc 1px solid;\" />
-			</div>
-			<div>
+			";
+			if(file_exists("../_webdesign/$webdesign_name/webdesign_preview_$webdesign_name.jpg")){
+				echo"
+				<div style=\"float: left;\">
+					<img src=\"../_webdesign/$webdesign_name/webdesign_preview_$webdesign_name.jpg\" alt=\"webdesign_preview_$webdesign_name.jpg\" style=\"border: #ccc 1px solid;\" />
+				</div>
+				";
+			}
+			echo"
 				<p><b>Name:</b> $webdesign_name</p>
 
 				<p><a href=\"index.php?open=webdesign&amp;page=$page&amp;action=switch_to_webdesign&amp;webdesign_name=$webdesign_name&amp;editor_language=$editor_language&amp;l=$l&amp;process=1\" class=\"btn_default\">Use design</a></p>
-			</div>
+
 
 			<div class=\"clear\"></div>
 		<!-- //Design info -->
@@ -144,7 +149,7 @@ elseif($action == "switch_to_webdesign"){
 	else{
 		$webdesign_name = "";
 	}
-	if(is_dir("../_webdesign/$webdesign_name") && file_exists("../_webdesign/$webdesign_name/webdesign_preview_$webdesign_name.jpg")){
+	if(is_dir("../_webdesign/$webdesign_name")){
 		
 
 	$update_file="<?php

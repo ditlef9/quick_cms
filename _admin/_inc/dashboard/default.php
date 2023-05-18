@@ -3,8 +3,8 @@
 *
 * File: _admin/_inc/media/default.php
 * Version 2
-* Date 16:12 27.04.2019
-* Copyright (c) 2021 Sindre Andre Ditlefsen
+* Date 14.05.203
+* Copyright (c) 2021-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -67,7 +67,7 @@ if(isset($_GET['week'])) {
 else{
 	$week = date("W");
 }
-$week_mysql = quote_smart($link, $week);
+
 
 if(isset($_GET['month'])) {
 	$month = $_GET['month'];
@@ -76,7 +76,6 @@ if(isset($_GET['month'])) {
 else{
 	$month = date("m");
 }
-$month_mysql = quote_smart($link, $month);
 
 if(isset($_GET['year'])) {
 	$year = $_GET['year'];
@@ -85,7 +84,6 @@ if(isset($_GET['year'])) {
 else{
 	$year = date("Y");
 }
-$year_mysql = quote_smart($link, $year);
 
 
 $rand = date("ymdhis");
@@ -142,12 +140,11 @@ if($action == ""){
 						";
 						// Data this week
 						$query_t = "SELECT stats_visit_per_week_id, stats_visit_per_week_human_unique, stats_visit_per_week_human_unique_diff_from_last_week FROM $t_stats_visists_per_week WHERE stats_visit_per_week_week=$week AND stats_visit_per_week_year=$year";
-						$result_t = mysqli_query($link, $query_t);
-						$row_t = mysqli_fetch_row($result_t);
-						list($get_stats_visit_per_week_id, $get_stats_visit_per_week_human_unique, $get_stats_visit_per_week_human_unique_diff_from_last_week) = $row_t;	
+						$result_t = $mysqli->query($query_t);
+						$row_t = $result_t->fetch_row();
+						list($get_stats_visit_per_week_id, $get_stats_visit_per_week_human_unique, $get_stats_visit_per_week_human_unique_diff_from_last_week) = $row_t;
 
 						echo"
-
 						<h2>Unique visits per week</h2>
                   			<p class=\"dark_grey\" style=\"padding:0;margin:0;\">";
 						if($get_stats_visit_per_week_human_unique_diff_from_last_week == 0){
@@ -179,16 +176,17 @@ if($action == ""){
 				<div class=\"dashboard_columns_four_wrapper\">
 					<div class=\"dashboard_columns_four_inner\">";
 						// Data this week
+						
 						$query_t = "SELECT stats_comments_id, stats_comments_comments_written, stats_comments_comments_written_diff_from_last_week FROM $t_stats_comments_per_week WHERE stats_comments_week=$week AND stats_comments_year=$year";
-						$result_t = mysqli_query($link, $query_t);
-						$row_t = mysqli_fetch_row($result_t);
+						$result_t = $mysqli->query($query_t);
+						$row_t = $result_t->fetch_row();
 						list($get_stats_comments_id, $get_stats_comments_comments_written, $get_stats_comments_comments_written_diff_from_last_week) = $row_t;	
 						if($get_stats_comments_id == ""){
-							mysqli_query($link, "INSERT INTO $t_stats_comments_per_week 
+							$query = "INSERT INTO $t_stats_comments_per_week 
 							(stats_comments_id, stats_comments_week, stats_comments_month, stats_comments_year, stats_comments_comments_written) 
 							VALUES 
-							(NULL, $week, $month, $year, 0)")
-							or die(mysqli_error($link));
+							(NULL, $week, $month, $year, 0)";
+							$result = $mysqli->query($query);
 						}
 	
 						echo"
@@ -226,15 +224,16 @@ if($action == ""){
 					<div class=\"dashboard_columns_four_inner\">";
 						// Data this week
 						$query_t = "SELECT stats_registered_id, stats_registered_users_registed, stats_registered_users_registed_diff_from_last_week FROM $t_stats_users_registered_per_week WHERE stats_registered_week=$week AND stats_registered_year=$year";
-						$result_t = mysqli_query($link, $query_t);
-						$row_t = mysqli_fetch_row($result_t);
+						$result_t = $mysqli->query($query_t);
+						$row_t = $result_t->fetch_row();
 						list($get_stats_registered_id, $get_stats_registered_users_registed, $get_stats_registered_users_registed_diff_from_last_week) = $row_t;	
 						if($get_stats_registered_id == ""){
-								mysqli_query($link, "INSERT INTO $t_stats_users_registered_per_week 
-								(stats_registered_id, stats_registered_week, stats_registered_year, stats_registered_users_registed, stats_registered_users_registed_diff_from_last_week) 
-								VALUES 
-								(NULL, $week, $year, 0, 0)")
-								or die(mysqli_error($link));
+
+							$query = "INSERT INTO $t_stats_users_registered_per_week 
+							(stats_registered_id, stats_registered_week, stats_registered_year, stats_registered_users_registed, stats_registered_users_registed_diff_from_last_week) 
+							VALUES 
+							(NULL, $week, $year, 0, 0)";
+							$result = $mysqli->query($query);
 						}
 
 						echo"
@@ -273,15 +272,15 @@ if($action == ""){
 					<div class=\"dashboard_columns_four_inner_last\">";
 						// Last user registered
 						$query_t = "SELECT user_id, user_name, user_alias, user_language, user_country_name, user_city_name, user_gender, user_registered_date_saying FROM $t_users ORDER BY user_id DESC LIMIT 0,1";
-						$result_t = mysqli_query($link, $query_t);
-						$row_t = mysqli_fetch_row($result_t);
+						$result_t = $mysqli->query($query_t);
+						$row_t = $result_t->fetch_row();
 						list($get_last_user_id, $get_last_user_name, $get_last_user_alias, $get_last_user_language, $get_last_user_country_name, $get_last_user_city_name, $get_last_user_gender, $get_last_user_registered_saying) = $row_t;
 
 						// Photo
-						$q = "SELECT photo_id, photo_destination, photo_thumb_60 FROM $t_users_profile_photo WHERE photo_user_id='$get_last_user_id' AND photo_profile_image='1'";
-						$r = mysqli_query($link, $q);
-						$rowb = mysqli_fetch_row($r);
-						list($get_last_photo_id, $get_last_photo_destination, $get_last_photo_thumb_60) = $rowb;
+						$query_t = "SELECT photo_id, photo_destination, photo_thumb_60 FROM $t_users_profile_photo WHERE photo_user_id='$get_last_user_id' AND photo_profile_image='1'";
+						$result_t = $mysqli->query($query_t);
+						$row_t = $result_t->fetch_row();
+						list($get_last_photo_id, $get_last_photo_destination, $get_last_photo_thumb_60) = $row_t;
 
 						echo"
 
@@ -292,7 +291,9 @@ if($action == ""){
 							";
 							if($get_last_photo_id != ""){
 								if(!(file_exists("../_uploads/users/images/$get_last_user_id/$get_last_photo_thumb_60"))){
-									$res = mysqli_query($link, "DELETE FROM $t_users_profile_photo WHERE photo_user_id='$get_last_user_id' AND photo_profile_image='1'");
+									if ($mysqli->query("DELETE FROM $t_users_profile_photo WHERE photo_user_id='$get_last_user_id' AND photo_profile_image='1'") !== TRUE) {
+										echo "Error MySQLi delete: " . $mysqli->error; die;
+									}
 								}
 								echo"
 								<a href=\"../users/view_profile.php?user_id=$get_last_user_id&amp;l=$l\"><img src=\"../_uploads/users/images/$get_last_user_id/$get_last_photo_thumb_60\" alt=\"$get_last_photo_thumb_60\" /></a>
@@ -356,8 +357,8 @@ if($action == ""){
 						<div class=\"float_right\">
 							<p>\n";
 							$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_default, language_active_flag_path_18x18, language_active_flag_active_18x18, language_active_flag_inactive_18x18 FROM $t_languages_active";
-							$result = mysqli_query($link, $query);
-							while($row = mysqli_fetch_row($result)) {
+							$result = $mysqli->query($query);
+							while($row = $result->fetch_row()) {
 								list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_default, $get_language_active_flag_path_18x18, $get_language_active_flag_active_18x18, $get_language_active_flag_inactive_18x18) = $row;
 								echo"						<a href=\"index.php?open=dashboard&amp;page=statistics_year&amp;stats_year=$year&amp;editor_language=$get_language_active_iso_two&amp;l=$l\"><img src=\"../$get_language_active_flag_path_18x18/$get_language_active_flag_active_18x18\" alt=\"$get_language_active_flag_active_18x18\" title=\"View stats for $get_language_active_name\" /></a>\n";
 							}
@@ -423,8 +424,8 @@ if($action == ""){
 					<div class=\"float_right\">
 						<p>\n";
 						$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_default, language_active_flag_path_18x18, language_active_flag_active_18x18, language_active_flag_inactive_18x18 FROM $t_languages_active";
-						$result = mysqli_query($link, $query);
-						while($row = mysqli_fetch_row($result)) {
+						$result = $mysqli->query($query);
+						while($row = $result->fetch_row()) {
 							list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_default, $get_language_active_flag_path_18x18, $get_language_active_flag_active_18x18, $get_language_active_flag_inactive_18x18) = $row;
 							echo"						<a href=\"index.php?open=dashboard&amp;page=statistics_month&amp;stats_year=$year&amp;stats_month=$month&amp;editor_language=$get_language_active_iso_two&amp;l=$l\"><img src=\"../$get_language_active_flag_path_18x18/$get_language_active_flag_active_18x18\" alt=\"$get_language_active_flag_active_18x18\" title=\"View stats for $get_language_active_name\" /></a>\n";
 						}
@@ -462,8 +463,8 @@ if($action == ""){
 						$time = time();
 
 						$query_t = "SELECT status_code_id, status_code_title, status_code_text_color, status_code_bg_color, status_code_border_color, status_code_weight, status_code_show_on_board, status_code_on_status_close_task, status_code_count_tasks FROM $t_tasks_status_codes WHERE status_code_show_on_board=1 AND status_code_task_is_assigned=0 ORDER BY status_code_weight ASC LIMIT 0,1";
-						$result_t = mysqli_query($link, $query_t);
-						$row_t = mysqli_fetch_row($result_t);
+						$result_t = $mysqli->query($query_t);
+						$row_t = $result_t->fetch_row();
 						list($get_status_code_id, $get_status_code_title, $get_status_code_text_color, $get_status_code_bg_color, $get_status_code_border_color, $get_status_code_weight, $get_status_code_show_on_board, $get_status_code_on_status_close_task, $get_status_code_count_tasks) = $row_t;	
 
 						echo"
@@ -483,8 +484,8 @@ if($action == ""){
 
 							$query = "SELECT task_id, task_system_task_abbr, task_system_incremented_number, task_project_task_abbr, task_project_incremented_number, task_title, task_text, task_status_code_id, task_priority_id, task_priority_weight, task_created_datetime, task_created_by_user_id, task_created_by_user_alias, task_created_by_user_image, task_created_by_user_email, task_updated_datetime, task_due_datetime, task_due_time, task_due_translated, task_assigned_to_user_id, task_assigned_to_user_alias, task_assigned_to_user_image, task_assigned_to_user_thumb_40, task_assigned_to_user_email, task_qa_datetime, task_qa_by_user_id, task_qa_by_user_alias, task_qa_by_user_image, task_qa_by_user_email, task_finished_datetime, task_finished_by_user_id, task_finished_by_user_alias, task_finished_by_user_image, task_finished_by_user_email, task_is_archived, task_comments, task_project_id, task_project_part_id, task_system_id, task_system_part_id FROM $t_tasks_index ";
 							$query = $query . "WHERE task_status_code_id=$get_status_code_id AND task_is_archived='0' ORDER BY task_priority_id, task_id ASC";
-							$result = mysqli_query($link, $query);
-							while($row = mysqli_fetch_row($result)) {
+							$result = $mysqli->query($query);
+							while($row = $result->fetch_row()) {
 								list($get_task_id, $get_task_system_task_abbr, $get_task_system_incremented_number, $get_task_project_task_abbr, $get_task_project_incremented_number, $get_task_title, $get_task_text, $get_task_status_code_id, $get_task_priority_id, $get_task_priority_weight, $get_task_created_datetime, $get_task_created_by_user_id, $get_task_created_by_user_alias, $get_task_created_by_user_image, $get_task_created_by_user_email, $get_task_updated_datetime, $get_task_due_datetime, $get_task_due_time, $get_task_due_translated, $get_task_assigned_to_user_id, $get_task_assigned_to_user_alias, $get_task_assigned_to_user_image, $get_task_assigned_to_user_thumb_40, $get_task_assigned_to_user_email, $get_task_qa_datetime, $get_task_qa_by_user_id, $get_task_qa_by_user_alias, $get_task_qa_by_user_image, $get_task_qa_by_user_email, $get_task_finished_datetime, $get_task_finished_by_user_id, $get_task_finished_by_user_alias, $get_task_finished_by_user_image, $get_task_finished_by_user_email, $get_task_is_archived, $get_task_comments, $get_task_project_id, $get_task_project_part_id, $get_task_system_id, $get_task_system_part_id) = $row;
 
 								// Number
@@ -503,8 +504,8 @@ if($action == ""){
 
 								// Read?
 								$query_r = "SELECT read_id FROM $t_tasks_read WHERE read_task_id=$get_task_id AND read_user_id=$my_user_id_mysql";
-								$result_r = mysqli_query($link, $query_r);
-								$row_r = mysqli_fetch_row($result_r);
+								$result_r = $mysqli->query($query_r);
+								$row_r = $result_r->fetch_row();
 								list($get_read_id) = $row_r;	
 
 					
@@ -551,14 +552,14 @@ if($action == ""){
 				$row_counter = 0;
 				$column_counter = 0;
 				$query_u = "SELECT user_id, user_email, user_name FROM $t_users WHERE user_rank='admin' ORDER BY user_name ASC";
-				$result_u = mysqli_query($link, $query_u);
-				while($row_u = mysqli_fetch_row($result_u)) {
+				$result_u = $mysqli->query($query_u);
+				while($row_u = $result_u->fetch_row()) {
 					list($get_user_id, $get_user_email, $get_user_name) = $row_u;
 
 					// Get my photo
 					$query = "SELECT photo_id, photo_destination, photo_thumb_40, photo_thumb_50 FROM $t_users_profile_photo WHERE photo_user_id=$get_user_id AND photo_profile_image='1'";
-					$result = mysqli_query($link, $query);
-					$row = mysqli_fetch_row($result);
+					$result = $mysqli->query($query);
+					$row = $result->fetch_row();
 					list($get_photo_id, $get_photo_destination, $get_photo_thumb_40, $get_photo_thumb_50) = $row;
 
 					echo"
@@ -596,8 +597,8 @@ if($action == ""){
 
 						// Statuses
 						$query_s = "SELECT status_code_id, status_code_title, status_code_text_color, status_code_bg_color, status_code_border_color, status_code_weight, status_code_show_on_board, status_code_on_status_close_task, status_code_count_tasks FROM $t_tasks_status_codes WHERE status_code_show_on_board=1 AND status_code_task_is_assigned=1 ORDER BY status_code_weight ASC";
-						$result_s = mysqli_query($link, $query_s);
-						while($row_s = mysqli_fetch_row($result_s)) {
+						$result_s = $mysqli->query($query_s);
+						while($row_s = $result_s->fetch_row()) {
 							list($get_status_code_id, $get_status_code_title, $get_status_code_text_color, $get_status_code_bg_color, $get_status_code_border_color, $get_status_code_weight, $get_status_code_show_on_board, $get_status_code_on_status_close_task, $get_status_code_count_tasks) = $row_s;
 
 							echo"
@@ -608,8 +609,8 @@ if($action == ""){
 							// Tasks
 							$query = "SELECT task_id, task_system_task_abbr, task_system_incremented_number, task_project_task_abbr, task_project_incremented_number, task_title, task_text, task_status_code_id, task_priority_id, task_priority_weight, task_created_datetime, task_created_by_user_id, task_created_by_user_alias, task_created_by_user_image, task_created_by_user_email, task_updated_datetime, task_due_datetime, task_due_time, task_due_translated, task_assigned_to_user_id, task_assigned_to_user_alias, task_assigned_to_user_image, task_assigned_to_user_thumb_40, task_assigned_to_user_email, task_qa_datetime, task_qa_by_user_id, task_qa_by_user_alias, task_qa_by_user_image, task_qa_by_user_email, task_finished_datetime, task_finished_by_user_id, task_finished_by_user_alias, task_finished_by_user_image, task_finished_by_user_email, task_is_archived, task_comments, task_project_id, task_project_part_id, task_system_id, task_system_part_id FROM $t_tasks_index ";
 							$query = $query . "WHERE task_status_code_id=$get_status_code_id AND task_assigned_to_user_id=$get_user_id AND task_is_archived='0' ORDER BY task_priority_id, task_id ASC";
-							$result = mysqli_query($link, $query);
-							while($row = mysqli_fetch_row($result)) {
+							$result = $mysqli->query($query);
+							while($row = $result->fetch_row()) {
 								list($get_task_id, $get_task_system_task_abbr, $get_task_system_incremented_number, $get_task_project_task_abbr, $get_task_project_incremented_number, $get_task_title, $get_task_text, $get_task_status_code_id, $get_task_priority_id, $get_task_priority_weight, $get_task_created_datetime, $get_task_created_by_user_id, $get_task_created_by_user_alias, $get_task_created_by_user_image, $get_task_created_by_user_email, $get_task_updated_datetime, $get_task_due_datetime, $get_task_due_time, $get_task_due_translated, $get_task_assigned_to_user_id, $get_task_assigned_to_user_alias, $get_task_assigned_to_user_image, $get_task_assigned_to_user_thumb_40, $get_task_assigned_to_user_email, $get_task_qa_datetime, $get_task_qa_by_user_id, $get_task_qa_by_user_alias, $get_task_qa_by_user_image, $get_task_qa_by_user_email, $get_task_finished_datetime, $get_task_finished_by_user_id, $get_task_finished_by_user_alias, $get_task_finished_by_user_image, $get_task_finished_by_user_email, $get_task_is_archived, $get_task_comments, $get_task_project_id, $get_task_project_part_id, $get_task_system_id, $get_task_system_part_id) = $row;
 			
 								// Number
@@ -628,8 +629,8 @@ if($action == ""){
 
 								// Read?
 								$query_r = "SELECT read_id FROM $t_tasks_read WHERE read_task_id=$get_task_id AND read_user_id=$my_user_id_mysql";
-								$result_r = mysqli_query($link, $query_r);
-								$row_r = mysqli_fetch_row($result_r);
+								$result_r = $mysqli->query($query_r);
+								$row_r = $result_r->fetch_row();
 								list($get_read_id) = $row_r;	
 
 									

@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/_dashboard/users_per_week_last_2_years.php
-* Version 1
-* Date 12:39 02.04.2022
-* Copyright (c) 2022 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2022-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -62,10 +61,10 @@ for($x=0;$x<12;$x++){
 	$week_lookup = $datetime_class->format('W');
 
 	
-	// Fetch this year	
+	// Fetch this year
 	$query = "SELECT stats_registered_id, stats_registered_week, stats_registered_year, stats_registered_users_registed, stats_registered_users_registed_diff_from_last_week FROM $t_stats_users_registered_per_week WHERE stats_registered_week=$week_lookup AND stats_registered_year=$this_year_lookup";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
 	list($get_this_stats_registered_id, $get_this_stats_registered_week, $get_this_stats_registered_year, $get_this_stats_registered_users_registed, $get_this_stats_registered_users_registed_diff_from_last_week) = $row;
 	if($get_this_stats_registered_users_registed == ""){
 		$get_this_stats_registered_users_registed = 0;
@@ -74,8 +73,8 @@ for($x=0;$x<12;$x++){
 	
 	// Fetch last year	
 	$query = "SELECT stats_registered_id, stats_registered_week, stats_registered_year, stats_registered_users_registed, stats_registered_users_registed_diff_from_last_week FROM $t_stats_users_registered_per_week WHERE stats_registered_week=$week_lookup AND stats_registered_year=$last_year_lookup";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
 	list($get_last_stats_registered_id, $get_last_stats_registered_week, $get_last_stats_registered_year, $get_last_stats_registered_users_registed, $get_last_stats_registered_users_registed_diff_from_last_week) = $row;
 	if($get_last_stats_registered_users_registed == ""){
 		$get_last_stats_registered_users_registed = 0;
@@ -169,7 +168,7 @@ function makeSeries(name, fieldName) {
     });
   });
 
-  legendA.data.push(series);
+  // legendA.data.push(series);
 }
 
 

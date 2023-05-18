@@ -3,8 +3,7 @@
 *
 * File: _admin/_inc/_dashboard/comments_per_week_last_2_years.php
 * Version 1
-* Date 12:39 02.04.2022
-* Copyright (c) 2022 Sindre Andre Ditlefsen
+* Copyright (c) 2022-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 * This will be for all languages as it is on the front page
@@ -67,8 +66,8 @@ for($x=0;$x<12;$x++){
 	// Fetch this year
 	$comments_written_this_year_for_week = 0;
 	$query = "SELECT stats_comments_id, stats_comments_week, stats_comments_month, stats_comments_year, stats_comments_comments_written, stats_comments_comments_written_diff_from_last_week FROM $t_stats_comments_per_week WHERE stats_comments_week=$week_lookup AND stats_comments_year=$this_year_lookup";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
 		list($get_this_stats_comments_id, $get_this_stats_comments_week, $get_this_stats_comments_month, $get_this_stats_comments_year, $get_this_stats_comments_comments_written, $get_this_stats_comments_comments_written_diff_from_last_week) = $row;
 		$comments_written_this_year_for_week = $comments_written_this_year_for_week + $get_this_stats_comments_comments_written;
 	}
@@ -76,8 +75,8 @@ for($x=0;$x<12;$x++){
 	// Fetch last year
 	$comments_written_last_year_for_week = 0;
 	$query = "SELECT stats_comments_id, stats_comments_week, stats_comments_month, stats_comments_year, stats_comments_comments_written, stats_comments_comments_written_diff_from_last_week FROM $t_stats_comments_per_week WHERE stats_comments_week=$week_lookup AND stats_comments_year=$last_year_lookup";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
 		list($get_last_stats_comments_id, $get_last_stats_comments_week, $get_last_stats_comments_month, $get_last_stats_comments_year, $get_last_stats_comments_comments_written, $get_last_stats_comments_comments_written_diff_from_last_week) = $row;
 		$comments_written_last_year_for_week = $comments_written_last_year_for_week + $get_last_stats_comments_comments_written;
 	}
@@ -168,7 +167,7 @@ function makeSeries(name, fieldName) {
     });
   });
 
-  legendA.data.push(series);
+  // legendA.data.push(series);
 }
 
 

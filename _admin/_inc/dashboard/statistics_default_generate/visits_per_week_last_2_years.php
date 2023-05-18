@@ -3,8 +3,7 @@
 *
 * File: _admin/_inc/_dashboard/visits_per_week_last_2_years.php
 * Version 1
-* Date 12:39 02.04.2022
-* Copyright (c) 2022 Sindre Andre Ditlefsen
+* Copyright (c) 2022-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -65,9 +64,10 @@ for($x=0;$x<12;$x++){
 	// Fetch this year
 	$visit_per_week_human_unique_this_year_for_week = 0;
 	$get_this_stats_visit_per_week_week = "";
+
 	$query = "SELECT stats_visit_per_week_id, stats_visit_per_week_week, stats_visit_per_week_year, stats_visit_per_week_human_unique, stats_visit_per_week_human_unique_diff_from_last_week FROM $t_stats_visists_per_week WHERE stats_visit_per_week_week=$week_lookup AND stats_visit_per_week_year=$this_year_lookup";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
 		list($get_this_stats_visit_per_week_id, $get_this_stats_visit_per_week_week, $get_this_stats_visit_per_week_year, $get_this_stats_visit_per_week_human_unique, $get_this_stats_visit_per_week_human_unique_diff_from_last_week) = $row;
 		$visit_per_week_human_unique_this_year_for_week = $visit_per_week_human_unique_this_year_for_week + $get_this_stats_visit_per_week_human_unique;
 	}
@@ -77,8 +77,8 @@ for($x=0;$x<12;$x++){
 	// Fetch last year
 	$visit_per_week_human_unique_last_year_for_week = 0;
 	$query = "SELECT stats_visit_per_week_id, stats_visit_per_week_week, stats_visit_per_week_year, stats_visit_per_week_human_unique, stats_visit_per_week_human_unique_diff_from_last_week FROM $t_stats_visists_per_week WHERE stats_visit_per_week_week=$week_lookup AND stats_visit_per_week_year=$last_year_lookup";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
 		list($get_last_stats_visit_per_week_id, $get_last_stats_visit_per_week_week, $get_last_stats_visit_per_week_year, $get_last_stats_visit_per_week_human_unique, $get_last_stats_visit_per_week_human_unique_diff_from_last_week) = $row;
 		$visit_per_week_human_unique_last_year_for_week = $visit_per_week_human_unique_last_year_for_week + $get_last_stats_visit_per_week_human_unique;
 	}
@@ -169,7 +169,7 @@ function makeSeries(name, fieldName) {
     });
   });
 
-  legendA.data.push(series);
+  // legendA.data.push(series);
 }
 
 

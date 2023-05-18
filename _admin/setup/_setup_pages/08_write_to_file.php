@@ -41,7 +41,6 @@ if ($mysqli -> connect_errno) {
 	$error = $mysqli -> connect_error;
 	echo "
 	<div class=\"error\"><p><b>MySQL connection error</b>: $error</p>
-	mysqlHostSav, $mysqlUserNameSav, $mysqlPasswordSav, $mysqlDatabaseNameSav
 	</div>
 	";
 }
@@ -208,8 +207,8 @@ else{
 $stmt = $mysqli->prepare("SELECT user_id FROM $t_users WHERE user_email=?"); 
 $stmt->bind_param("s", $inp_user_email);
 $stmt->execute();
-$result = $stmt->get_result(); // get the mysqli result
-$row = $result->fetch_row(); // fetch data
+$result = $stmt->get_result();
+$row = $result->fetch_row();
 list($sql_user_id) = $row;
 if($sql_user_id == ""){
 

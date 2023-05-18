@@ -3,8 +3,7 @@
 *
 * File: _admin/_inc/settings/admin_navigation.php
 * Version 1.0
-* Date: 13:37 14.11.2018
-* Copyright (c) 2008-2018 Sindre Andre Ditlefsen
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -129,8 +128,8 @@ elseif($action == "my_navigation"){
 
 		$x = 0;
 		$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_user_id=$my_user_id_mysql ORDER BY navigation_weight ASC";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_navigation_id, $get_navigation_url, $get_navigation_title, $get_navigation_icon_white_18, $get_navigation_icon_black_18, $get_navigation_weight) = $row;
 
 			// Style
@@ -143,7 +142,9 @@ elseif($action == "my_navigation"){
 	
 			// Check order
 			if($get_navigation_weight != "$x"){
-				mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=$x WHERE navigation_id=$get_navigation_id") or die(mysqli_error($link));
+				if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=$x WHERE navigation_id=$get_navigation_id") !== TRUE) {
+					echo "Error updating record: " . $mysqli->error; die;
+				}
 			}
 
 			echo"
@@ -175,12 +176,12 @@ elseif($action == "my_navigation"){
 elseif($action == "move_up"){
 	$my_user_id = $_SESSION['admin_user_id'];
 	$my_user_id = output_html($my_user_id);
-	$my_user_id_mysql = quote_smart($link, $my_user_id);
-
-	$navigation_id_mysql = quote_smart($link, $navigation_id);
-	$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_id=$navigation_id_mysql AND navigation_user_id=$my_user_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	
+	$stmt = $mysqli->prepare("SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_id=? AND navigation_user_id=?"); 
+	$stmt->bind_param("ss", $my_user_id, $navigation_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_navigation_id, $get_current_navigation_url, $get_current_navigation_title, $get_current_navigation_icon_white_18, $get_current_navigation_icon_black_18, $get_current_navigation_weight) = $row;
 
 	if($get_current_navigation_id != ""){
@@ -188,9 +189,11 @@ elseif($action == "move_up"){
 			// Find the one we want to switch with
 			$inp_current_navigation_weight = $get_current_navigation_weight-1;
 
-			$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_weight=$inp_current_navigation_weight AND navigation_user_id=$my_user_id_mysql";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
+			$stmt = $mysqli->prepare("SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_weight=? AND navigation_user_id=?"); 
+			$stmt->bind_param("ss", inp_current_navigation_weight, $my_user_id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$row = $result->fetch_row();
 			list($get_switch_navigation_id, $get_switch_navigation_url, $get_switch_navigation_title, $get_switch_navigation_icon_white_18, $get_switch_navigation_icon_black_18, $get_switch_navigation_weight) = $row;
 
 			
@@ -198,8 +201,13 @@ elseif($action == "move_up"){
 				$inp_current_navigation_weight = $get_switch_navigation_weight;
 				$inp_switch_navigation_weight = $get_current_navigation_weight;
 
-				mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=$inp_current_navigation_weight WHERE navigation_id=$get_current_navigation_id") or die(mysqli_error($link));
-				mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=$inp_switch_navigation_weight WHERE navigation_id=$get_switch_navigation_id") or die(mysqli_error($link));
+				if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=$inp_current_navigation_weight WHERE navigation_id=$get_current_navigation_id") !== TRUE) {
+					echo "Error updating record: " . $mysqli->error; die;
+				}
+				if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=$inp_switch_navigation_weight WHERE navigation_id=$get_switch_navigation_id") !== TRUE) {
+					echo "Error updating record: " . $mysqli->error; die;
+				}
+
 
 				$url = "index.php?open=$open&page=$page&action=my_navigation&ft=success&fm=moved";
 				header("Location: $url");
@@ -218,12 +226,12 @@ elseif($action == "move_up"){
 elseif($action == "move_down"){
 	$my_user_id = $_SESSION['admin_user_id'];
 	$my_user_id = output_html($my_user_id);
-	$my_user_id_mysql = quote_smart($link, $my_user_id);
 
-	$navigation_id_mysql = quote_smart($link, $navigation_id);
-	$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_id=$navigation_id_mysql AND navigation_user_id=$my_user_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_id=? AND navigation_user_id=?"); 
+	$stmt->bind_param("ss", $navigation_id, $my_user_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_navigation_id, $get_current_navigation_url, $get_current_navigation_title, $get_current_navigation_icon_white_18, $get_current_navigation_icon_black_18, $get_current_navigation_weight) = $row;
 
 	if($get_current_navigation_id != ""){
@@ -231,9 +239,11 @@ elseif($action == "move_down"){
 			// Find the one we want to switch with
 			$inp_current_navigation_weight = $get_current_navigation_weight+1;
 
-			$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_weight=$inp_current_navigation_weight AND navigation_user_id=$my_user_id_mysql";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
+			$stmt = $mysqli->prepare("SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_weight=? AND navigation_user_id=?"); 
+			$stmt->bind_param("ss", $inp_current_navigation_weight, $my_user_id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$row = $result->fetch_row();
 			list($get_switch_navigation_id, $get_switch_navigation_url, $get_switch_navigation_title, $get_switch_navigation_icon_white_18, $get_switch_navigation_icon_black_18, $get_switch_navigation_weight) = $row;
 
 			
@@ -241,8 +251,12 @@ elseif($action == "move_down"){
 				$inp_current_navigation_weight = $get_switch_navigation_weight;
 				$inp_switch_navigation_weight = $get_current_navigation_weight;
 
-				mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=$inp_current_navigation_weight WHERE navigation_id=$get_current_navigation_id") or die(mysqli_error($link));
-				mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=$inp_switch_navigation_weight WHERE navigation_id=$get_switch_navigation_id") or die(mysqli_error($link));
+				if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=$inp_current_navigation_weight WHERE navigation_id=$get_current_navigation_id") !== TRUE) {
+					echo "Error updating record: " . $mysqli->error; die;
+				}
+				if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=$inp_switch_navigation_weight WHERE navigation_id=$get_switch_navigation_id") !== TRUE) {
+					echo "Error updating record: " . $mysqli->error; die;
+				}
 
 				$url = "index.php?open=$open&page=$page&action=my_navigation&ft=success&fm=moved";
 				header("Location: $url");
@@ -261,12 +275,12 @@ elseif($action == "move_down"){
 elseif($action == "edit"){
 	$my_user_id = $_SESSION['admin_user_id'];
 	$my_user_id = output_html($my_user_id);
-	$my_user_id_mysql = quote_smart($link, $my_user_id);
 
-	$navigation_id_mysql = quote_smart($link, $navigation_id);
-	$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_id=$navigation_id_mysql AND navigation_user_id=$my_user_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_id=? AND navigation_user_id=?"); 
+	$stmt->bind_param("ss", $navigation_id, $my_user_id_mysql);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_navigation_id, $get_current_navigation_url, $get_current_navigation_title, $get_current_navigation_icon, $get_current_navigation_icon_white_18, $get_current_navigation_icon_black_18, $get_current_navigation_weight) = $row;
 
 	if($get_current_navigation_id != ""){
@@ -301,12 +315,15 @@ elseif($action == "edit"){
 			$inp_icon_color_medium = $inp_icon . "_orange_24x24.png";
 			$inp_icon_color_medium_mysql = quote_smart($link, $inp_icon_color_medium);
 
-			mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_url=$inp_url_mysql, navigation_title=$inp_title_mysql, navigation_icon=$inp_icon_mysql, 
-					navigation_icon_black_18=$inp_icon_black_small_mysql, navigation_icon_black_24=$inp_icon_black_medium_mysql, 
-					navigation_icon_white_18=$inp_icon_white_small_mysql, navigation_icon_white_24=$inp_icon_white_medium_mysql, 
-					navigation_icon_color_18=$inp_icon_color_small_mysql, navigation_icon_color_24=$inp_icon_color_medium_mysql
-					 WHERE navigation_id=$get_current_navigation_id") or die(mysqli_error($link));
-			
+			if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_url=$inp_url_mysql, navigation_title=$inp_title_mysql, navigation_icon=$inp_icon_mysql, 
+			navigation_icon_black_18=$inp_icon_black_small_mysql, navigation_icon_black_24=$inp_icon_black_medium_mysql, 
+			navigation_icon_white_18=$inp_icon_white_small_mysql, navigation_icon_white_24=$inp_icon_white_medium_mysql, 
+			navigation_icon_color_18=$inp_icon_color_small_mysql, navigation_icon_color_24=$inp_icon_color_medium_mysql
+			 WHERE navigation_id=$get_current_navigation_id") !== TRUE) {
+				echo "Error updating record: " . $mysqli->error; die;
+			}
+
+
 			$url = "index.php?open=$open&page=$page&action=my_navigation&ft=success&fm=changes_saved";
 			header("Location: $url");
 			exit;
@@ -376,18 +393,20 @@ elseif($action == "edit"){
 elseif($action == "delete"){
 	$my_user_id = $_SESSION['admin_user_id'];
 	$my_user_id = output_html($my_user_id);
-	$my_user_id_mysql = quote_smart($link, $my_user_id);
 
-	$navigation_id_mysql = quote_smart($link, $navigation_id);
-	$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_id=$navigation_id_mysql AND navigation_user_id=$my_user_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_id=? AND navigation_user_id=?"); 
+	$stmt->bind_param("ss", $navigation_id, $my_user_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_navigation_id, $get_current_navigation_url, $get_current_navigation_title, $get_current_navigation_icon, $get_current_navigation_icon_white_18, $get_current_navigation_icon_black_18, $get_current_navigation_weight) = $row;
 
 	if($get_current_navigation_id != ""){
 		if($process == "1"){
-			mysqli_query($link, "DELETE FROM $t_admin_navigation WHERE navigation_id=$get_current_navigation_id") or die(mysqli_error($link));
-			
+			if ($mysqli->query("DELETE FROM $t_admin_navigation WHERE navigation_id=$get_current_navigation_id") !== TRUE) {
+				echo "Error MySQLi delete: " . $mysqli->error; die;
+			}
+
 			$url = "index.php?open=$open&page=$page&action=my_navigation&ft=success&fm=deleted";
 			header("Location: $url");
 			exit;
@@ -441,73 +460,70 @@ elseif($action == "add_item"){
 	// Me
 	$my_user_id = $_SESSION['admin_user_id'];
 	$my_user_id = output_html($my_user_id);
-	$my_user_id_mysql = quote_smart($link, $my_user_id);
 
 
 	if($process == "1"){
 		$inp_url = $_GET['item'];
 		$inp_url = output_html($inp_url);
-		$inp_url_mysql = quote_smart($link, $inp_url);
 
 		$inp_title = ucfirst($inp_url);
 		$inp_title = output_html($inp_title);
-		$inp_title_mysql = quote_smart($link, $inp_title);
 
 		$inp_icon = "$inp_url";
 		$inp_icon = output_html($inp_icon);
-		$inp_icon_mysql = quote_smart($link, $inp_icon);
 
 		$inp_icon_black_small = $inp_icon . "_black_18x18.png";
-		$inp_icon_black_small_mysql = quote_smart($link, $inp_icon_black_small);
 
 		$inp_icon_black_medium = $inp_icon . "_black_24x24.png";
-		$inp_icon_black_medium_mysql = quote_smart($link, $inp_icon_black_medium);
 
 		$inp_icon_white_small = $inp_icon . "_white_18x18.png";
-		$inp_icon_white_small_mysql = quote_smart($link, $inp_icon_white_small);
 
 		$inp_icon_white_medium = $inp_icon . "_white_24x24.png";
-		$inp_icon_white_medium_mysql = quote_smart($link, $inp_icon_white_medium);
 
 		$inp_icon_color_small = $inp_icon . "_orange_18x18.png";
-		$inp_icon_color_small_mysql = quote_smart($link, $inp_icon_color_small);
 
 		$inp_icon_color_medium = $inp_icon . "_orange_24x24.png";
-		$inp_icon_color_medium_mysql = quote_smart($link, $inp_icon_color_medium);
 
-
-		mysqli_query($link, "INSERT INTO $t_admin_navigation 
-		(navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_black_18, navigation_icon_black_24, navigation_icon_white_18, navigation_icon_white_24, 
-		navigation_icon_color_18, navigation_icon_color_24, navigation_user_id, navigation_show, navigation_weight) 
+		$stmt = $mysqli->prepare("INSERT INTO $t_admin_navigation 
+		(navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_black_18, 
+		navigation_icon_black_24, navigation_icon_white_18, navigation_icon_white_24, navigation_icon_color_18, navigation_icon_color_24, 
+		navigation_user_id, navigation_show, navigation_weight) 
 		VALUES 
-		(NULL, $inp_url_mysql, $inp_title_mysql, $inp_icon_mysql, $inp_icon_black_small_mysql, $inp_icon_black_medium_mysql, 
-		$inp_icon_white_small_mysql, $inp_icon_white_medium_mysql, $inp_icon_color_small_mysql, $inp_icon_color_medium_mysql, 
-		$my_user_id_mysql, '1', '999')")
-		or die(mysqli_error($link));
+		(NULL,?,?,?,?, 
+		?,?,?,?,?, 
+		?,'1','999')");
+		$stmt->bind_param("ssssssssss", $inp_url, $inp_title, $inp_icon, $inp_icon_black_small, $inp_icon_black_medium, 
+		$inp_icon_white_small, $inp_icon_white_medium, $inp_icon_color_small, $inp_icon_color_medium, 
+		$my_user_id); 
+		$stmt->execute();
+
 
 
 		// Sort all alphabetically
 		$x=0;
 		$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_user_id=$my_user_id_mysql ORDER BY navigation_title ASC";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_navigation_id, $get_navigation_url, $get_navigation_title, $get_navigation_icon_white_18, $get_navigation_icon_black_18, $get_navigation_weight) = $row;
 			if($get_navigation_weight != "$x"){
-				mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=$x WHERE navigation_id=$get_navigation_id") or die(mysqli_error($link));
-
+				if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=$x WHERE navigation_id=$get_navigation_id") !== TRUE) {
+					echo "Error MySQLi update: " . $mysqli->error; die;
+				}
 			}
 			$x++;
 		}
 
 		// Get ID of dashboard
 		$query = "SELECT navigation_id FROM $t_admin_navigation WHERE navigation_url='dashboard' AND navigation_user_id=$my_user_id_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$result = $mysqli->query($query);
+		$row = $result->fetch_row();
 		list($get_dashboard_navigation_id) = $row;
 
 		// Set weight to -1
-		mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=-1 WHERE navigation_id=$get_dashboard_navigation_id") or die(mysqli_error($link));
-		
+		if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=-1 WHERE navigation_id=$get_dashboard_navigation_id") !== TRUE) {
+			echo "Error MySQLi update: " . $mysqli->error; die;
+		}
+
 		
 
 		$url = "index.php?open=$open&page=$page&action=add_item&ft=success&fm=item_added";
@@ -586,10 +602,14 @@ elseif($action == "add_item"){
 
 
 					// Check if I have it
-					$navigation_url_mysql = quote_smart($link, $file);
-					$query = "SELECT navigation_id FROM $t_admin_navigation WHERE navigation_url=$navigation_url_mysql AND navigation_user_id=$my_user_id_mysql";
-					$result = mysqli_query($link, $query);
-					$row = mysqli_fetch_row($result);
+					$navigation_url = "$file";
+
+					
+					$stmt = $mysqli->prepare("SELECT navigation_id FROM $t_admin_navigation WHERE navigation_url=? AND navigation_user_id=?"); 
+					$stmt->bind_param("ss", $navigation_url, $my_user_id);
+					$stmt->execute();
+					$result = $stmt->get_result();
+					$row = $result->fetch_row();
 					list($get_current_navigation_id) = $row;
 
 					if($get_current_navigation_id == ""){
@@ -615,8 +635,7 @@ elseif($action == "my_navigation_auto_setup"){
 		$my_user_id = output_html($my_user_id);
 		$my_user_id_mysql = quote_smart($link, $my_user_id);
 
-
-		mysqli_query($link, "INSERT INTO $t_admin_navigation
+		$result = $mysqli->query("INSERT INTO $t_admin_navigation
 		(navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_black_18, navigation_icon_white_18, navigation_user_id, navigation_show, navigation_weight) 
 		VALUES 
 		(NULL, 'dashboard', 'Dashboard', 'dashboard', 'dashboard_black_18x18.png', 'dashboard_white_18x18.png', $my_user_id_mysql, 1, 1),
@@ -625,8 +644,7 @@ elseif($action == "my_navigation_auto_setup"){
 		(NULL, 'users', 'Users', 'users', 'users_black_18x18.png', 'users_white_18x18.png', $my_user_id_mysql, 1, 4),
 		(NULL, 'settings', 'Settings', 'settings', 'settings_black_18x18.png', 'settings_white_18x18.png', $my_user_id_mysql, 1, 5),
 		(NULL, 'webdesign', 'Webdesign', 'webdesign', 'webdesign_black_18x18.png', 'webdesign_white_18x18.png', $my_user_id_mysql, 1, 6)
-		")
-		or die(mysqli_error($link));
+		");
 
 			
 		$url = "index.php?l=$l&editor_language=$editor_language";
@@ -638,78 +656,83 @@ elseif($action == "add_to_favorite_and_visit"){
 	// Me
 	$my_user_id = $_SESSION['admin_user_id'];
 	$my_user_id = output_html($my_user_id);
-	$my_user_id_mysql = quote_smart($link, $my_user_id);
 
 
 	$inp_url = $_GET['item'];
 	$inp_url = output_html($inp_url);
-	$inp_url_mysql = quote_smart($link, $inp_url);
 
 	$inp_title = ucfirst($inp_url);
 	$inp_title = output_html($inp_title);
-	$inp_title_mysql = quote_smart($link, $inp_title);
 
 	$inp_icon = "$inp_url";
 	$inp_icon = output_html($inp_icon);
-	$inp_icon_mysql = quote_smart($link, $inp_icon);
 
 	$inp_icon_black_small = $inp_icon . "_black_18x18.png";
-	$inp_icon_black_small_mysql = quote_smart($link, $inp_icon_black_small);
 
 	$inp_icon_black_medium = $inp_icon . "_black_24x24.png";
-	$inp_icon_black_medium_mysql = quote_smart($link, $inp_icon_black_medium);
 
 	$inp_icon_white_small = $inp_icon . "_white_18x18.png";
-	$inp_icon_white_small_mysql = quote_smart($link, $inp_icon_white_small);
 
 	$inp_icon_white_medium = $inp_icon . "_white_24x24.png";
-	$inp_icon_white_medium_mysql = quote_smart($link, $inp_icon_white_medium);
 
 	$inp_icon_color_small = $inp_icon . "_orange_18x18.png";
-	$inp_icon_color_small_mysql = quote_smart($link, $inp_icon_color_small);
 
 	$inp_icon_color_medium = $inp_icon . "_orange_24x24.png";
-	$inp_icon_color_medium_mysql = quote_smart($link, $inp_icon_color_medium);
 
 	// Check if I have this already
-	$query = "SELECT navigation_id FROM $t_admin_navigation WHERE navigation_url=$inp_url_mysql AND navigation_user_id=$my_user_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT navigation_id FROM $t_admin_navigation WHERE navigation_url=? AND navigation_user_id=?"); 
+	$stmt->bind_param("ss", $inp_url, $my_user_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_navigation_id) = $row;
 	if($get_current_navigation_id == ""){
 
-		mysqli_query($link, "INSERT INTO $t_admin_navigation 
-		(navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_black_18, navigation_icon_black_24, navigation_icon_white_18, navigation_icon_white_24, 
-		navigation_icon_color_18, navigation_icon_color_24, navigation_user_id, navigation_show, navigation_weight) 
-		VALUES 
-		(NULL, $inp_url_mysql, $inp_title_mysql, $inp_icon_mysql, $inp_icon_black_small_mysql, $inp_icon_black_medium_mysql, 
-		$inp_icon_white_small_mysql, $inp_icon_white_medium_mysql, $inp_icon_color_small_mysql, $inp_icon_color_medium_mysql, 
-		$my_user_id_mysql, '1', '999')")
-		or die(mysqli_error($link));
+		$inp_show = 1;
+		$inp_weight = 999;
+
+		$stmt = $mysqli->prepare("INSERT INTO $t_admin_navigation 
+				(navigation_id, navigation_url, navigation_title, navigation_icon, navigation_icon_black_18, 
+				navigation_icon_black_24, navigation_icon_white_18, navigation_icon_white_24, navigation_icon_color_18, navigation_icon_color_24, 
+				navigation_user_id, navigation_show, navigation_weight) 
+				VALUES 
+				(NULL,?,?,?,?,
+				?,?,?,?,?,
+				?,?,?)");
+		$stmt->bind_param("ssssssssssss", $inp_url, $inp_title, $inp_icon, $inp_icon_black_small, 
+				$inp_icon_black_medium, $inp_icon_white_small, $inp_icon_white_medium, $inp_icon_color_small, $inp_icon_color_medium, 
+				$my_user_id, $inp_show, $inp_weight); 
+		$stmt->execute();
 
 
 		// Sort all alphabetically
 		$x=0;
-		$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_user_id=$my_user_id_mysql ORDER BY navigation_title ASC";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$stmt = $mysqli->prepare("SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18, navigation_icon_black_18, navigation_weight FROM $t_admin_navigation WHERE navigation_user_id=? ORDER BY navigation_title ASC"); 
+		$stmt->bind_param("s", $my_user_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		while($row = $result->fetch_row()) {
 			list($get_navigation_id, $get_navigation_url, $get_navigation_title, $get_navigation_icon_white_18, $get_navigation_icon_black_18, $get_navigation_weight) = $row;
 			if($get_navigation_weight != "$x"){
-				mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=$x WHERE navigation_id=$get_navigation_id") or die(mysqli_error($link));
 
+				if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=$x WHERE navigation_id=$get_navigation_id") !== TRUE) {
+					echo "Error MySQLi update: " . $mysqli->error; die;
+				}
 			}
 			$x++;
 		}
 
 		// Get ID of dashboard
 		$query = "SELECT navigation_id FROM $t_admin_navigation WHERE navigation_url='dashboard' AND navigation_user_id=$my_user_id_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$result = $mysqli->query($query);
+		$row = $result->fetch_row();
 		list($get_dashboard_navigation_id) = $row;
 
 		// Set weight to -1
-		mysqli_query($link, "UPDATE $t_admin_navigation SET navigation_weight=-1 WHERE navigation_id=$get_dashboard_navigation_id") or die(mysqli_error($link));
-		
+		if ($mysqli->query("UPDATE $t_admin_navigation SET navigation_weight=-1 WHERE navigation_id=$get_dashboard_navigation_id") !== TRUE) {
+			echo "Error MySQLi update: " . $mysqli->error; die;
+		}
+
 		
 		$url = "index.php?open=$inp_url&editor_language=$editor_language&l=$l&ft=info&fm=added_to_quick_access_for_next_time";
 		header("Location: $url");

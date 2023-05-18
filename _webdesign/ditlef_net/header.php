@@ -1,13 +1,12 @@
 <?php
 /**
 *
-* File: en/_webdesign/en/header.php
-* Version 12:28 10.04.2019
-* Copyright (c) 2009-2019 Sindre Andre Ditlefsen
+* File: en/_webdesign/ditlef/header.php
+* Version 13.05.2023
+* Copyright (c) 2009-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
-
 
 
 /*- Website config -------------------------------------------------------------------- */
@@ -19,7 +18,6 @@ if(!(isset($server_name))){
 include("$root/_admin/_functions/latex.php");
 /*- Variables ------------------------------------------------------------------------- */
 $l_mysql = quote_smart($link, $l);
-
 
 
 /*- Money ---------------------------------------------------------------------------- */
@@ -146,26 +144,8 @@ echo"<!DOCTYPE html>
 	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
 	<meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0;\" />
 
-	<!-- jQuery -->
-		<script type=\"text/javascript\" src=\"$root/_admin/_javascripts/jquery/jquery-3.5.1.min.js\"></script>
-	<!-- //jQuery -->
-
 	<!-- Hide show nav -->
 		<script>
-		\$(document).ready(function(){
-			\$(\".toggle\").click(function () {
-				var idname= \$(this).data('divid');
-				\$(\".\"+idname).toggle();
-			});
-			\$(\".main_navigation_menu_icon\").click(function () {
-				\$(\"#main_left\").toggle();
-				\$(\"#main_navigation\").hide();
-			});
-			\$(\".main_navigation_menu_more\").click(function () {
-				\$(\"#main_navigation\").toggle();
-				\$(\"#main_left\").hide();
-			});
-		});
 		</script>
 	<!-- //Hide show nav -->
 
@@ -174,129 +154,114 @@ echo"<!DOCTYPE html>
 <a id=\"top\"></a>
 
 <!-- Header -->
-	<header>
-		<div id=\"header_inner\">
-			<div id=\"header_left\">
-				<a href=\"$root\"><span>&lt;&gt;</span> $configWebsiteTitleSav</a>
-			</div>
-			<div id=\"header_center\">
-				<div id=\"main_navigation\">
-					<ul>
 
-						<li><a href=\"$root/courses/index.php?l=$l\" class=\"main_navigation_has_sub"; if($url_minus_two == "courses"){ echo"_active"; } echo"\">Courses</a> <img src=\"$root/_webdesign/en/images/header/main_navigation/main_navigation_has_sub_mobile_black.png\" alt=\"main_navigation_has_sub_mobile.png\" class=\"main_navigation_has_sub_mobile toggle\" data-divid=\"display_main_navigation_sub_courses\" />
-							<ul class=\"main_navigation_sub display_main_navigation_sub_courses\">\n";
-							$t_courses_categories_main	 = $mysqlPrefixSav . "courses_categories_main";
-							$query = "SELECT main_category_id, main_category_title FROM $t_courses_categories_main WHERE main_category_language=$l_mysql ORDER BY main_category_title ASC";
-							$result = mysqli_query($link, $query);
-							while($row = mysqli_fetch_row($result)) {
-								list($get_main_category_id, $get_main_category_title) = $row;
-								echo"								";
-								echo"<li><a href=\"$root/courses/open_main_category.php?main_category_id=$get_main_category_id&amp;l=$l\">$get_main_category_title</a></li>\n";
-							}
-							echo"
-							</ul>
-						</li>
-						<li><a href=\"$root/references/index.php?l=$l\""; if($url_minus_two == "references"){ echo" class=\"main_navigation_active\""; } echo">References</a>
-						<li><a href=\"$root/forum/index.php?l=$l\" class=\"main_navigation_has_sub"; if($url_minus_two == "forum"){ echo"_active"; } echo"\">Forum</a> <img src=\"$root/_webdesign/en/images/header/main_navigation/main_navigation_has_sub_mobile_black.png\" alt=\"main_navigation_has_sub_mobile.png\" class=\"main_navigation_has_sub_mobile toggle\" data-divid=\"display_main_navigation_sub_community\" />
-							<ul class=\"main_navigation_sub display_main_navigation_sub_community\">
-								<li><a href=\"$root/forum/index.php?l=$l\">All questions</a></li>
-								<li><a href=\"$root/forum/index.php?show=recent&amp;l=$l\">Recent</a></li>
-								<li><a href=\"$root/forum/index.php?show=popular&amp;l=$l\">Popular</a></li>
-								<li><a href=\"$root/forum/index.php?show=unanswered&amp;l=$l\">Unanswered</a></li>
-								<li><a href=\"$root/forum/index.php?show=active&amp;l=$l\">Active</a></li>
-							</ul>
-						</li>
-	
-						<li><a href=\"$root/downloads/index.php?l=$l\" class=\"main_navigation_has_sub"; if($url_minus_two == "downloads"){ echo"_active"; } echo"\">Downloads</a> <img src=\"$root/_webdesign/en/images/header/main_navigation/main_navigation_has_sub_mobile_black.png\" alt=\"main_navigation_has_sub_mobile.png\" class=\"main_navigation_has_sub_mobile toggle\" data-divid=\"diplay_main_navigation_sub_downloads\" />
-							<ul class=\"main_navigation_sub diplay_main_navigation_sub_downloads\">
-							<li><a href=\"$root/downloads/index.php?order_by=download_updated_datetime&amp;order_method=desc&amp;l=$l\">Last updated</a></li>
-							<li><a href=\"$root/downloads/index.php?order_by=download_unique_hits&amp;order_method=desc&amp;l=$l\">Top downloads</a></li>
-							<li><a href=\"$root/downloads/index.php?order_by=download_id&amp;order_method=desc&amp;l=$l\">New</a></li>
-							</ul>
-						</li>
-
-						<li><a href=\"$root/blog/index.php?l=$l\""; if($url_minus_two == "blog"){ echo" class=\"main_navigation_active\""; } echo">Blog</a>
-						
-					</ul>
-			
-				</div> <!-- //main_navigation -->
-			</div>
-			<div id=\"header_right\">
-			
-				<div id=\"navigation_right\">
-					<ul>
-					";
-
-					if(isset($_SESSION['user_id'])){
-						echo"
-						<li><a href=\"$root/users/view_profile.php?user_id=$get_my_user_id&amp;l=en\">$get_my_user_alias</a></li>
-						<li><a href=\"$root/users/logout.php?process=1&amp;l=en\">Log out</a></li>
-						";
+<header>
+		<!-- Header left -->
+			<div class=\"header_left\">
+				<!-- Javascript toggle nav -->
+				<script>
+				function hoverNavImage(element) {
+					var menuBox = document.getElementById('nav');
+					if(menuBox.style.display == \"block\") {
+						// Nav is showing
+						// Toggle between X black and X blue
+						// Image = Black X
+						element.setAttribute('src', '$root/_webdesign/ditlef_net/images/header/close_rounded_nofill_black_24x24.svg');
 					}
-					else{
-						echo"
-						<li><a href=\"$root/users/login.php?l=en\">Login</a></li>
-						<li><a href=\"$root/users/create_free_account.php?l=en\">Registrer</a></li>
-						";
-					}
-					echo"
-						<li><a href=\"$root/search/index.php?l=en\" class=\"sub_header_right_search\">Search</a></li>
-					</ul>
-				</div> <!-- //navigation_right -->
-
-
-			<!-- Mobile navigation -->
-				";
-				echo"
-				<div class=\"mobile_nav\">
-					<ul>\n";
-						if($nav != ""){
-							echo"						";
-							echo"<li><a href=\"#\"><img src=\"$root/_webdesign/en/images/header/main_navigation_menu_icon_white.png\" alt=\"main_navigation_menu_icon.png\" class=\"main_navigation_menu_icon\" /></a></li>\n";
+					else {
+						// Nav is closed
+						// Toggle between menu black and menu blue
+						// Image = Menu
+						var menuImgSrc = document.getElementById(\"menu_image\").src;
+						menuImgSrc = /[^/]*$/.exec(menuImgSrc)[0];
+						if(menuImgSrc == \"menu_rounded_nofill_black_24x24.svg\"){
+							element.setAttribute('src', '$root/_webdesign/ditlef_net/images/header/menu_rounded_nofill_2f3ab2_24x24.svg');
 						}
-						echo"
-						<li><a href=\"#\" class=\"main_navigation_menu_more\">More</a></li>
-						<li><a href=\"$root/search/index.php?l=$l\" id=\"mobile_bar_left_search\"><img src=\"$root/_webdesign/en/images/header/main_navigation_search_white.png\" alt=\"Search\" /></a></li>
-						<li><a href=\"#\" id=\"ic_more_vert_link_img\"><img src=\"$root/_webdesign/en/images/header/ic_more_vert_white.png\" alt=\"ic_more_vert.png\" /></a></li>
-					</ul>
+						else{
+							element.setAttribute('src', '$root/_webdesign/ditlef_net/images/header/menu_rounded_nofill_black_24x24.svg');
+						}
+					}
 
-					<script>
-					\$(document).ready(function(){
-						\$(\"#ic_more_vert_link_img\").click(function () {
-							\$(\"#ic_more_vert_div\").toggle();
-						});
-					});
-					</script>
+				}
+				function onClickNavImage(element) {
+					var menuBox = document.getElementById('nav');    
+					if(menuBox.style.display == \"block\") { // if is menuBox displayed, hide it
+						menuBox.style.display = \"none\";
+						element.setAttribute('src', '$root/_webdesign/ditlef_net/images/header/menu_rounded_nofill_black_24x24.svg');
+					}
+					else { // if is menuBox hidden, display it
+						menuBox.style.display = \"block\";
+						element.setAttribute('src', '$root/_webdesign/ditlef_net/images/header/close_rounded_nofill_black_24x24.svg');
+					}
+				}
+				</script>
+				<!-- //Javascript toggle menu -->
+				<a href=\"#menu\" class=\"menu\"><img src=\"$root/_webdesign/ditlef_net/images/header/menu_rounded_nofill_black_24x24.svg\" alt=\"Menu\" id=\"menu_image\" onclick=\"onClickNavImage(this)\" onmouseover=\"hoverNavImage(this);\" onmouseout=\"hoverNavImage(this);\"> </a>
+				<a href=\"$root\" class=\"logo\">Ditlef</a>
+			</div>
+		<!-- //Header left -->
+		
+		<!-- Header center -->
+			<!-- Javascript change hover image -->
+				<script>
+				function hover_search_image(element) {
+					element.setAttribute('src', '$root/_webdesign/ditlef_net/images/header/search_rounded_nofill_2f3ab2_20x20.svg');
+				}
+				  
+				function unhover_search_image(element) {
+					element.setAttribute('src', '$root/_webdesign/ditlef_net/images/header/search_rounded_nofill_black_20x20.svg');
+				}
+				</script>
+			<!-- //Javascript change hover image -->
 
-					<!-- Mobile user menu -->
-						<div id=\"ic_more_vert_div\">
-							<ul>
-							";
-							if(isset($my_user_id)){
-								echo"
-								<li><a href=\"$root/users/my_profile.php?l=$l\">$get_my_user_alias</a></li>
-								<li class=\"last\"><a href=\"$root/users/logout.php?process=1&amp;l=$l\">$l_logout</a></li>
-								";
-							}
-							else{
-								echo"
-								<li><a href=\"$root/users/login.php?l=$l\">$l_login</a></li>
-								<li class=\"last\"><a href=\"$root/users/create_free_account.php?l=$l\">$l_registrer</a></li>
-								";
-							}
-							echo"
-							</ul>
-						</div>
-					<!-- //Mobile user -->
-				</div>
-			<!-- //Mobile navigation -->
-			</div> <!-- //header_right -->
-		</div> <!-- //header_inner -->
-	</header>
-<!-- //Header -->
+			<div class=\"header_center\">
+				<div class=\"header_search_container\">
+					<form action=\"/action_page.php\">
+			  			<input type=\"text\" placeholder=\"Search..\" name=\"search\">
+			  			<button type=\"submit\"><img src=\"$root/_webdesign/ditlef_net/images/header/search_rounded_nofill_black_20x20.svg\" alt=\"Search\" onmouseover=\"hover_search_image(this);\" onmouseout=\"unhover_search_image(this);\"></button>
+					</form>
+		  		</div>
+			</div>
+		<!-- //Header center -->
 
+		
+		<!-- Header right -->
+			<div class=\"header_right\">
+			";
 
+			if(isset($_SESSION['user_id'])){
+				echo"
+				<a href=\"$root/users/view_profile.php?user_id=$get_my_user_id&amp;l=en\" class=\"nofill\">$get_my_user_alias</a>
+				<a href=\"$root/users/logout.php?process=1&amp;l=en\" class=\"nofill\">Log out</a>
+				";
+			}
+			else{
+				echo"
+				<a href=\"$root/users/login.php?l=en\" class=\"nofill\">Login</a>
+				<a href=\"$root/users/create_free_account.php?l=en\"  class=\"fill\">Registrer</a>
+				";
+			}
+			echo"
+			</div>
+		<!-- //Header right -->
+</header>
 
+<nav id=\"nav\">
+	<ul>
+		<!-- All Courses -->\n";
+			$t_courses_categories_main	 = $mysqlPrefixSav . "courses_categories_main";
+			$query = "SELECT main_category_id, main_category_title FROM $t_courses_categories_main ORDER BY main_category_title ASC";
+			echo"$query";
+			$result = mysqli_query($link, $query);
+			while($row = mysqli_fetch_row($result)) {
+				list($get_main_category_id, $get_main_category_title) = $row;
+				echo"								";
+				echo"<li><a href=\"$root/courses/open_main_category.php?main_category_id=$get_main_category_id&amp;l=$l\">$get_main_category_title</a></li>\n";
+			}
+		echo"
+	<!-- All Courses -->
+	</ul>
+</nav>
 
 
 <!-- Main -->

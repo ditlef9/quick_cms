@@ -3,8 +3,8 @@
 *
 * File: _admin/_inc/dashboard/_stats/process_unprocessed.php
 * Version 1
-* Date 09:55 28.11.2021
-* Copyright (c) 2021 Sindre Andre Ditlefsen
+* Date 14.05.2023
+* Copyright (c) 2021-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -74,10 +74,9 @@ $t_languages_active  = $mysqlPrefixSav . "languages_active";
 
 // Unprocessed
 $query_u = "SELECT unprocessed_id, unprocessed_first_datetime, unprocessed_last_datetime, unprocessed_year, unprocessed_month, unprocessed_day, unprocessed_week, unprocessed_ip, unprocessed_user_agent, unprocessed_accept_language, unprocessed_language, unprocessed_first_request_uri, unprocessed_last_request_uri, unprocessed_first_referer, unprocessed_last_referer, unprocessed_hits FROM $t_stats_unprocessed";
-$result_u = mysqli_query($link, $query_u);
-while($row_u = mysqli_fetch_row($result_u)) {
+$result_u = $mysqli->query($query_u);
+while($row_u = $result_u->fetch_row()) {
 	list($get_unprocessed_id, $get_unprocessed_first_datetime, $get_unprocessed_last_datetime, $get_unprocessed_year, $get_unprocessed_month, $get_unprocessed_day, $get_unprocessed_week, $get_unprocessed_ip, $get_unprocessed_user_agent, $get_unprocessed_accept_language, $get_unprocessed_language, $get_unprocessed_first_request_uri, $get_unprocessed_last_request_uri, $get_unprocessed_first_referer, $get_unprocessed_last_referer, $get_unprocessed_hits) = $row_u;
-
 
 
 	// Hostname
@@ -86,31 +85,36 @@ while($row_u = mysqli_fetch_row($result_u)) {
 		$my_hostname = gethostbyaddr($get_unprocessed_ip); // Some servers in local network cant use getostbyaddr because of nameserver missing
 	}
 	$my_hostname = output_html($my_hostname);
-	$my_hostname_mysql = quote_smart($link, $my_hostname);
 
 	// IP
 	$my_ip = "$get_unprocessed_ip";
-	$my_ip_mysql = quote_smart($link, $get_unprocessed_ip);
 
 	// Find user agent. By looking for user agent we can know if it is human or bot
 	if($get_unprocessed_user_agent == ""){
 		echo"<p style=\"color: red;\"><b>Warning:</b> unprocessed.php: my_user_agent is blank. Deleting.<br /><b>Data:</b>
 		$get_unprocessed_id, $get_unprocessed_first_datetime, $get_unprocessed_last_datetime, $get_unprocessed_year, $get_unprocessed_month, $get_unprocessed_day, $get_unprocessed_week, $get_unprocessed_ip, $get_unprocessed_user_agent, $get_unprocessed_accept_language, $get_unprocessed_language, $get_unprocessed_first_request_uri, $get_unprocessed_last_request_uri, $get_unprocessed_first_referer, $get_unprocessed_last_referer, $get_unprocessed_hits</p>\n";
-		mysqli_query($link, "DELETE FROM $t_stats_unprocessed WHERE unprocessed_id=$get_unprocessed_id") or die(mysqli_error($link));
+		if ($mysqli->query("DELETE FROM $t_stats_unprocessed WHERE unprocessed_id=$get_unprocessed_id") !== TRUE) {
+			echo "Error MySQLi delete: " . $mysqli->error; die;
+		}
+	
 	}
-	$my_user_agent = "$get_unprocessed_user_agent";
-	$my_user_agent_mysql = quote_smart($link, $my_user_agent);
-	$query = "SELECT stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned FROM $t_stats_user_agents_index WHERE stats_user_agent_string=$my_user_agent_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	
+
+	$stmt = $mysqli->prepare("SELECT stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned FROM $t_stats_user_agents_index WHERE stats_user_agent_string=?"); 
+	$stmt->bind_param("s", $get_unprocessed_user_agent);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_stats_user_agent_id, $get_stats_user_agent_string, $get_stats_user_agent_type, $get_stats_user_agent_browser, $get_stats_user_agent_browser_version, $get_stats_user_agent_browser_icon, $get_stats_user_agent_os, $get_stats_user_agent_os_version, $get_stats_user_agent_os_icon, $get_stats_user_agent_bot, $get_stats_user_agent_bot_icon, $get_stats_user_agent_bot_website, $get_stats_user_agent_banned) = $row;
 
 	if($get_stats_user_agent_id == ""){
 		include("_inc/dashboard/_stats/autoinsert_new_user_agent.php");
 
-		$query = "SELECT stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned FROM $t_stats_user_agents_index WHERE stats_user_agent_string=$my_user_agent_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$stmt = $mysqli->prepare("SELECT stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned FROM $t_stats_user_agents_index WHERE stats_user_agent_string=?"); 
+		$stmt->bind_param("s", $get_unprocessed_user_agent);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_stats_user_agent_id, $get_stats_user_agent_string, $get_stats_user_agent_type, $get_stats_user_agent_browser, $get_stats_user_agent_browser_version, $get_stats_user_agent_browser_icon, $get_stats_user_agent_os, $get_stats_user_agent_os_version, $get_stats_user_agent_os_icon, $get_stats_user_agent_bot, $get_stats_user_agent_bot_icon, $get_stats_user_agent_bot_website, $get_stats_user_agent_banned) = $row;
 		if($get_stats_user_agent_id == ""){
 			echo"<p><span style=\"color:red;\">Error inserting new user agent!</span><br />
@@ -128,18 +132,17 @@ while($row_u = mysqli_fetch_row($result_u)) {
 	}
 
 	// User agent type
-	$inp_user_agent_type_mysql = quote_smart($link, $get_stats_user_agent_type);
+	$inp_user_agent_type = $get_stats_user_agent_type;
 
 	// OS
-	$inp_os_mysql = quote_smart($link, $get_stats_user_agent_os);
+	$inp_os = $get_stats_user_agent_os;
 
 	// Browser
-	$inp_browser_mysql = quote_smart($link, $get_stats_user_agent_browser);
+	$inp_browser = $get_stats_user_agent_browser;
 
 	// Accept
 	$inp_accept_language_array = explode(";", $get_unprocessed_accept_language);
 	$inp_accept_language = $inp_accept_language_array[0];
-	$inp_accept_language_mysql = quote_smart($link, $inp_accept_language);
 
 	// Accept language preffered
 	$inp_accept_language_array = explode(";", $get_unprocessed_accept_language);
@@ -147,19 +150,21 @@ while($row_u = mysqli_fetch_row($result_u)) {
 
 	$inp_accept_language_preffered_array = explode(",", $inp_accept_language_preffered);
 	$inp_accept_language_preffered = $inp_accept_language_preffered_array[0];
-	$inp_accept_language_mysql = quote_smart($link, $inp_accept_language_preffered);
+	$inp_accept_language = $inp_accept_language_preffered;
 
 	// Language
-	$inp_language_mysql = quote_smart($link, $get_unprocessed_language);
+	$inp_language = $get_unprocessed_language;
 
 	// Active language
-	$query = "SELECT language_active_id, language_active_name, language_active_slug, language_active_native_name, language_active_iso_two, language_active_iso_three, language_active_iso_four, language_active_iso_two_alt_a, language_active_iso_two_alt_b, language_active_flag_path_16x16, language_active_flag_active_16x16 FROM $t_languages_active WHERE language_active_iso_two=$inp_language_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT language_active_id, language_active_name, language_active_slug, language_active_native_name, language_active_iso_two, language_active_iso_three, language_active_iso_four, language_active_iso_two_alt_a, language_active_iso_two_alt_b, language_active_flag_path_16x16, language_active_flag_active_16x16 FROM $t_languages_active WHERE language_active_iso_two=?"); 
+	$stmt->bind_param("s", $inp_language);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_language_active_id, $get_language_active_name, $get_language_active_slug, $get_language_active_native_name, $get_language_active_iso_two, $get_language_active_iso_three, $get_language_active_iso_four, $get_language_active_iso_two_alt_a, $get_language_active_iso_two_alt_b, $get_language_active_flag_path_16x16, $get_language_active_flag_active_16x16) = $row;
 
 	// Request uri
-	$inp_request_uri_mysql = quote_smart($link, $get_unprocessed_first_request_uri);
+	$inp_request_uri = $get_unprocessed_first_request_uri;
 
 	// Month full and month short
 	if($get_unprocessed_month == "01" OR $get_unprocessed_month == "1"){
@@ -243,7 +248,10 @@ while($row_u = mysqli_fetch_row($result_u)) {
 
 
 	// Delete
-	mysqli_query($link, "DELETE FROM $t_stats_unprocessed WHERE unprocessed_id=$get_unprocessed_id") or die(mysqli_error($link));
+	if ($mysqli->query("DELETE FROM $t_stats_unprocessed WHERE unprocessed_id=$get_unprocessed_id") !== TRUE) {
+		echo "Error MySQLi delete: " . $mysqli->error; die;
+	}
+
 }
 
 

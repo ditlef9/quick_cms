@@ -6,8 +6,8 @@ ini_set('arg_separator.output', '&amp;');
 *
 * File: _admin/index.php
 * Version 3.0.0
-* Date 20:46 18.08.2021
-* Copyright (c) 2008-2021 Sindre Andre Ditlefsen
+* Date 14.05.2023
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -15,7 +15,6 @@ ini_set('arg_separator.output', '&amp;');
 /*- Functions ------------------------------------------------------------------------ */
 include("_functions/output_html.php");
 include("_functions/clean.php");
-include("_functions/quote_smart.php");
 include("_functions/resize_crop_image.php");
 
 
@@ -123,31 +122,30 @@ else{
 $mysql_config_file = "_data/mysql_" . $server_name . ".php";
 if(file_exists($mysql_config_file)){
 	include("$mysql_config_file");
-	$link = mysqli_connect($mysqlHostSav, $mysqlUserNameSav, $mysqlPasswordSav, $mysqlDatabaseNameSav);
-	if (!$link) {
+	$mysqli = new mysqli($mysqlHostSav, $mysqlUserNameSav, $mysqlPasswordSav, $mysqlDatabaseNameSav);
+
+	if ($mysqli -> connect_errno) {
+		$error = $mysqli -> connect_error;
 		echo "
-		<div class=\"alert alert-danger\"><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span><strong>MySQL connection error</strong>"; 
-		echo PHP_EOL;
-   		echo "<br />Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-    		echo "<br />Debugging error: " . mysqli_connect_error() . PHP_EOL;
-    		echo"
+		<div class=\"error\"><p><b>MySQL connection error</b>: $error</p>
 		</div>
 		";
 	}
 
+
 	/*- MySQL Tables -------------------------------------------------- */
-	$t_users 	 		= $mysqlPrefixSav . "users";
-	$t_users_profile 		= $mysqlPrefixSav . "users_profile";
-	$t_users_friends 		= $mysqlPrefixSav . "users_friends";
+	$t_users 	 				= $mysqlPrefixSav . "users";
+	$t_users_profile 			= $mysqlPrefixSav . "users_profile";
+	$t_users_friends 			= $mysqlPrefixSav . "users_friends";
 	$t_users_friends_requests 	= $mysqlPrefixSav . "users_friends_requests";
-	$t_users_profile		= $mysqlPrefixSav . "users_profile";
+	$t_users_profile			= $mysqlPrefixSav . "users_profile";
 	$t_users_profile_photo 		= $mysqlPrefixSav . "users_profile_photo";
-	$t_users_status 		= $mysqlPrefixSav . "users_status";
+	$t_users_status 			= $mysqlPrefixSav . "users_status";
 	$t_users_status_subscriptions	= $mysqlPrefixSav . "users_status_subscriptions";
 	$t_users_status_replies 	= $mysqlPrefixSav . "users_status_replies";
 	$t_users_status_replies_likes 	= $mysqlPrefixSav . "users_status_replies_likes";
 	$t_users_status_likes 		= $mysqlPrefixSav . "users_status_likes";
-	$t_users_profile 		= $mysqlPrefixSav . "users_profile";
+	$t_users_profile 			= $mysqlPrefixSav . "users_profile";
 	$t_users_cover_photos 		= $mysqlPrefixSav . "users_cover_photos";
 	$t_users_email_subscriptions 	= $mysqlPrefixSav . "users_email_subscriptions";
 	$t_users_notifications 		= $mysqlPrefixSav . "users_notifications";
@@ -156,17 +154,17 @@ if(file_exists($mysql_config_file)){
 	$t_users_antispam_questions	= $mysqlPrefixSav . "users_antispam_questions";
 	$t_users_antispam_answers	= $mysqlPrefixSav . "users_antispam_answers";
 	
-	$t_pages 			= $mysqlPrefixSav . "pages";
-	$t_pages_comments		= $mysqlPrefixSav . "pages_comments";
+	$t_pages 					= $mysqlPrefixSav . "pages";
+	$t_pages_comments			= $mysqlPrefixSav . "pages_comments";
 	$t_pages_navigation 		= $mysqlPrefixSav . "pages_navigation";
 
-	$t_comments		= $mysqlPrefixSav . "comments";
+	$t_comments				= $mysqlPrefixSav . "comments";
 	$t_comments_users_block	= $mysqlPrefixSav . "comments_users_block";
 
-	$t_images			= $mysqlPrefixSav . "images";
+	$t_images				= $mysqlPrefixSav . "images";
 	$t_images_paths			= $mysqlPrefixSav . "images_paths";
 
-	$t_languages 			= $mysqlPrefixSav . "languages";
+	$t_languages 				= $mysqlPrefixSav . "languages";
 	$t_languages_active 		= $mysqlPrefixSav . "languages_active";
 	$t_languages_countries		= $mysqlPrefixSav . "languages_countries";
 	
@@ -178,7 +176,7 @@ if(file_exists($mysql_config_file)){
 	$t_admin_translations_files       = $mysqlPrefixSav . "admin_translations_files";
 	$t_admin_translations_strings     = $mysqlPrefixSav . "admin_translations_strings";
 
-	$t_admin_navigation		= $mysqlPrefixSav . "admin_navigation";
+	$t_admin_navigation			= $mysqlPrefixSav . "admin_navigation";
 	$t_admin_messages_inbox     = $mysqlPrefixSav . "admin_messages_inbox";
 
 	$t_social_media 	= $mysqlPrefixSav . "social_media";
@@ -218,9 +216,10 @@ if(isset($_GET['editor_language'])) {
 else{
 	// Find active language
 	$query = "SELECT language_active_id, language_active_iso_two FROM $t_languages_active WHERE language_active_default='1'";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
 	list($get_language_active_id, $get_language_active_iso_two) = $row;
+
 
 
 	if($get_language_active_id == ""){
@@ -339,15 +338,15 @@ elseif($open != "" && $page != ""){
 /*- Include user ---------------------------------------------------------------------- */
 $my_user_id = $_SESSION['admin_user_id'];
 $my_user_id = output_html($my_user_id);
-$my_user_id_mysql = quote_smart($link, $my_user_id);
 
 $my_security = $_SESSION['admin_security'];
 $my_security = output_html($my_security);
-$my_security_mysql = quote_smart($link, $my_security);
 
-$query = "SELECT user_id, user_email, user_name, user_language, user_last_online, user_rank, user_login_tries FROM $t_users WHERE user_id=$my_user_id_mysql AND user_security=$my_security_mysql";
-$result = mysqli_query($link, $query);
-$row = mysqli_fetch_row($result);
+$stmt = $mysqli->prepare("SELECT user_id, user_email, user_name, user_language, user_last_online, user_rank, user_login_tries FROM $t_users WHERE user_id=? AND user_security=?"); 
+$stmt->bind_param("ss", $my_user_id, $my_security);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_row();
 list($get_my_user_id, $get_my_user_email, $get_my_user_name, $get_my_user_language, $get_my_user_last_online, $get_my_user_rank, $get_my_user_login_tries) = $row;
 if($get_my_user_id == ""){
 	$url = "login/index.php?ft=info&fm=please_login_to_the_control_panel";
@@ -366,10 +365,9 @@ else{
 
 // Get my photo
 $query = "SELECT photo_id, photo_destination, photo_thumb_40, photo_thumb_50 FROM $t_users_profile_photo WHERE photo_user_id='$get_my_user_id' AND photo_profile_image='1'";
-$result = mysqli_query($link, $query);
-$row = mysqli_fetch_row($result);
+$result = $mysqli->query($query);
+$row = $result->fetch_row();
 list($get_my_photo_id, $get_my_photo_destination, $get_my_photo_thumb_40, $get_my_photo_thumb_50) = $row;
-
 
 /*- Design ---------------------------------------------------------------------------- */
 if($process != "1"){
@@ -474,11 +472,14 @@ echo"<!DOCTYPE html>
 
 
 				$x = 0;
-				$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18 FROM $t_admin_navigation WHERE navigation_user_id=$my_user_id_mysql ORDER BY navigation_weight ASC";
-				$result = mysqli_query($link, $query);
-				while($row = mysqli_fetch_row($result)) {
+				$query = "SELECT navigation_id, navigation_url, navigation_title, navigation_icon_white_18 FROM $t_admin_navigation WHERE navigation_user_id=? ORDER BY navigation_weight ASC";
+				$stmt = $mysqli->prepare($query); 
+				$stmt->bind_param("s", $my_user_id);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				while($row = $result->fetch_row()) {
 					list($get_navigation_id, $get_navigation_url, $get_navigation_title, $get_navigation_icon_white_18) = $row;
-
+		
 					echo"
 					<li";if($open == "$get_navigation_url"){echo" class=\"main_navigation_has_sub_li_active\"";}echo">
 						<a href=\"index.php?open=$get_navigation_url&amp;editor_language=$editor_language&amp;l=$l\"";if($open == "$get_navigation_url"){echo" class=\"main_navigation_has_sub_a_active\"";}echo"><img src=\"_inc/$get_navigation_url/_gfx/icons/$get_navigation_icon_white_18\" alt=\"$get_navigation_icon_white_18\" /> $get_navigation_title</a> <img src=\"_design/gfx/main_navigation/main_navigation_has_sub_grey.png\" alt=\"main_navigation_has_sub.png\" class=\"main_navigation_has_sub toggle\" data-divid=\"display_main_navigation_sub_dashboard\" />
@@ -580,7 +581,7 @@ echo"<!DOCTYPE html>
 							else{
 								echo"
 								<h1>Server error 404</h1>
-								<p>Flatfilen _inc/$open/default.php finnes ikke på serveren.</p>
+								<p>Flatfilen _inc/$open/default.php finnes ikke pï¿½ serveren.</p>
 								";
 							}
 						}
@@ -607,7 +608,7 @@ echo"<!DOCTYPE html>
 								else{
 									echo"
 									<h1>Server error 404</h1>
-									<p>Flatfilen _inc/$open/$page.php finnes ikke på serveren.</p>
+									<p>Flatfilen _inc/$open/$page.php finnes ikke pï¿½ serveren.</p>
 									";
 								}
 							
@@ -627,8 +628,22 @@ echo"<!DOCTYPE html>
 			<!-- //Includes -->
 
 		</div>
+
+
 	</main>
 <!-- //Content -->
+
+
+<!-- Footer line -->
+<footer>
+	<p>
+	<a href=\"https://ditlef.net\">&copy; 2008-2023 S. Ditlefsen</a>
+	|
+	<a href=\"https://github.com/ditlef9/quick_cms\">Quick CMS $cmsVersionSav</a>
+	</p>
+</footer>
+<!-- //Footer line -->
+
 </body>
 </html>";
 ?>

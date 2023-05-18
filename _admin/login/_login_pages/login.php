@@ -15,7 +15,6 @@ if($process == "1"){
 			header("Location: index.php?ft=error&fm=please_enter_your_email&l=$l");
 			exit;
 		}
-		$inp_email_mysql = quote_smart($link, $inp_email);
 
 		// Validate email
 		// if (!filter_var($inp_email, FILTER_VALIDATE_EMAIL)) {
@@ -42,9 +41,11 @@ if($process == "1"){
 
 
 	// We got mail and password, look for user
-	$query = "SELECT user_id, user_name, user_password, user_salt, user_security, user_language, user_last_online, user_rank, user_login_tries FROM $t_users WHERE user_email=$inp_email_mysql OR user_name=$inp_email_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT user_id, user_name, user_password, user_salt, user_security, user_language, user_last_online, user_rank, user_login_tries FROM $t_users WHERE user_email=?"); 
+	$stmt->bind_param("s", $inp_email);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_user_id, $get_user_name, $get_user_password, $get_user_salt, $get_user_security, $get_user_language, $get_user_last_online, $get_user_rank, $get_user_login_tries) = $row;
 
 	if($get_user_id == ""){
@@ -61,49 +62,60 @@ if($process == "1"){
 
 
 	// Country :: Find my country based on IP
+	$my_ip = $_SERVER['REMOTE_ADDR'];
+	$my_ip = output_html($my_ip);
 	$ip_type = "";
 	$get_country = "";
 	if (ip2long($my_ip) !== false) {
 		$ip_type = "ipv4";
-
-		$in_addr = inet_pton($my_ip);
-		$in_addr_mysql = quote_smart($link, $in_addr);
-
-		$query = "select * from $t_stats_ip_to_country_lookup_ipv4 where addr_type = '$ip_type' and ip_start <= $in_addr_mysql order by ip_start desc limit 1";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		
+		$in_addr = "$my_ip";
+		if($my_ip != "127.0.0.1"){
+			$in_addr = inet_pton($my_ip); // converts a readable IP address into a packed 32bit IPv4 or 128bit IPv6 format
+		}
+		$q = "SELECT * FROM $t_stats_ip_to_country_lookup_ipv4 WHERE addr_type=? AND ip_start <=? ORDER BY ip_start DESC LIMIT 1";
+		$stmt = $mysqli->prepare($q); 
+		$stmt->bind_param("ss", $ip_type, $in_addr);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_ip_id, $get_addr_type, $get_ip_start, $get_ip_end, $get_country) = $row;
+
 	} else if (preg_match('/^[0-9a-fA-F:]+$/', $my_ip) && @inet_pton($my_ip)) {
 		$ip_type = "ipv6";
 
 		$in_addr = inet_pton($my_ip);
 		$in_addr_mysql = quote_smart($link, $in_addr);
 
-		$query = "select * from $t_stats_ip_to_country_lookup_ipv6 where addr_type = '$ip_type' and ip_start <= $in_addr_mysql order by ip_start desc limit 1";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$stmt = $mysqli->prepare("SELECT * FROM $t_stats_ip_to_country_lookup_ipv6 WHERE addr_type =? and ip_start <=? order by ip_start desc limit 1"); 
+		$stmt->bind_param("ss", $ip_type, $in_addr);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_ip_id, $get_addr_type, $get_ip_start, $get_ip_end, $get_country) = $row;
+
 	}
 	$get_my_country_name = "";
 	$get_my_country_iso_two = "";
 	if($get_ip_id != ""){
-		$country_iso_two_mysql = quote_smart($link, $get_country);
-		$query = "SELECT country_id, country_name, country_iso_two FROM $t_languages_countries WHERE country_iso_two=$country_iso_two_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$stmt = $mysqli->prepare("SELECT country_id, country_name, country_iso_two FROM $t_languages_countries WHERE country_iso_two=?"); 
+		$stmt->bind_param("s", $get_country);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_country_id, $get_my_country_name, $get_my_country_iso_two) = $row;
+
 	}
-	$inp_country_mysql = quote_smart($link, $get_my_country_name);
+	$inp_country = $get_my_country_name;
 
-	$inp_browser_mysql = quote_smart($link, $get_stats_user_agent_browser);
+	$inp_browser = $get_stats_user_agent_browser;
 
-	$inp_os_mysql = quote_smart($link, $get_stats_user_agent_os);
+	$inp_os = $get_stats_user_agent_os;
 
 	$inp_os_icon = clean($get_stats_user_agent_os);
 	$inp_os_icon = $inp_os_icon . "_32x32.png";
-	$inp_os_icon_mysql = quote_smart($link, $inp_os_icon);
 	
-	$inp_type_mysql = quote_smart($link, $get_stats_user_agent_type);
+	$inp_type = "$get_stats_user_agent_type";
 
 	if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
 		$inp_accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
@@ -114,41 +126,53 @@ if($process == "1"){
 		$inp_accept_language = "ZZ";
 	}
 	$inp_accpeted_language = substr("$inp_accept_language", 0,2);
-	$inp_accpeted_language_mysql = quote_smart($link, $inp_accpeted_language);
 
 	$inp_language = output_html($l);
-	$inp_language_mysql = quote_smart($link, $inp_language);
 	
 	$inp_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 	$inp_url = htmlspecialchars($inp_url, ENT_QUOTES, 'UTF-8');
 	$inp_url = output_html($inp_url);
-	$inp_url_mysql = quote_smart($link, $inp_url);
 
-	mysqli_query($link, "INSERT INTO $t_users_logins (login_id, login_user_id, login_datetime, login_datetime_saying, login_year, 
-				login_month, login_ip, login_hostname, login_user_agent, login_country, 
-				login_browser, login_os, login_type, login_accepted_language, login_language, 
-				login_successfully, login_url, login_warning_sent)
-				VALUES(
-				NULL, $get_user_id, '$datetime', '$datetime_saying', '$year',
-				'$month', $my_ip_mysql, $my_hostname_mysql, $my_user_agent_mysql, $inp_country_mysql,
+	$inp_zero = 0;
+
+	$stmt = $mysqli->prepare("INSERT INTO $t_users_logins
+						(login_id, login_user_id, login_datetime, login_datetime_saying, login_year, 
+						login_month, login_ip, login_hostname, login_user_agent, login_country, 
+						login_browser, login_os, login_type, login_accepted_language, login_language, 
+						login_successfully, login_url, login_warning_sent) 
+	VALUES 
+	(NULL,?,?,?,?, 
+	?,?,?,?,?, 
+	?,?,?,?,?, 
+	?,?,?)");
+	$stmt->bind_param("sssssssssssssssss", $get_user_id, $datetime, $datetime_saying, $year,
+				$month, $my_ip_mysql, $my_hostname_mysql, $my_user_agent_mysql, $inp_country_mysql,
 				$inp_browser_mysql, $inp_os_mysql, $inp_type_mysql, $inp_accpeted_language_mysql, $inp_language_mysql,
-				0,  $inp_url_mysql, 0)") or die(mysqli_error($link));
+				$inp_zero,  $inp_url_mysql, $inp_zero); 
+	$stmt->execute();
+
+
 
 	// Get this login attemt
-	$query = "SELECT login_id FROM $t_users_logins WHERE login_user_id=$get_user_id AND login_datetime='$datetime'";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT login_id FROM $t_users_logins WHERE login_user_id=? AND login_datetime=?"); 
+	$stmt->bind_param("ss", $get_user_id, $datetime);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_login_id) = $row;
+
 
 	// E-mail found
 	if($get_user_login_tries > 5){
 		// Can we reset it?
 		// Get prev lost login attemt
-		$query = "SELECT login_id, login_datetime FROM $t_users_logins WHERE login_user_id=$get_user_id ORDER BY login_id DESC LIMIT 1,1";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		
+		$stmt = $mysqli->prepare("SELECT login_id, login_datetime FROM $t_users_logins WHERE login_user_id=? ORDER BY login_id DESC LIMIT 1,1"); 
+		$stmt->bind_param("ss", $get_user_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_prev_login_id, $get_prev_login_datetime) = $row;
-
 
 		$array = explode(" ", $get_prev_login_datetime);
 		$time  = explode(":", $array[1]);
@@ -156,7 +180,10 @@ if($process == "1"){
 		$now   = date("H");
 		if($hour == "$now"){
 			// Update login attemt
-			mysqli_query($link, "UPDATE $t_users_logins SET login_successfully=0, login_unsuccessfully_reason='Too many login attempts' WHERE login_id=$get_current_login_id") or die(mysqli_error($link));
+			if ($mysqli->query("UPDATE $t_users_logins SET login_successfully=0, login_unsuccessfully_reason='Too many login attempts' WHERE login_id=$get_current_login_id") !== TRUE) {
+				echo "Error updating record: " . $mysqli->error; die;
+			}
+
 
 			// Header
 			header("Location: index.php?ft=warning&fm=account_temporarily_banned_please_wait_one_hour_before_trying_again&inp_mail=$inp_mail&l=$l");
@@ -174,8 +201,15 @@ if($process == "1"){
 		$input_registered_time 	= time();
 
 		// Update login attemt
-		mysqli_query($link, "UPDATE $t_users SET user_login_tries=$inp_login_attempts WHERE user_id=$get_user_id") or die(mysqli_error($link));
-		mysqli_query($link, "UPDATE $t_users_logins SET login_successfully=0, login_unsuccessfully_reason='Wrong password' WHERE login_id=$get_current_login_id") or die(mysqli_error($link));
+		# todo
+		
+		if ($mysqli->query("UPDATE $t_users SET user_login_tries=$inp_login_attempts WHERE user_id=$get_user_id' WHERE login_id=$get_current_login_id") !== TRUE) {
+			echo "Error updating record: " . $mysqli->error; die;
+		}
+
+		if ($mysqli->query("UPDATE $t_users_logins SET login_successfully=0, login_unsuccessfully_reason='Wrong password' WHERE login_id=$get_current_login_id") !== TRUE) {
+			echo "Error updating record: " . $mysqli->error; die;
+		}
 
 
 		if($inp_login_attempts > 5){
@@ -267,16 +301,16 @@ if($process == "1"){
 
 			// Who is moderator of the week?
 			$query = "SELECT moderator_user_id, moderator_user_email, moderator_user_name FROM $t_users_moderator_of_the_week WHERE moderator_week=$week AND moderator_year=$year";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
+			$result = $conn->query($query);
+			$row = $result->fetch_row();
 			list($get_moderator_user_id, $get_moderator_user_email, $get_moderator_user_name) = $row;
 			if($get_moderator_user_id == ""){
 				// Create moderator of the week
 				include("../_functions/create_moderator_of_the_week.php");
 				
 				$query = "SELECT moderator_user_id, moderator_user_email, moderator_user_name FROM $t_users_moderator_of_the_week WHERE moderator_week=$week AND moderator_year=$year";
-				$result = mysqli_query($link, $query);
-				$row = mysqli_fetch_row($result);
+				$result = $conn->query($query);
+				$row = $result->fetch_row();
 				list($get_moderator_user_id, $get_moderator_user_email, $get_moderator_user_name) = $row;
 			}
 
@@ -380,7 +414,10 @@ if($process == "1"){
 	}
 	else{
 		// Update login attemt
-		mysqli_query($link, "UPDATE $t_users_logins SET login_successfully=0, login_unsuccessfully_reason='Access to admin denied' WHERE login_id=$get_current_login_id") or die(mysqli_error($link));
+		if ($mysqli->query("UPDATE $t_users_logins SET login_successfully=0, login_unsuccessfully_reason='Access to admin denied' WHERE login_id=$get_current_login_id") !== TRUE) {
+			echo "Error updating record: " . $mysqli->error; die;
+		}
+
 
 		header("Location: index.php?ft=warning&fm=access_denied_please_contact_administrator&inp_mail=$inp_mail&l=$l");
 		exit;
@@ -405,31 +442,41 @@ if($process == "1"){
 	
 
 	// Update login attemt
-	mysqli_query($link, "UPDATE $t_users_logins SET login_successfully=1 WHERE login_id=$get_current_login_id") or die(mysqli_error($link));
+	if ($mysqli->query("UPDATE $t_users_logins SET login_successfully=1 WHERE login_id=$get_current_login_id") !== TRUE) {
+		echo "Error updating record: " . $mysqli->error; die;
+	}
 
 	// Check if I am known
 	$inp_fingerprint = $my_hostname . "|" . $get_my_country_name . "|" . $get_stats_user_agent_os . "|" . $get_stats_user_agent_browser . "|" . $inp_accpeted_language;
-	// $inp_fingerprint = md5($inp_fingerprint);
-	$inp_fingerprint_mysql = quote_smart($link, $inp_fingerprint);
 
-	$query = "SELECT known_device_id FROM $t_users_known_devices WHERE known_device_user_id=$get_user_id AND known_device_fingerprint=$inp_fingerprint_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT known_device_id FROM $t_users_known_devices WHERE known_device_user_id=? AND known_device_fingerprint=?"); 
+	$stmt->bind_param("ss", $get_user_id, $inp_fingerprint);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_known_device_id) = $row;
 	if($get_current_known_device_id == ""){
 		// New device
-		mysqli_query($link, "INSERT INTO $t_users_known_devices (known_device_id, known_device_user_id, known_device_fingerprint, known_device_created_datetime, known_device_created_datetime_saying, 
-				known_device_updated_datetime, known_device_updated_datetime_saying, known_device_updated_year, known_device_created_ip, known_device_created_hostname,
-				known_device_last_ip, known_device_last_hostname, known_device_user_agent, known_device_country, known_device_browser, known_device_os, known_device_os_icon, known_device_type, 
-				known_device_accepted_language, known_device_language, known_device_last_url)
-				VALUES(
-				NULL, $get_user_id, $inp_fingerprint_mysql, '$datetime', '$datetime_saying',
-				 '$datetime', '$datetime_saying', $year, $my_ip_mysql, $my_hostname_mysql, 
-				$my_ip_mysql, $my_hostname_mysql, $my_user_agent_mysql, $inp_country_mysql, $inp_browser_mysql, $inp_os_mysql, $inp_os_icon_mysql, $inp_type_mysql,
-				$inp_accpeted_language_mysql, $inp_language_mysql, $inp_url_mysql)") or die(mysqli_error($link));
+		$stmt = $mysqli->prepare("INSERT INTO $t_users_known_devices (known_device_id, known_device_user_id, known_device_fingerprint, known_device_created_datetime, known_device_created_datetime_saying, 
+					known_device_updated_datetime, known_device_updated_datetime_saying, known_device_updated_year, known_device_created_ip, known_device_created_hostname,
+					known_device_last_ip, known_device_last_hostname, known_device_user_agent, known_device_country, known_device_browser, 
+					known_device_os, known_device_os_icon, known_device_type, known_device_accepted_language, known_device_language,
+					known_device_last_url) 
+					VALUES 
+					(NULL,?,?,?,?, 
+					?,?,?,?,?, 
+					?,?,?,?,?,
+					?,?,?,?,?,
+					?)");
+		$stmt->bind_param("ssssssssssssssssssss", $get_user_id, $inp_fingerprint, $datetime, $datetime_saying,
+					$datetime, $datetime_saying, $year, $my_ip, $my_hostname, 
+					$my_ip, $my_hostname, $my_user_agent, $inp_country, $inp_browser, 
+					$inp_os, $inp_os_icon, $inp_type, $inp_accpeted_language, $inp_language,
+					$inp_url); 
+		$stmt->execute();
+
 
 		// Email to owner that there is a new login
-
 		$subject = "$l_new_login_at $configWebsiteTitleSav $l_at_lowercase $datetime_saying";
 			
 		$message = "<html>\n";
@@ -512,28 +559,35 @@ if($process == "1"){
 		}
 	}
 	else{
-		// Update last seen
-		mysqli_query($link, "UPDATE $t_users_known_devices SET 
-					known_device_updated_datetime='$datetime', 
-					known_device_updated_datetime_saying='$datetime_saying',
-					known_device_last_ip=$my_ip_mysql,
-					known_device_last_hostname=$my_hostname_mysql
-
-				     WHERE known_device_id=$get_current_known_device_id") or die(mysqli_error($link));
+		// Update known devices last used
+		$stmt = $mysqli->prepare("UPDATE $t_users_known_devices SET 
+					known_device_updated_datetime=?, 
+					known_device_updated_datetime_saying=?,
+					known_device_last_ip=?,
+					known_device_last_hostname=?
+					WHERE known_device_id=?");
+		$stmt->bind_param("sssss", $datetime, $datetime_saying, $my_ip, $my_hostname, $get_current_known_device_id); 
+		$stmt->execute();
 		
 	}
 
 
 	// Update login attemts
-	mysqli_query($link, "UPDATE $t_users SET user_login_tries=0 WHERE user_id=$get_user_id") or die(mysqli_error($link));
+	if ($mysqli->query("UPDATE $t_users SET user_login_tries=0 WHERE user_id=$get_user_id") !== TRUE) {
+		echo "Error updating record: " . $mysqli->error; die;
+	}
 
 
 	// Delete old logins (users_logins and users_known_devices)
 	$one_year_ago = $year-1;
 	$one_months_ago = $month-1;
-	mysqli_query($link, "DELETE FROM $t_users_logins WHERE login_year < $year OR login_month < $one_months_ago") or die(mysqli_error($link));
-	mysqli_query($link, "DELETE FROM $t_users_known_devices WHERE known_device_updated_year < $one_year_ago") or die(mysqli_error($link));
-
+	
+	if ($mysqli->query("DELETE FROM $t_users_logins WHERE login_year < $year OR login_month < $one_months_ago") !== TRUE) {
+		echo "Error updating record: " . $mysqli->error; die;
+	}
+	if ($mysqli->query("DELETE FROM $t_users_known_devices WHERE known_device_updated_year < $one_year_ago") !== TRUE) {
+		echo "Error updating record: " . $mysqli->error; die;
+	}
 
 	// Move to admin-panel
 	header("Location: ../_liquidbase/liquidbase.php?l=$l");
@@ -637,10 +691,6 @@ echo"
 	<a href=\"index.php?page=forgot_password\">$l_forgot_password</a>
 	</p>
 <!-- //Main Menu -->
-
-<!-- Stats -->
-	<iframe src=\"process_stats_iframe.php\" width=\"200\" height=\"10\"></iframe>
-<!-- //Stats -->
 
 ";
 ?>

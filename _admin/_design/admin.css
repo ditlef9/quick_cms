@@ -1,9 +1,8 @@
 /**
 *
 * File: _admin/_design/admin.css
-* Version 2
-* Date 21:39 26.04.2019
-* Copyright (c) 2008-2019 Sindre Andre Ditlefsen
+* Version 3
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -331,7 +330,7 @@ header{
 		float: none;
 		position: static;
 		margin: 0px 0px 0px 0px;
-		padding 0px 0px 0px 0px;
+		padding: 0px 0px 0px 0px;
 		display: block; /* make link fill enitre li */
 
 	}
@@ -653,7 +652,7 @@ table.hor-zebra>tbody>tr:hover td {
 	background: #f8f8f8;
 	border-radius: 5px;
 	padding: 0px 10px 0px 10px;
-
+}
 
 	
 /*- Tabs ----------------------------------------------------------------------------- */
@@ -729,33 +728,23 @@ div.tabs > ul > li > a.active {
 
 /*- Footer ------------------------------------------------------------------------------ */
 footer{
-	clear: both;
-	overflow: hidden;
+	text-align: center;
 	width: 100%;
-	background: #fff;
-
-	display: flex;
-	flex-wrap: wrap; // allow wrapping items
+	background: red;
 }
-	
-	/* Footer left */
-	div.footer_left{
-		float: left;
-		background: #263544;
-		overflow: auto;
-		width: 210px;
-		padding: 10px 0px 10px 0px;
-		border-top: #25323f 1px solid;
-	}
-	/* Footer right */
-	div.footer_right{
-		background: #fff;
-		overflow: auto;
-		border-top: #e3e8eb 1px solid;
-		padding: 0px 10px 0px 10px;
-		text-align: right;
+#botter{
+	text-align: center;
+	margin: 0px auto;
 
-		flex-grow: 1;
-		flex-basis: 50%; 
-	}
+}
+
+
+/*- Footer  ------------------------------------------------------------------ */
+footer{
+	float: left;
+	width: 86%;
+	margin: 12px 0px 0px 14%;
+	background: #fff;
+	text-align: center;
+}
 
