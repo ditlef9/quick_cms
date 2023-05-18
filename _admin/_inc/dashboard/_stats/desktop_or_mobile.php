@@ -189,7 +189,7 @@ else{
 
 // Visists :: Day :: IPs
 $stmt = $mysqli->prepare("SELECT stats_visit_per_day_ip_id, stats_visit_per_day_ip_day, stats_visit_per_day_ip_month, stats_visit_per_day_ip_year, stats_visit_per_day_type, stats_visit_per_day_ip FROM $t_stats_visists_per_day_ips WHERE stats_visit_per_day_ip_day=? AND stats_visit_per_day_ip_month=? AND stats_visit_per_day_ip_year=? AND stats_visit_per_day_ip_language=? AND stats_visit_per_day_ip=?"); 
-$stmt->bind_param("ssss", $get_unprocessed_day, $get_unprocessed_month, $get_unprocessed_year, $inp_language, $my_ip);
+$stmt->bind_param("sssss", $get_unprocessed_day, $get_unprocessed_month, $get_unprocessed_year, $inp_language, $my_ip);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_row();
@@ -671,7 +671,7 @@ if($get_stats_country_id == ""){
 		VALUES 
 		(NULL,?,?,?,?,
 		?,?,?)");
-	$stmt->bind_param("ssssss", $get_unprocessed_month, $get_unprocessed_year, $inp_language, $inp_geoname_country_name, $inp_geoname_country_iso_code, 
+	$stmt->bind_param("sssssss", $get_unprocessed_month, $get_unprocessed_year, $inp_language, $inp_geoname_country_name, $inp_geoname_country_iso_code, 
 		$one, $one); 
 	$stmt->execute();
 
@@ -704,8 +704,8 @@ if($configSiteDaysToKeepPageVisitsSav != "0"){
 		$page_url = substr($page_url, 0, 190);
 		$page_url = $page_url . "...";
 	}
-	$inp_stats_page_url_mysql = quote_smart($link, $page_url);
-	$inp_stats_page_title_mysql = quote_smart($link, "");
+	$inp_stats_page_url = "$page_url";
+	$inp_stats_page_title = "";
 
 	$stmt = $mysqli->prepare("SELECT stats_pages_per_year_id, stats_pages_per_year_human_unique, stats_pages_per_year_unique_desktop, stats_pages_per_year_unique_mobile FROM $t_stats_pages_visits_per_year WHERE stats_pages_per_year_year=? AND stats_pages_per_year_language=? AND stats_pages_per_year_url=?"); 
 	$stmt->bind_param("sss", $get_unprocessed_year, $inp_language, $inp_stats_page_url);
@@ -734,8 +734,9 @@ if($configSiteDaysToKeepPageVisitsSav != "0"){
 			(NULL,?,?,?,?,
 			?,?,?,?,?,
 			?)");
-		$stmt->bind_param("ssssssssss", $get_unprocessed_year, $inp_language, $inp_stats_page_url, $inp_stats_page_title, $zero, 
-			$one, $inp_unique_desktop, $inp_unique_mobile, $zero, $time, $zero); 
+		$stmt->bind_param("ssssssssss", $get_unprocessed_year, $inp_language, $inp_stats_page_url, $inp_stats_page_title, 
+			$zero, $one, $inp_unique_desktop, $inp_unique_mobile, $zero, 
+			$time); 
 		$stmt->execute();
 
 

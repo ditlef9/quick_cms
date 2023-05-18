@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_functions/autoinsert_new_user_agent.php
-* Version 3.0
-* Date 10:35 20.10.2022
-* Copyright (c) 2008-2022 Sindre Andre Ditlefsen
+* Version 4
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -64,7 +63,6 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 			// URL
 			$inp_stats_user_agent_url = "http://" . $r . ".com";
 			$inp_stats_user_agent_url = output_html($inp_stats_user_agent_url);
-			$inp_stats_user_agent_url_mysql = quote_smart($link, $inp_stats_user_agent_url);
 
 			// Bot version
 			$inp_stats_user_agent_bot_version = get_between($my_user_agent, $r, ';');
@@ -76,7 +74,6 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 			if($inp_stats_user_agent_bot_version > 10){
 				$inp_stats_user_agent_bot_version = substr($inp_stats_user_agent_bot_version, 0, 10);
 			}
-			$inp_stats_user_agent_bot_version_mysql = quote_smart($link, $inp_stats_user_agent_bot_version);
 			//echo"Agent: $my_user_agent<br />get_between($my_user_agent, $r, ';')<br />Bot ver: $inp_stats_user_agent_bot_version";
 
 
@@ -85,12 +82,10 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 			// Agent Name
 			$inp_stats_user_agent_bot = ucfirst($r);
 			$inp_stats_user_agent_bot = output_html($inp_stats_user_agent_bot);
-			$inp_stats_user_agent_bot_mysql = quote_smart($link, $inp_stats_user_agent_bot);
 
 			// Icon
 			$inp_stats_user_agent_bot_icon = $r . ".png";
 			$inp_stats_user_agent_bot_icon = output_html($inp_stats_user_agent_bot_icon);
-			$inp_stats_user_agent_bot_icon_mysql = quote_smart($link, $inp_stats_user_agent_bot_icon);
 			
 			// Insert new bot
 			if($test == "1"){
@@ -112,15 +107,22 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				$inp_stats_user_agent_bot_version_mysql, $inp_stats_user_agent_bot_icon_mysql, $inp_stats_user_agent_url_mysql, '0')</pre>
 				";
 			}
-			mysqli_query($link, "INSERT INTO $t_stats_user_agents_index
-			(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, 
-			stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, 
-			stats_user_agent_bot_version, stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned) 
-			VALUES
-			(NULL, $my_user_agent_mysql, 'bot', '', '', 
-			'', '', '', '', $inp_stats_user_agent_bot_mysql, 
-			$inp_stats_user_agent_bot_version_mysql, $inp_stats_user_agent_bot_icon_mysql, $inp_stats_user_agent_url_mysql, '0')
-			") or die(mysqli_error($link));
+			$inp_user_agent_type = "bot";
+			$blank = "";
+			$zero = 0;
+			$stmt = $mysqli->prepare("INSERT INTO $t_stats_user_agents_index
+				(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, 
+				stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, 
+				stats_user_agent_bot_version, stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned) 
+				VALUES 
+				(NULL,?,?,?,?,
+				?,?,?,?,?,
+				?,?,?,?)");
+			$stmt->bind_param("sssssssssssss", $my_user_agent, $inp_user_agent_type, $blank, $blank, 
+				$blank, $blank, $blank, $blank, $inp_stats_user_agent_bot, 
+				$inp_stats_user_agent_bot_version, $inp_stats_user_agent_bot_icon, $inp_stats_user_agent_url, $zero); 
+			$stmt->execute();
+
 
 			break;
 		}
@@ -157,7 +159,6 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				$inp_stats_user_agent_browser_icon = clean($inp_stats_user_agent_browser);
 				$inp_stats_user_agent_browser_icon = $inp_stats_user_agent_browser_icon . ".png";
 				$inp_stats_user_agent_browser_icon = output_html($inp_stats_user_agent_browser_icon);
-				$inp_stats_user_agent_browser_icon_mysql = quote_smart($link, $inp_stats_user_agent_browser_icon);
 
 				// Browser version
 				$inp_stats_user_agent_browser_version = 0;
@@ -170,12 +171,10 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				}
 				//echo"Agent: $my_user_agent<br />Browser ver: $inp_stats_user_agent_browser_version ";
 				$inp_stats_user_agent_browser_version = output_html($inp_stats_user_agent_browser_version);
-				$inp_stats_user_agent_browser_version_mysql = quote_smart($link, $inp_stats_user_agent_browser_version);
 
 
 				// Browser
 				$inp_stats_user_agent_browser = output_html(ucfirst($inp_stats_user_agent_browser));
-				$inp_stats_user_agent_browser_mysql = quote_smart($link, $inp_stats_user_agent_browser);
 
 
 				// OS 
@@ -183,13 +182,11 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				$inp_stats_user_agent_os = output_html($inp_stats_user_agent_os);
 				$inp_stats_user_agent_os = str_replace("IPhone", "iPhone", $inp_stats_user_agent_os);
 				$inp_stats_user_agent_os = str_replace("IPad", "iPad", $inp_stats_user_agent_os);
-				$inp_stats_user_agent_os_mysql = quote_smart($link, $inp_stats_user_agent_os);
 
 				// OS Icon
 				$inp_stats_user_agent_os_icon = clean($m_os);
 				$inp_stats_user_agent_os_icon =  $inp_stats_user_agent_os_icon. ".png";
 				$inp_stats_user_agent_os_icon = output_html($inp_stats_user_agent_os_icon);
-				$inp_stats_user_agent_os_icon_mysql = quote_smart($link, $inp_stats_user_agent_os_icon);
 
 				// OS Version
 				// my_user_agent = Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0
@@ -247,7 +244,6 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				if($inp_stats_user_agent_os_version == ""){
 					$inp_stats_user_agent_os_version = "N/A";
 				}
-				$inp_stats_user_agent_os_version_mysql = quote_smart($link, $inp_stats_user_agent_os_version);
 				// echo"Agent: $my_user_agent<br />OS: $inp_stats_user_agent_os <br />OS ver: $inp_stats_user_agent_os_version ";
 
 
@@ -279,16 +275,22 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 					'', '', '0')</pre>
 					";
 				}
+				$inp_user_agent_type = "mobile";
+				$blank = "";
+				$zero = 0;
+				$stmt = $mysqli->prepare("INSERT INTO $t_stats_user_agents_index
+					(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, 
+					stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, 
+					stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned) 
+					VALUES 
+					(NULL,?,?,?,?,
+					?,?,?,?,?,
+					?,?,?)");
+				$stmt->bind_param("ssssssssssss", $my_user_agent, $inp_user_agent_type, $inp_stats_user_agent_browser, $inp_stats_user_agent_browser_version,
+					$blank, $inp_stats_user_agent_os, $inp_stats_user_agent_os_version, $inp_stats_user_agent_browser_icon, $blank,
+					$blank, $blank, $zero); 
+				$stmt->execute();
 
-				mysqli_query($link, "INSERT INTO $t_stats_user_agents_index
-				(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, 
-				stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, 
-				stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned) 
-				VALUES
-				(NULL, $my_user_agent_mysql, 'mobile', $inp_stats_user_agent_browser_mysql, $inp_stats_user_agent_browser_version_mysql,
-				'', $inp_stats_user_agent_os_mysql, $inp_stats_user_agent_os_version_mysql, $inp_stats_user_agent_browser_icon_mysql, '',
-				'', '', '0')
-				") or die(mysqli_error($link));
 
 				break;
 			}
@@ -317,13 +319,11 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				// OS
 				$inp_stats_user_agent_os = ucfirst($os);
 				$inp_stats_user_agent_os = output_html($inp_stats_user_agent_os);
-				$inp_stats_user_agent_os_mysql = quote_smart($link, $inp_stats_user_agent_os);
 
 				// OS Icon
 				$inp_stats_user_agent_os_icon = clean($os);
 				$inp_stats_user_agent_os_icon = $inp_stats_user_agent_os_icon . ".png";
 				$inp_stats_user_agent_os_icon = output_html($inp_stats_user_agent_os_icon);
-				$inp_stats_user_agent_os_icon_mysql = quote_smart($link, $inp_stats_user_agent_os_icon);
 
 				// OS Version
 				// my_user_agent = Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0
@@ -345,7 +345,6 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				if($inp_stats_user_agent_os_version == ""){
 					$inp_stats_user_agent_os_version = "N/A";
 				}
-				$inp_stats_user_agent_os_version_mysql = quote_smart($link, $inp_stats_user_agent_os_version);
 				
 				
 
@@ -363,7 +362,6 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				$inp_stats_user_agent_browser_icon = clean($inp_stats_user_agent_browser);
 				$inp_stats_user_agent_browser_icon = $inp_stats_user_agent_browser_icon . ".png";
 				$inp_stats_user_agent_browser_icon = output_html($inp_stats_user_agent_browser_icon);
-				$inp_stats_user_agent_browser_icon_mysql = quote_smart($link, $inp_stats_user_agent_browser_icon);
 
 
 				// Browser version
@@ -402,12 +400,10 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 				}
 				$inp_stats_user_agent_browser_version = output_html($inp_stats_user_agent_browser_version);
 				$inp_stats_user_agent_browser_version = str_replace("&amp;#039", "", $inp_stats_user_agent_browser_version);
-				$inp_stats_user_agent_browser_version_mysql = quote_smart($link, $inp_stats_user_agent_browser_version);
 
 
 				// Browser
 				$inp_stats_user_agent_browser = output_html(ucfirst($inp_stats_user_agent_browser));
-				$inp_stats_user_agent_browser_mysql = quote_smart($link, $inp_stats_user_agent_browser);
 
 
 				// Insert new desktop
@@ -434,16 +430,23 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 					$inp_stats_user_agent_browser_icon_mysql, $inp_stats_user_agent_os_mysql, $inp_stats_user_agent_os_version_mysql, $inp_stats_user_agent_os_icon_mysql, '', 
 					'', '', '0')</pre>";
 				}
+				
+				$inp_user_agent_type = "desktop";
+				$blank = "";
+				$zero = 0;
 
-				mysqli_query($link, "INSERT INTO $t_stats_user_agents_index
-				(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, 
-				stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, 
-				stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned) 
-				VALUES
-				(NULL, $my_user_agent_mysql, 'desktop', $inp_stats_user_agent_browser_mysql, $inp_stats_user_agent_browser_version_mysql, 
-				$inp_stats_user_agent_browser_icon_mysql, $inp_stats_user_agent_os_mysql, $inp_stats_user_agent_os_version_mysql, $inp_stats_user_agent_os_icon_mysql, '', 
-				'', '', '0')
-				") or die(mysqli_error($link));
+				$stmt = $mysqli->prepare("INSERT INTO $t_stats_user_agents_index
+					(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, 
+					stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, 
+					stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned) 
+					VALUES 
+					(NULL,?,?,?,?,
+					?,?,?,?,?,
+					?,?,?)");
+				$stmt->bind_param("ssssssssssss", $my_user_agent, $inp_user_agent_type, $inp_stats_user_agent_browser, $inp_stats_user_agent_browser_version, 
+					$inp_stats_user_agent_browser_icon, $inp_stats_user_agent_os, $inp_stats_user_agent_os_version, $inp_stats_user_agent_os_icon, $blank, 
+					$blank, $blank, $zero); 
+				$stmt->execute();
 
 
 				break;
@@ -476,17 +479,14 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 						// URL
 						$inp_stats_user_agent_url = "http://" . $my_user_agent . ".com";
 						$inp_stats_user_agent_url = output_html($inp_stats_user_agent_url);
-						$inp_stats_user_agent_url_mysql = quote_smart($link, $inp_stats_user_agent_url);
 
 						// Agent Name
 						$inp_stats_user_agent_bot = ucfirst($my_user_agent);
 						$inp_stats_user_agent_bot = output_html($inp_stats_user_agent_bot);
-						$inp_stats_user_agent_bot_mysql = quote_smart($link, $inp_stats_user_agent_bot);
 
 						// Icon
 						$inp_stats_user_agent_bot_icon = $array[$x] . ".png";
 						$inp_stats_user_agent_bot_icon = output_html($inp_stats_user_agent_bot_icon);
-						$inp_stats_user_agent_bot_icon_mysql = quote_smart($link, $inp_stats_user_agent_bot_icon);
 			
 						// Insert unknown bot
 						if($test == "1"){
@@ -502,15 +502,24 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 							'', '', 0, '' $inp_stats_user_agent_bot_mysql, 
 							$inp_stats_user_agent_bot_icon_mysql, $inp_stats_user_agent_url_mysql, '0'</pre>";
 						}
-						mysqli_query($link, "INSERT INTO $t_stats_user_agents_index
-						(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, 
-						stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, 
-						stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned) 
-						VALUES
-						(NULL, $my_user_agent_mysql, 'bot', '', 0, 
-						'', '', 0, '', $inp_stats_user_agent_bot_mysql, 
-						$inp_stats_user_agent_bot_icon_mysql, $inp_stats_user_agent_url_mysql, '0')
-						") or die(mysqli_error($link));
+
+						$inp_user_agent_type = "bot";
+						$blank = "";
+						$zero = 0;
+						$stmt = $mysqli->prepare("INSERT INTO $t_stats_user_agents_index
+							(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_browser, stats_user_agent_browser_version, 
+							stats_user_agent_browser_icon, stats_user_agent_os, stats_user_agent_os_version, stats_user_agent_os_icon, stats_user_agent_bot, 
+							stats_user_agent_bot_icon, stats_user_agent_bot_website, stats_user_agent_banned) 
+							VALUES 
+							(NULL,?,?,?,?,
+							?,?,?,?,?,
+							?,?,?)");
+						$stmt->bind_param("ssssssssssss", $my_user_agent, $inp_user_agent_type, $blank, $zero, 
+							$blank, $blank, $zero, $blank, $inp_stats_user_agent_bot, 
+							$inp_stats_user_agent_bot_icon, $inp_stats_user_agent_url, $zero); 
+						$stmt->execute();
+
+
 
 
 						break;
@@ -528,11 +537,16 @@ if(isset($my_user_agent) && $get_stats_user_agent_id == ""){
 		}
 
 		// New visitor
-		mysqli_query($link, "INSERT INTO $t_stats_user_agents_index
-		(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_banned) 
-		VALUES
-		(NULL, $my_user_agent_mysql, 'unknown', '0')
-		") or die(mysqli_error($link));
+		$inp_user_agent_type = "unknown";
+		$zero = 0;
+
+		$stmt = $mysqli->prepare("INSERT INTO $t_stats_user_agents_index
+			(stats_user_agent_id, stats_user_agent_string, stats_user_agent_type, stats_user_agent_banned) 
+			VALUES 
+			(NULL,?,?,?)");
+		$stmt->bind_param("sss", $my_user_agent, $inp_user_agent_type, $zero); 
+		$stmt->execute();
+
 	}
 }
 else{
