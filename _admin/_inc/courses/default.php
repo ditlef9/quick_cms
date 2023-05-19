@@ -40,9 +40,22 @@ $t_courses_exams_user_tries_qa		= $mysqlPrefixSav . "courses_exams_user_tries_qa
 
 
 /*- Check if setup is run ------------------------------------------------------------- */
-$query = "SELECT * FROM $t_courses_liquidbase LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
+$liquidbase_exists = false;
+$query = "SHOW TABLES";
+$result = $mysqli->query($query);
+if($result !== false) {
+	if($result->num_rows > 0) {
+		while($row = $result->fetch_row()) {
+			if($row[0] == "$t_courses_liquidbase"){
+				$liquidbase_exists = true;
+				break;
+			}
+    	}
+  	}
+}
+else echo "Error Unable to check tables " . $mysqli->error;
+
+if($liquidbase_exists){
 	echo"
 	<h1>Courses</h1>
 				

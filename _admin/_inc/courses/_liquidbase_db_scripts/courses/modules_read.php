@@ -17,31 +17,27 @@ if(!(isset($define_access_to_control_panel))){
 echo"
 
 <!-- courses_modules_read -->
+<p>Create table: $t_courses_modules_read</p>
 ";
 
-$query = "SELECT * FROM $t_courses_modules_read LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
-	// Count rows
-	$row_cnt = mysqli_num_rows($result);
-	echo"
-	<p>$t_courses_modules_read: $row_cnt</p>
-	";
+
+$mysqli->query("DROP TABLE IF EXISTS $t_courses_modules_read");
+
+if (!$mysqli -> query("CREATE TABLE $t_courses_modules_read(
+	module_read_id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(module_read_id), 
+
+	 read_course_id INT,
+	 read_course_title VARCHAR(200),
+
+	 read_module_id INT,
+	 read_module_title VARCHAR(200),
+
+	 read_user_id INT)")) {
+	echo("MySQLI create table error: " . $mysqli -> error); die;
 }
-else{
-	mysqli_query($link, "CREATE TABLE $t_courses_modules_read(
-	  module_read_id INT NOT NULL AUTO_INCREMENT,
-	  PRIMARY KEY(module_read_id), 
 
-	   read_course_id INT,
-	   read_course_title VARCHAR(200),
 
-	   read_module_id INT,
-	   read_module_title VARCHAR(200),
-
-	   read_user_id INT)")
-	   or die(mysqli_error());
-}
 echo"
 <!-- //courses_modules_read -->
 

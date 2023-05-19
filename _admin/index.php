@@ -420,10 +420,6 @@ echo"<!DOCTYPE html>
 		echo"
 	<!-- //Special CSS -->
 
-	<!-- jQuery -->
-		<script type=\"text/javascript\" src=\"_javascripts/jquery/jquery.min.js\"></script>
-	<!-- //jQuery -->
-
 
 </head>
 <body>

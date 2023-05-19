@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/courses/_liquibase/courses/001_courses.php
-* Version 1.0.0
-* Date 21:19 28.08.2019
-* Copyright (c) 2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2019-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -17,34 +16,29 @@ if(!(isset($define_access_to_control_panel))){
 echo"
 
 
-<!-- courses categories -->
+<!-- courses categories sub -->
+<p>Create table: $t_courses_categories_sub</p>
 ";
 
-$query = "SELECT * FROM $t_courses_categories_sub LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
-	// Count rows
-	$row_cnt = mysqli_num_rows($result);
-	echo"
-	<p>$t_courses_categories_sub: $row_cnt</p>
-	";
+
+$mysqli->query("DROP TABLE IF EXISTS $t_courses_categories_sub");
+
+if (!$mysqli -> query("CREATE TABLE $t_courses_categories_sub(
+	sub_category_id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(sub_category_id), 
+	 sub_category_title VARCHAR(200), 
+	 sub_category_title_clean VARCHAR(200), 
+	 sub_category_description TEXT, 
+	 sub_category_main_category_id INT,
+	 sub_category_main_category_title VARCHAR(200), 
+	 sub_category_language VARCHAR(10), 
+	 sub_category_created DATETIME,
+	 sub_category_updated DATETIME)")) {
+	echo("MySQLI create table error: " . $mysqli -> error); die;
 }
-else{
-	mysqli_query($link, "CREATE TABLE $t_courses_categories_sub(
-	  sub_category_id INT NOT NULL AUTO_INCREMENT,
-	  PRIMARY KEY(sub_category_id), 
-	   sub_category_title VARCHAR(200), 
-	   sub_category_title_clean VARCHAR(200), 
-	   sub_category_description TEXT, 
-	   sub_category_main_category_id INT,
-	   sub_category_main_category_title VARCHAR(200), 
-	   sub_category_language VARCHAR(10), 
-	   sub_category_created DATETIME,
-	   sub_category_updated DATETIME)")
-	   or die(mysqli_error());
-}
+
 echo"
-<!-- //courses categories -->
+<!-- //courses categories sub -->
 
 ";
 ?>

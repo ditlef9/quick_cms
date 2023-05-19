@@ -17,49 +17,44 @@ if(!(isset($define_access_to_control_panel))){
 echo"
 
 <!-- modules_quizzes_qa -->
-	<p>Check table $t_courses_modules_quizzes_qa</p>
+<p>Create table: $t_courses_modules_quizzes_qa</p>
 ";
 
-$query = "SELECT * FROM $t_courses_modules_quizzes_qa LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
-	// Count rows
-	$row_cnt = mysqli_num_rows($result);
-	echo"
-	<p>$t_courses_modules_quizzes_qa: $row_cnt</p>
-	";
+
+$mysqli->query("DROP TABLE IF EXISTS $t_courses_modules_quizzes_qa");
+
+if (!$mysqli -> query("CREATE TABLE $t_courses_modules_quizzes_qa(
+	qa_id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(qa_id), 
+	 qa_course_id INT,
+	 qa_course_title VARCHAR(200),
+	 qa_quiz_id INT,
+	 qa_question_number INT,
+	 qa_question VARCHAR(200),
+	 qa_text TEXT,
+	 qa_type VARCHAR(200),
+	 qa_alt_a VARCHAR(200),
+	 qa_alt_b VARCHAR(200),
+	 qa_alt_c VARCHAR(200),
+	 qa_alt_d VARCHAR(200),
+	 qa_alt_e VARCHAR(200),
+	 qa_alt_f VARCHAR(200),
+	 qa_alt_g VARCHAR(200),
+	 qa_alt_h VARCHAR(200),
+	 qa_alt_i VARCHAR(200),
+	 qa_alt_j VARCHAR(200),
+	 qa_alt_k VARCHAR(200),
+	 qa_alt_l VARCHAR(200),
+	 qa_alt_m VARCHAR(200),
+	 qa_alt_n VARCHAR(200),
+	 qa_correct_alternatives VARCHAR(200),
+	 qa_points INT,
+	 qa_hint TEXT,
+	 qa_explanation TEXT)")) {
+	echo("MySQLI create table error: " . $mysqli -> error); die;
 }
-else{
-	mysqli_query($link, "CREATE TABLE $t_courses_modules_quizzes_qa(
-	  qa_id INT NOT NULL AUTO_INCREMENT,
-	  PRIMARY KEY(qa_id), 
-	   qa_course_id INT,
-	   qa_course_title VARCHAR(200),
-	   qa_quiz_id INT,
-	   qa_question_number INT,
-	   qa_question VARCHAR(200),
-	   qa_text TEXT,
-	   qa_type VARCHAR(200),
-	   qa_alt_a VARCHAR(200),
-	   qa_alt_b VARCHAR(200),
-	   qa_alt_c VARCHAR(200),
-	   qa_alt_d VARCHAR(200),
-	   qa_alt_e VARCHAR(200),
-	   qa_alt_f VARCHAR(200),
-	   qa_alt_g VARCHAR(200),
-	   qa_alt_h VARCHAR(200),
-	   qa_alt_i VARCHAR(200),
-	   qa_alt_j VARCHAR(200),
-	   qa_alt_k VARCHAR(200),
-	   qa_alt_l VARCHAR(200),
-	   qa_alt_m VARCHAR(200),
-	   qa_alt_n VARCHAR(200),
-	   qa_correct_alternatives VARCHAR(200),
-	   qa_points INT,
-	   qa_hint TEXT,
-	   qa_explanation TEXT)")
-	   or die(mysqli_error());
-}
+
+
 echo"
 <!-- //modules_quizzes_qa -->
 

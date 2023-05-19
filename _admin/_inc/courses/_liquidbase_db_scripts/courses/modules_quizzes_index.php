@@ -18,29 +18,27 @@ echo"
 
 
 <!-- modules_quizzes_index -->
+<p>Create table: $t_courses_modules_quizzes_index</p>
 ";
 
-$query = "SELECT * FROM $t_courses_modules_quizzes_index LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
-	// Count rows
-	$row_cnt = mysqli_num_rows($result);
-	echo"
-	<p>$t_courses_modules_quizzes_index: $row_cnt</p>
-	";
+
+
+$mysqli->query("DROP TABLE IF EXISTS $t_courses_modules_quizzes_index");
+
+if (!$mysqli -> query("CREATE TABLE $t_courses_modules_quizzes_index (
+	quiz_id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(quiz_id), 
+	 quiz_course_id INT,
+	 quiz_course_title VARCHAR(200),
+	 quiz_language VARCHAR(20),
+	 quiz_total_questions INT,
+	 quiz_total_points INT,
+	 quiz_points_needed_to_pass INT)")) {
+	echo("MySQLI create table error: " . $mysqli -> error); die;
 }
-else{
-	mysqli_query($link, "CREATE TABLE $t_courses_modules_quizzes_index (
-	  quiz_id INT NOT NULL AUTO_INCREMENT,
-	  PRIMARY KEY(quiz_id), 
-	   quiz_course_id INT,
-	   quiz_course_title VARCHAR(200),
-	   quiz_language VARCHAR(20),
-	   quiz_total_questions INT,
-	   quiz_total_points INT,
-	   quiz_points_needed_to_pass INT)")
-	   or die(mysqli_error());
-}
+
+
+
 echo"
 <!-- //modules_quizzes_index -->
 

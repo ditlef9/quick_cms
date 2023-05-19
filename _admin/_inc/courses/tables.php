@@ -57,26 +57,21 @@ if($action == ""){
 
 	<!-- edb_liquidbase-->
 	";
-	$query = "SELECT * FROM $t_courses_liquidbase LIMIT 1";
-	$result = mysqli_query($link, $query);
-	if($result !== FALSE){
-		// Count rows
-		$row_cnt = mysqli_num_rows($result);
-		echo"
-		<p>$t_courses_liquidbase: $row_cnt</p>
-		";
+	if (!$mysqli -> query("CREATE TABLE IF NOT EXISTS $t_courses_liquidbase(
+		liquidbase_id INT NOT NULL AUTO_INCREMENT,
+		PRIMARY KEY(liquidbase_id), 
+		 liquidbase_dir VARCHAR(200), 
+		 liquidbase_file VARCHAR(200), 
+		 liquidbase_run_datetime DATETIME, 
+		 liquidbase_run_saying VARCHAR(200))")) {
+		echo("MySQLI create table error: " . $mysqli -> error); die;
 	}
-	else{
-		mysqli_query($link, "CREATE TABLE $t_courses_liquidbase(
-		  liquidbase_id INT NOT NULL AUTO_INCREMENT,
-		  PRIMARY KEY(liquidbase_id), 
-		   liquidbase_dir VARCHAR(200), 
-		   liquidbase_file VARCHAR(200), 
-		   liquidbase_run_datetime DATETIME, 
-		   liquidbase_run_saying VARCHAR(200))")
-	  	 or die(mysqli_error());
-
-
+	$query = "SELECT count(liquidbase_id) FROM $t_courses_liquidbase";
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
+	list($sql_count_liquidbase_id) = $row;
+	
+	if ($sql_count_liquidbase_id == 0){
 		// If refererer then refresh to that page
 		if(isset($_GET['refererer'])) {
 			$refererer = $_GET['refererer'];
@@ -155,12 +150,12 @@ if($action == ""){
 						if(!(is_dir("_inc/courses/_liquidbase_db_scripts/$module/$liquidbase_name"))){
 
 							// Has it been executed?
-							$inp_liquidbase_module_mysql = quote_smart($link, $module);
-							$inp_liquidbase_name_mysql = quote_smart($link, $liquidbase_name);
+							$inp_liquidbase_module = "$module";
+							$inp_liquidbase_name = "$liquidbase_name";
 					
-							$query = "SELECT liquidbase_id FROM $t_courses_liquidbase WHERE liquidbase_dir=$inp_liquidbase_module_mysql AND liquidbase_file=$inp_liquidbase_name_mysql";
-							$result = mysqli_query($link, $query);
-							$row = mysqli_fetch_row($result);
+							$query = "SELECT liquidbase_id FROM $t_courses_liquidbase WHERE liquidbase_dir='$inp_liquidbase_module' AND liquidbase_file='$inp_liquidbase_name'";
+							$result = $mysqli->query($query);
+							$row = $result->fetch_row();
 							list($get_liquidbase_id) = $row;
 							if($get_liquidbase_id == ""){
 								// Date
@@ -169,11 +164,10 @@ if($action == ""){
 
 
 								// Insert
-								mysqli_query($link, "INSERT INTO $t_courses_liquidbase 
+								$mysqli->query("INSERT INTO $t_courses_liquidbase 
 								(liquidbase_id, liquidbase_dir, liquidbase_file, liquidbase_run_datetime, liquidbase_run_saying) 
 								VALUES 
-								(NULL, $inp_liquidbase_module_mysql, $inp_liquidbase_name_mysql, '$datetime', '$run_saying')")
-								or die(mysqli_error($link));
+								(NULL, $inp_liquidbase_module, $inp_liquidbase_name, '$datetime', '$run_saying')");
 
 								// Run code
 								include("_inc/courses/_liquidbase_db_scripts/$module/$liquidbase_name");

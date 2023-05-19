@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/courses/courses.php
-* Version 
-* Date 20:17 30.10.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -52,9 +51,22 @@ else {
 
 
 /*- Check if setup is run ------------------------------------------------------------- */
-$query = "SELECT * FROM $t_courses_liquidbase LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
+$liquidbase_exists = false;
+$query = "SHOW TABLES";
+$result = $mysqli->query($query);
+if($result !== false) {
+	if($result->num_rows > 0) {
+		while($row = $result->fetch_row()) {
+			if($row[0] == "$t_courses_liquidbase"){
+				$liquidbase_exists = true;
+				break;
+			}
+    	}
+  	}
+}
+else echo "Error Unable to check tables " . $mysqli->error;
+
+if($liquidbase_exists){
 	echo"
 	<h1>Courses</h1>
 				
@@ -90,8 +102,8 @@ if($result !== FALSE){
 			";
 			// Navigation
 			$query = "SELECT navigation_id FROM $t_pages_navigation WHERE navigation_url_path='courses/index.php'";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
+			$result = $mysqli->query($query);
+			$row = $result->fetch_row();
 			list($get_navigation_id) = $row;
 			if($get_navigation_id == ""){
 				echo"
@@ -111,8 +123,8 @@ if($result !== FALSE){
 			";
 			$found_editor_language = "";
 			$query = "SELECT language_active_id, language_active_name, language_active_slug, language_active_native_name, language_active_iso_two, language_active_iso_three, language_active_iso_four, language_active_flag_path_16x16, language_active_flag_active_16x16, language_active_flag_inactive_16x16, language_active_flag_path_18x18, language_active_flag_active_18x18, language_active_flag_inactive_18x18, language_active_flag_path_24x24, language_active_flag_active_24x24, language_active_flag_inactive_24x24, language_active_flag_path_32x32, language_active_flag_active_32x32, language_active_flag_inactive_32x32, language_active_charset, language_active_default FROM $t_languages_active";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_language_active_id, $get_language_active_name, $get_language_active_slug, $get_language_active_native_name, $get_language_active_iso_two, $get_language_active_iso_three, $get_language_active_iso_four, $get_language_active_flag_path_16x16, $get_language_active_flag_active_16x16, $get_language_active_flag_inactive_16x16, $get_language_active_flag_path_18x18, $get_language_active_flag_active_18x18, $get_language_active_flag_inactive_18x18, $get_language_active_flag_path_24x24, $get_language_active_flag_active_24x24, $get_language_active_flag_inactive_24x24, $get_language_active_flag_path_32x32, $get_language_active_flag_active_32x32, $get_language_active_flag_inactive_32x32, $get_language_active_charset, $get_language_active_default) = $row;
 				echo"	<a href=\"index.php?open=$open&amp;editor_language=$get_language_active_iso_two&amp;l=$l\"><img src=\"../$get_language_active_flag_path_16x16/$get_language_active_flag_active_16x16\" alt=\"$get_language_active_flag_active_16x16\" /></a>\n";
 
@@ -146,10 +158,11 @@ if($result !== FALSE){
 				  <tr>
 				   <td>
 					<p style=\"padding:4px 0px 4px 0px;margin:0;\">";
-				$editor_language_mysql = quote_smart($link, $editor_language);
-				$query = "SELECT main_category_id, main_category_title FROM $t_courses_categories_main WHERE main_category_language=$editor_language_mysql ORDER BY main_category_title ASC";
-				$result = mysqli_query($link, $query);
-				while($row = mysqli_fetch_row($result)) {
+				$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title FROM $t_courses_categories_main WHERE main_category_language=?"); 
+				$stmt->bind_param("s", $editor_language);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				while($row = $result->fetch_row()) {
 					list($get_main_category_id, $get_main_category_title) = $row;
 					echo"
 					<a href=\"index.php?open=$open&amp;page=open_main_category&amp;main_category_id=$get_main_category_id&amp;editor_language=$editor_language&amp;l=$l\">$get_main_category_title</a><br />
@@ -166,10 +179,12 @@ if($result !== FALSE){
 		  <td style=\"vertical-align:top;\">
 			<!-- Right: Courses -->";
 
-				$editor_language_mysql = quote_smart($link, $editor_language);
-				$query = "SELECT course_id, course_title, course_title_clean, course_front_page_intro, course_main_category_id, course_main_category_title, course_sub_category_id, course_sub_category_title, course_image_file, course_image_thumb, course_modules_count, course_lessons_count, course_quizzes_count, course_users_enrolled_count FROM $t_courses_index WHERE course_language=$editor_language_mysql ORDER BY course_users_enrolled_count ASC";
-				$result = mysqli_query($link, $query);
-				while($row = mysqli_fetch_row($result)) {
+			
+			$stmt = $mysqli->prepare("SELECT course_id, course_title, course_title_clean, course_front_page_intro, course_main_category_id, course_main_category_title, course_sub_category_id, course_sub_category_title, course_image_file, course_image_thumb, course_modules_count, course_lessons_count, course_quizzes_count, course_users_enrolled_count FROM $t_courses_index WHERE course_language=? ORDER BY course_users_enrolled_count ASC"); 
+			$stmt->bind_param("s", $editor_language);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			while($row = $result->fetch_row()) {
 					list($get_course_id, $get_course_title, $get_course_title_clean, $get_course_front_page_intro, $get_course_main_category_id, $get_course_main_category_title, $get_course_sub_category_id, $get_course_sub_category_title, $get_course_image_file, $get_course_image_thumb, $get_course_modules_count, $get_course_lessons_count, $get_course_quizzes_count, $get_course_users_enrolled_count) = $row;
 					echo"
 					<table style=\"width: 100%;\">

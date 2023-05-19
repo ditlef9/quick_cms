@@ -14,40 +14,33 @@ if(!(isset($define_access_to_control_panel))){
 	die;
 }
 
-mysqli_query($link, "DROP TABLE IF EXISTS $t_courses_modules") or die(mysqli_error($link));
-
 echo"
 
 <!-- courses_modules -->
+<p>Create table: $t_courses_modules</p>
 ";
 
-$query = "SELECT * FROM $t_courses_modules LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
-	// Count rows
-	$row_cnt = mysqli_num_rows($result);
-	echo"
-	<p>$t_courses_modules: $row_cnt</p>
-	";
+$mysqli->query("DROP TABLE IF EXISTS $t_courses_modules");
+
+if (!$mysqli -> query("CREATE TABLE $t_courses_modules(
+	module_id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(module_id), 
+	 module_course_id INT,
+	 module_course_title VARCHAR(200),
+	 module_number INT,
+	 module_title VARCHAR(200),
+	 module_title_clean VARCHAR(200),
+	 module_content TEXT,
+	 module_read_times INT,
+	 module_read_ipblock TEXT,
+	 module_created DATETIME,
+	 module_updated DATETIME,
+	 module_last_read_datetime DATETIME,
+	 module_last_read_date_formatted VARCHAR(60))")) {
+	echo("MySQLI create table error: " . $mysqli -> error); die;
 }
-else{
-	mysqli_query($link, "CREATE TABLE $t_courses_modules(
-	  module_id INT NOT NULL AUTO_INCREMENT,
-	  PRIMARY KEY(module_id), 
-	   module_course_id INT,
-	   module_course_title VARCHAR(200),
-	   module_number INT,
-	   module_title VARCHAR(200),
-	   module_title_clean VARCHAR(200),
-	   module_content TEXT,
-	   module_read_times INT,
-	   module_read_ipblock TEXT,
-	   module_created DATETIME,
-	   module_updated DATETIME,
-	   module_last_read_datetime DATETIME,
-	   module_last_read_date_formatted VARCHAR(60))")
-	   or die(mysqli_error());
-}
+
+
 echo"
 <!-- //courses_modules -->
 

@@ -17,38 +17,34 @@ if(!(isset($define_access_to_control_panel))){
 echo"
 
 <!-- modules_quizzes_user_records -->
+<p>Create table: $t_courses_modules_quizzes_user_records</p>
 ";
 
-$query = "SELECT * FROM $t_courses_modules_quizzes_user_records LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
-	// Count rows
-	$row_cnt = mysqli_num_rows($result);
-	echo"
-	<p>$t_courses_modules_quizzes_user_records: $row_cnt</p>
-	";
+
+$mysqli->query("DROP TABLE IF EXISTS $t_courses_modules_quizzes_user_records");
+
+if (!$mysqli -> query("CREATE TABLE $t_courses_modules_quizzes_user_records(
+	record_id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(record_id), 
+	 record_course_id INT,
+	 record_course_title VARCHAR(200),
+	 record_quiz_id INT,
+	 record_user_id INT,
+	 record_started_datetime DATETIME,
+	 record_started_time VARCHAR(200),
+	 record_started_saying VARCHAR(200),
+	 record_is_closed INT,
+	 record_ended_datetime DATETIME,
+	 record_ended_time VARCHAR(200),
+	 record_ended_saying VARCHAR(200),
+	 record_finished_saying VARCHAR(200),
+	 record_time_used VARCHAR(200),
+	 record_percentage INT,
+	 record_passed INT)")) {
+	echo("MySQLI create table error: " . $mysqli -> error); die;
 }
-else{
-	mysqli_query($link, "CREATE TABLE $t_courses_modules_quizzes_user_records(
-	  record_id INT NOT NULL AUTO_INCREMENT,
-	  PRIMARY KEY(try_id), 
-	   record_course_id INT,
-	   record_course_title VARCHAR(200),
-	   record_quiz_id INT,
-	   record_user_id INT,
-	   record_started_datetime DATETIME,
-	   record_started_time VARCHAR(200),
-	   record_started_saying VARCHAR(200),
-	   record_is_closed INT,
-	   record_ended_datetime DATETIME,
-	   record_ended_time VARCHAR(200),
-	   record_ended_saying VARCHAR(200),
-	   record_finished_saying VARCHAR(200),
-	   record_time_used VARCHAR(200),
-	   record_percentage INT,
-	   record_passed INT)")
-	   or die(mysqli_error());
-}
+
+die;
 echo"
 <!-- //modules_quizzes_user_records -->
 

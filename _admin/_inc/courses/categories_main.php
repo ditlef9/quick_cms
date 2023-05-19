@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/cources/categories_main.php
-* Version 2.0.0
-* Date 21:32 12.09.2019
-* Copyright (c) 2019 Sindre Andre Ditlefsen
+* Version 3
+* Copyright (c) 2019-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -106,10 +105,9 @@ if($action == ""){
 	
 
 
-		$editor_language_mysql = quote_smart($link, $editor_language);
 		$query = "SELECT main_category_id, main_category_title, main_category_title_clean, main_category_language FROM $t_courses_categories_main ORDER BY main_category_title ASC";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_main_category_id, $get_main_category_title, $get_main_category_title_clean, $get_main_category_language) = $row;
 
 			if(isset($odd) && $odd == false){
