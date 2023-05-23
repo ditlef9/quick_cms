@@ -164,11 +164,14 @@ if($action == ""){
 
 
 								// Insert
-								$mysqli->query("INSERT INTO $t_courses_liquidbase 
-								(liquidbase_id, liquidbase_dir, liquidbase_file, liquidbase_run_datetime, liquidbase_run_saying) 
-								VALUES 
-								(NULL, $inp_liquidbase_module, $inp_liquidbase_name, '$datetime', '$run_saying')");
-
+								$stmt = $mysqli->prepare("INSERT INTO $t_courses_liquidbase 
+									(liquidbase_id, liquidbase_dir, liquidbase_file, liquidbase_run_datetime, liquidbase_run_saying) 
+									VALUES 
+									(NULL,?,?,?,?)");
+								$stmt->bind_param("ssss", $inp_liquidbase_module, $inp_liquidbase_name, $datetime, $run_saying); 
+								$stmt->execute();
+							
+							
 								// Run code
 								include("_inc/courses/_liquidbase_db_scripts/$module/$liquidbase_name");
 							} // not runned before
@@ -202,8 +205,8 @@ if($action == ""){
 	";
 
 	$query = "SELECT liquidbase_id, liquidbase_dir, liquidbase_file, liquidbase_run_datetime, liquidbase_run_saying FROM $t_courses_liquidbase ORDER BY liquidbase_id DESC";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
 		list($get_liquidbase_id, $get_liquidbase_dir, $get_liquidbase_file, $get_liquidbase_run_datetime, $get_liquidbase_run_saying) = $row;
 
 		// Style
@@ -248,16 +251,20 @@ elseif($action == "delete"){
 	else{
 		$liquidbase_id = "";
 	}
-	$liquidbase_id_mysql = quote_smart($link, $liquidbase_id);
-	$query = "SELECT liquidbase_id, liquidbase_file, liquidbase_run_datetime FROM $t_courses_liquidbase WHERE liquidbase_id=$liquidbase_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+
+		
+	$stmt = $mysqli->prepare("SELECT liquidbase_id, liquidbase_file, liquidbase_run_datetime FROM $t_courses_liquidbase WHERE liquidbase_id=?"); 
+	$stmt->bind_param("s", $liquidbase_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_liquidbase_id, $get_liquidbase_file, $get_liquidbase_run_datetime) = $row;
 
 	if($get_liquidbase_id != ""){
 		if($process == "1"){
 
-			mysqli_query($link, "DELETE FROM $t_courses_liquidbase WHERE liquidbase_id=$get_liquidbase_id") or die(mysqli_error($link));
+			$mysqli->query("DELETE FROM $t_courses_liquidbase WHERE liquidbase_id=$get_liquidbase_id") or die($mysqli->error);
+
 
 			$url = "index.php?open=$open&page=$page&ft=success&fm=deleted";
 			header("Location: $url");

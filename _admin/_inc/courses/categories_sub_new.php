@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/courses/categories_sub_new.php
-* Version 1.0.0
-* Date 22:12 12.09.2019
-* Copyright (c) 2008-2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -47,14 +46,17 @@ if(isset($_GET['main_category_id'])){
 else{
 	$main_category_id = "";
 }
-$main_category_id_mysql = quote_smart($link, $main_category_id);
 
 
 if($action == ""){
-	$query = "SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
-	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_title_clean, $get_current_main_category_description, $get_current_main_category_language, $get_current_main_category_created, $get_current_main_category_updated) = $row;
+	
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_icon_path, main_category_icon_16x16, main_category_icon_18x18, main_category_icon_24x24, main_category_icon_32x32, main_category_icon_36x36, main_category_icon_48x48, main_category_icon_96x96, main_category_icon_192x192, main_category_icon_260x260, main_category_header_logo, main_category_webdesign, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
+	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_title_clean, $get_current_main_category_description, $get_current_main_category_language, $get_current_main_category_icon_path, $get_current_main_category_icon_16x16, $get_current_main_category_icon_18x18, $get_current_main_category_icon_24x24, $get_current_main_category_icon_32x32, $get_current_main_category_icon_36x36, $get_current_main_category_icon_48x48, $get_current_main_category_icon_96x96, $get_current_main_category_icon_192x192, $get_current_main_category_icon_260x260, $get_current_main_category_header_logo, $get_current_main_category_webdesign, $get_current_main_category_created, $get_current_main_category_updated) = $row;
+
 
 	if($get_current_main_category_id == ""){
 		echo"<p>Server error 404.</p>";
@@ -65,27 +67,33 @@ if($action == ""){
 		if($process == "1"){
 			$inp_title = $_POST['inp_title'];
 			$inp_title = output_html($inp_title);
-			$inp_title_mysql = quote_smart($link, $inp_title);
 
 			$inp_title_clean = clean($inp_title);
-			$inp_title_clean_mysql = quote_smart($link, $inp_title_clean);
 
-			$inp_language_mysql = quote_smart($link, $get_current_main_category_language);
+			$inp_description = "";
+
+			$inp_language_mysql = "$get_current_main_category_language";
 
 			$datetime = date("Y-m-d H:i:s");
 
-			$inp_main_category_title_mysql = quote_smart($link, $get_current_main_category_title);
+			$inp_main_category_title = "$get_current_main_category_title";
 		
-			mysqli_query($link, "INSERT INTO $t_courses_categories_sub
-			(sub_category_id, sub_category_title, sub_category_title_clean, sub_category_description, sub_category_main_category_id, sub_category_main_category_title, sub_category_language, sub_category_created, sub_category_updated) 
-			VALUES 
-			(NULL, $inp_title_mysql, $inp_title_clean_mysql, '', $get_current_main_category_id, $inp_main_category_title_mysql, $inp_language_mysql, '$datetime', '$datetime')")
-			or die(mysqli_error($link));
+			$stmt = $mysqli->prepare("INSERT INTO $t_courses_categories_sub
+				(sub_category_id, sub_category_title, sub_category_title_clean, sub_category_description, sub_category_main_category_id, 
+				sub_category_main_category_title, sub_category_language, sub_category_created, sub_category_updated) 
+				VALUES 
+				(NULL,?,?,?,?,
+				?,?,?,?)");
+			$stmt->bind_param("ssssssss", $inp_title, $inp_title_clean, $inp_description, $get_current_main_category_id, $inp_main_category_title, 
+					$inp_language, $datetime, $datetime
+				); 
+			$stmt->execute();
+
 
 			// Get ID
 			$query = "SELECT sub_category_id FROM $t_courses_categories_sub WHERE sub_category_created='$datetime'";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
+			$result = $mysqli->query($query);
+			$row = $result->fetch_row();
 			list($get_current_sub_category_id) = $row;
 
 
@@ -144,15 +152,15 @@ if($action == ""){
 			</ul>
 
 			<script>
-			\$(document).ready(function(){
-				\$('[name=\"inp_title\"]').focus();
-			});
+			window.onload = function() {
+				document.getElementById(\"inp_title\").focus();
+			}
 			</script>
 			
 			<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;main_category_id=$get_current_main_category_id&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 			<p><b>Title:</b><br />
-			<input type=\"text\" name=\"inp_title\" value=\"\" size=\"25\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" style=\"width: 100%;\" />
+			<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"\" size=\"25\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" style=\"width: 100%;\" />
 			</p>
 
 			<p><input type=\"submit\" value=\"Create\" class=\"btn_default\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" /></p>

@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/comments/courses_category_scan.php
-* Version 
-* Date 20:17 30.10.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */

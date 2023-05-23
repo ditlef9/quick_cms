@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/comments/courses_open.php
-* Version 
-* Date 15:13 15.09.2019
-* Copyright (c) 2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2019-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -49,11 +48,11 @@ if(isset($_GET['course_id'])){
 else{
 	$course_id = "";
 }
-$course_id_mysql = quote_smart($link, $course_id);
-
-$query = "SELECT course_id, course_title, course_title_clean, course_is_active, course_front_page_intro, course_description, course_contents, course_language, course_main_category_id, course_main_category_title, course_sub_category_id, course_sub_category_title, course_intro_video_embedded, course_image_file, course_image_thumb, course_icon_48, course_icon_64, course_icon_96, course_modules_count, course_lessons_count, course_quizzes_count, course_users_enrolled_count, course_read_times, course_read_times_ip_block, course_created, course_updated FROM $t_courses_index WHERE course_id=$course_id_mysql";
-$result = mysqli_query($link, $query);
-$row = mysqli_fetch_row($result);
+$stmt = $mysqli->prepare("SELECT course_id, course_title, course_title_clean, course_is_active, course_front_page_intro, course_description, course_contents, course_language, course_main_category_id, course_main_category_title, course_sub_category_id, course_sub_category_title, course_intro_video_embedded, course_image_file, course_image_thumb, course_icon_48, course_icon_64, course_icon_96, course_modules_count, course_lessons_count, course_quizzes_count, course_users_enrolled_count, course_read_times, course_read_times_ip_block, course_created, course_updated FROM $t_courses_index WHERE course_id=?"); 
+$stmt->bind_param("s", $course_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_row();
 list($get_current_course_id, $get_current_course_title, $get_current_course_title_clean, $get_current_course_is_active, $get_current_course_front_page_intro, $get_current_course_description, $get_current_course_contents, $get_current_course_language, $get_current_course_main_category_id, $get_current_course_main_category_title, $get_current_course_sub_category_id, $get_current_course_sub_category_title, $get_current_course_intro_video_embedded, $get_current_course_image_file, $get_current_course_image_thumb, $get_current_course_icon_48, $get_current_course_icon_64, $get_current_course_icon_96, $get_current_course_modules_count, $get_current_course_lessons_count, $get_current_course_quizzes_count, $get_current_course_users_enrolled_count, $get_current_course_read_times, $get_current_course_read_times_ip_block, $get_current_course_created, $get_current_course_updated) = $row;
 
 if($get_current_course_id == ""){
@@ -62,37 +61,42 @@ if($get_current_course_id == ""){
 else{
 	// Find category
 	$query = "SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=$get_current_course_main_category_id";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_title_clean, $get_current_main_category_description, $get_current_main_category_language, $get_current_main_category_created, $get_current_main_category_updated) = $row;
 
 	$query = "SELECT sub_category_id, sub_category_title, sub_category_title_clean, sub_category_description, sub_category_main_category_id, sub_category_main_category_title, sub_category_language, sub_category_created, sub_category_updated FROM $t_courses_categories_sub WHERE sub_category_id=$get_current_course_sub_category_id";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
 	list($get_current_sub_category_id, $get_current_sub_category_title, $get_current_sub_category_title_clean, $get_current_sub_category_description, $get_current_sub_category_main_category_id, $get_current_sub_category_main_category_title, $get_current_sub_category_language, $get_current_sub_category_created, $get_current_sub_category_updated) = $row;
 
 	// Find exam
 	$query = "SELECT exam_id, exam_course_id, exam_course_title, exam_language, exam_total_questions, exam_total_points, exam_points_needed_to_pass FROM $t_courses_exams_index WHERE exam_course_id=$get_current_course_id";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
 	list($get_current_exam_id, $get_current_exam_course_id, $get_current_exam_course_title, $get_current_exam_language, $get_current_exam_total_questions, $get_current_exam_total_points, $get_current_exam_points_needed_to_pass) = $row;
 	if($get_current_exam_id == ""){
 		// Insert exam
-		$inp_title_mysql = quote_smart($link, $get_current_course_title);
-		$inp_title_clean_mysql = quote_smart($link, $get_current_course_title_clean);
-		$inp_language_mysql = quote_smart($link, $get_current_course_language);
+		$inp_title = "$get_current_course_title";
+		$inp_title_clean = "$get_current_course_title_clean";
+		$inp_language = "$get_current_course_language";
 
-		mysqli_query($link, "INSERT INTO $t_courses_exams_index 
-		(exam_id, exam_course_id, exam_course_title, exam_language, 
-		exam_total_questions, exam_total_points, exam_points_needed_to_pass) 
-		VALUES 
-		(NULL, $get_current_course_id, $inp_title_mysql, $inp_language_mysql, 
-		'0', '0', '0')")
-		or die(mysqli_error($link));
+		$zero = 0;
+
+		$stmt = $mysqli->prepare("INSERT INTO $t_courses_exams_index 
+			(exam_id, exam_course_id, exam_course_title, exam_language, exam_total_questions, 
+			exam_total_points, exam_points_needed_to_pass) 
+			VALUES 
+			(NULL,?,?,?,?,
+			?,?)");
+		$stmt->bind_param("ssssss", $get_current_course_id, $inp_title, $inp_language, $zero,
+			$zero, $zero); 
+		$stmt->execute();
+
 		
 		$query = "SELECT exam_id, exam_course_id, exam_course_title, exam_language, exam_total_questions, exam_total_points, exam_points_needed_to_pass FROM $t_courses_exams_index WHERE exam_course_id=$get_current_course_id";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$result = $mysqli->query($query);
+		$row = $result->fetch_row();
 		list($get_current_exam_id, $get_current_exam_course_id, $get_current_exam_course_title, $get_current_exam_language, $get_current_exam_total_questions, $get_current_exam_total_points, $get_current_exam_points_needed_to_pass) = $row;
 
 	}
@@ -101,9 +105,11 @@ else{
 		if($process == "1"){
 			$inp_points_needed_to_pass = $_POST['inp_points_needed_to_pass'];
 			$inp_points_needed_to_pass = output_html($inp_points_needed_to_pass);
-			$inp_points_needed_to_pass_mysql = quote_smart($link, $inp_points_needed_to_pass);
+			
 
-			$result = mysqli_query($link, "UPDATE $t_courses_exams_index SET exam_points_needed_to_pass=$inp_points_needed_to_pass_mysql WHERE exam_id=$get_current_exam_id");
+			$stmt = $mysqli->prepare("UPDATE $t_courses_exams_index SET exam_points_needed_to_pass=? WHERE exam_id=?");
+			$stmt->bind_param("ss", $inp_points_needed_to_pass, $get_current_exam_id); 
+			$stmt->execute();
 
 			$url = "index.php?open=$open&page=$page&course_id=$course_id&editor_language=$editor_language&ft=success&fm=changes_saved";
 			header("Location: $url");
@@ -205,8 +211,8 @@ else{
 			$total_questions = 0;
 			$total_points = 0;
 			$query = "SELECT qa_id, qa_course_id, qa_course_title, qa_exam_id, qa_question_number, qa_question, qa_text, qa_type, qa_alt_a, qa_alt_b, qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, qa_alt_g, qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, qa_alt_l, qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, qa_hint, qa_explanation FROM $t_courses_exams_qa WHERE qa_course_id=$get_current_course_id ORDER BY qa_question_number ASC";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_qa_id, $get_qa_course_id, $get_qa_course_title, $get_qa_exam_id, $get_qa_question_number, $get_qa_question, $get_qa_text, $get_qa_type, $get_qa_alt_a, $get_qa_alt_b, $get_qa_alt_c, $get_qa_alt_d, $get_qa_alt_e, $get_qa_alt_f, $get_qa_alt_g, $get_qa_alt_h, $get_qa_alt_i, $get_qa_alt_j, $get_qa_alt_k, $get_qa_alt_l, $get_qa_alt_m, $get_qa_alt_n, $get_qa_correct_alternatives, $get_qa_points, $get_qa_hint, $get_qa_explanation) = $row;
 	
 				// Style
@@ -220,7 +226,9 @@ else{
 				// Question number
 				$total_questions = $total_questions+1;
 				if($total_questions != "$get_qa_question_number"){
-					$result_update = mysqli_query($link, "UPDATE $t_courses_exams_qa SET qa_question_number=$total_questions WHERE qa_id=$get_qa_id");
+					
+					$mysqli->query("UPDATE $t_courses_exams_qa SET qa_question_number=$total_questions WHERE qa_id=$get_qa_id") or die($mysqli->error);
+					
 					$get_qa_question_number = "$total_questions";
 				}
 
@@ -248,10 +256,10 @@ else{
 				$total_points = $total_points+$get_qa_points;
 			} // while
 			if($total_points != "$get_current_exam_total_points"){
-				$result_update = mysqli_query($link, "UPDATE $t_courses_exams_index SET exam_total_points=$total_points WHERE exam_id=$get_current_exam_id");
+				$mysqli->query("UPDATE $t_courses_exams_index SET exam_total_points=$total_points WHERE exam_id=$get_current_exam_id") or die($mysqli->error);
 			}
 			if($total_questions != "$get_current_exam_total_questions"){
-				$result_update = mysqli_query($link, "UPDATE $t_courses_exams_index SET exam_total_questions=$total_questions WHERE exam_id=$get_current_exam_id");
+				$mysqli->query("UPDATE $t_courses_exams_index SET exam_total_questions=$total_questions WHERE exam_id=$get_current_exam_id") or die($mysqli->error);
 			}
 			echo"
 			 </tbody>
@@ -263,15 +271,12 @@ else{
 		if($process == "1"){
 			$inp_question = $_POST['inp_question'];
 			$inp_question = output_html($inp_question);
-			$inp_question_mysql = quote_smart($link, $inp_question);
 
 			$inp_text = $_POST['inp_text'];
 			$inp_text = output_html($inp_text);
-			$inp_text_mysql = quote_smart($link, $inp_text);
 
 			$inp_type = $_POST['inp_type'];
 			$inp_type = output_html($inp_type);
-			$inp_type_mysql = quote_smart($link, $inp_type);
 
 
 			$letters = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N");
@@ -291,97 +296,100 @@ else{
 				}
 
 				if($letter_lowercase == "a"){
-					$inp_alt_a_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_a = "$inp_alt";
 				}
 				elseif($letter_lowercase == "b"){
-					$inp_alt_b_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_b = "$inp_alt";
 				}
 				elseif($letter_lowercase == "c"){
-					$inp_alt_c_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_c = "$inp_alt";
 				}
 				elseif($letter_lowercase == "d"){
-					$inp_alt_d_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_d = "$inp_alt";
 				}
 				elseif($letter_lowercase == "e"){
-					$inp_alt_e_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_e = "$inp_alt";
 				}
 				elseif($letter_lowercase == "f"){
-					$inp_alt_f_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_f = "$inp_alt";
 				}
 				elseif($letter_lowercase == "g"){
-					$inp_alt_g_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_g = "$inp_alt";
 				}
 				elseif($letter_lowercase == "h"){
-					$inp_alt_h_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_h = "$inp_alt";
 				}
 				elseif($letter_lowercase == "i"){
-					$inp_alt_i_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_i = "$inp_alt";
 				}
 				elseif($letter_lowercase == "j"){
-					$inp_alt_j_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_j = "$inp_alt";
 				}
 				elseif($letter_lowercase == "k"){
-					$inp_alt_k_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_k = "$inp_alt";
 				}
 				elseif($letter_lowercase == "l"){
-					$inp_alt_l_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_l = "$inp_alt";
 				}
 				elseif($letter_lowercase == "m"){
-					$inp_alt_m_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_m = "$inp_alt";
 				}
 				elseif($letter_lowercase == "n"){
-					$inp_alt_n_mysql = quote_smart($link, $inp_alt);
+					$inp_alt_n = "$inp_alt";
 				}
 			}
-			$inp_correct_alternatives_mysql = quote_smart($link, $inp_correct_alternatives);
 
 			$inp_points = $_POST['inp_points'];
 			$inp_points = output_html($inp_points);
-			$inp_points_mysql = quote_smart($link, $inp_points);
 
 			$inp_hint = $_POST['inp_hint'];
 			$inp_hint = output_html($inp_hint);
-			$inp_hint_mysql = quote_smart($link, $inp_hint);
 
 			$inp_explanation = $_POST['inp_explanation'];
 			$inp_explanation = output_html($inp_explanation);
-			$inp_explanation_mysql = quote_smart($link, $inp_explanation);
 
-			$inp_course_title_mysql = quote_smart($link, $get_current_course_title);
-			$inp_course_title_clean_mysql = quote_smart($link, $get_current_course_title_clean);
+			$inp_course_title = "$get_current_course_title";
+			$inp_course_title_clean = "$get_current_course_title_clean";
 
+			$inp_qa_question_number = 99;
 
-
-			mysqli_query($link, "INSERT INTO $t_courses_exams_qa
-			(qa_id, qa_course_id, qa_course_title, qa_exam_id, 
-			qa_question_number, qa_question, qa_text, qa_type, qa_alt_a, 
-			qa_alt_b, qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, 
-			qa_alt_g, qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, 
-			qa_alt_l, qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, 
-			qa_hint, qa_explanation) 
-			VALUES 
-			(NULL, $get_current_course_id, $inp_course_title_mysql, $get_current_exam_id, 
-			99, $inp_question_mysql, $inp_text_mysql, $inp_type_mysql, $inp_alt_a_mysql, 
-			$inp_alt_b_mysql, $inp_alt_c_mysql, $inp_alt_d_mysql, $inp_alt_e_mysql, $inp_alt_f_mysql,
-			$inp_alt_g_mysql, $inp_alt_h_mysql, $inp_alt_i_mysql, $inp_alt_j_mysql, $inp_alt_k_mysql,
-			$inp_alt_l_mysql, $inp_alt_m_mysql, $inp_alt_n_mysql, $inp_correct_alternatives_mysql, $inp_points_mysql,
-			$inp_hint_mysql, $inp_explanation_mysql)")
-			or die(mysqli_error($link));
-
+			$stmt = $mysqli->prepare("INSERT INTO $t_courses_exams_qa
+				(qa_id, qa_course_id, qa_course_title, qa_exam_id, qa_question_number, 
+				qa_question, qa_text, qa_type, qa_alt_a, qa_alt_b, 
+				qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, qa_alt_g,
+				qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, qa_alt_l, 
+				qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, qa_hint, 
+				qa_explanation) 
+				VALUES 
+				(NULL,?,?,?,?,
+				?,?,?,?,?,
+				?,?,?,?,?,
+				?,?,?,?,?,
+				?,?,?,?,?,
+				?)");
+			$stmt->bind_param("sssssssssssssssssssssssss", $get_current_course_id, $inp_course_title, $get_current_exam_id, $inp_qa_question_number, 
+				$inp_question, $inp_text, $inp_type, $inp_alt_a, $inp_alt_b, 
+				$inp_alt_c, $inp_alt_d, $inp_alt_e, $inp_alt_f, $inp_alt_g,
+				$inp_alt_h, $inp_alt_i, $inp_alt_j, $inp_alt_k, $inp_alt_l,
+				$inp_alt_m, $inp_alt_n, $inp_correct_alternatives, $inp_points, $inp_hint, 
+				$inp_explanation); 
+			$stmt->execute();
 
 			// Update question number, total questions, and points needed
 			$total_questions = 0;
 			$total_points = 0;
 			$query = "SELECT qa_id, qa_course_id, qa_course_title, qa_exam_id, qa_question_number, qa_question, qa_text, qa_type, qa_alt_a, qa_alt_b, qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, qa_alt_g, qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, qa_alt_l, qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, qa_hint, qa_explanation FROM $t_courses_exams_qa WHERE qa_course_id=$get_current_course_id ORDER BY qa_question_number ASC";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_qa_id, $get_qa_course_id, $get_qa_course_title, $get_qa_exam_id, $get_qa_question_number, $get_qa_question, $get_qa_text, $get_qa_type, $get_qa_alt_a, $get_qa_alt_b, $get_qa_alt_c, $get_qa_alt_d, $get_qa_alt_e, $get_qa_alt_f, $get_qa_alt_g, $get_qa_alt_h, $get_qa_alt_i, $get_qa_alt_j, $get_qa_alt_k, $get_qa_alt_l, $get_qa_alt_m, $get_qa_alt_n, $get_qa_correct_alternatives, $get_qa_points, $get_qa_hint, $get_qa_explanation) = $row;
 	
 
 				// Question number
 				$total_questions = $total_questions+1;
 				if($total_questions != "$get_qa_question_number"){
-					$result_update = mysqli_query($link, "UPDATE $t_courses_exams_qa SET qa_question_number=$total_questions WHERE qa_id=$get_qa_id");
+					
+					$mysqli->query("UPDATE $t_courses_exams_qa SET qa_question_number=$total_questions WHERE qa_id=$get_qa_id") or die($mysqli->error);
+
 					$get_qa_question_number = "$total_questions";
 				}
 
@@ -391,7 +399,7 @@ else{
 			// Total points needed to pass = 90 %
 			$points_needed_to_pass = floor(($total_points*90)/100);
 
-			$result_update = mysqli_query($link, "UPDATE $t_courses_exams_index SET exam_total_points=$total_points, exam_total_questions=$total_questions, exam_points_needed_to_pass=$points_needed_to_pass WHERE exam_id=$get_current_exam_id") or die(mysqli_error($link));
+			$mysqli->query("UPDATE $t_courses_exams_index SET exam_total_points=$total_points, exam_total_questions=$total_questions, exam_points_needed_to_pass=$points_needed_to_pass WHERE exam_id=$get_current_exam_id") or die($mysqli->error);
 
 
 			$url = "index.php?open=$open&page=$page&course_id=$course_id&action=new_question&editor_language=$editor_language&ft=success&fm=question_$inp_question" . "_saved";
@@ -437,9 +445,9 @@ else{
 		<!-- New question form -->
 			<h2>New exam question</h2>
 			<script>
-			\$(document).ready(function(){
-				\$('[name=\"inp_question\"]').focus();
-			});
+			window.onload = function() {
+				document.getElementById(\"inp_title\").focus();
+			}
 			</script>
 			
 			<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;course_id=$course_id&amp;action=new_question&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
@@ -510,11 +518,11 @@ else{
 		else{
 			$qa_id = "";
 		}
-		$qa_id_mysql = quote_smart($link, $qa_id);
-
-		$query = "SELECT qa_id, qa_course_id, qa_course_title, qa_exam_id, qa_question_number, qa_question, qa_text, qa_type, qa_alt_a, qa_alt_b, qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, qa_alt_g, qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, qa_alt_l, qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, qa_hint, qa_explanation FROM $t_courses_exams_qa WHERE qa_id=$qa_id_mysql AND qa_course_id=$get_current_course_id";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$stmt = $mysqli->prepare("SELECT qa_id, qa_course_id, qa_course_title, qa_exam_id, qa_question_number, qa_question, qa_text, qa_type, qa_alt_a, qa_alt_b, qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, qa_alt_g, qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, qa_alt_l, qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, qa_hint, qa_explanation FROM $t_courses_exams_qa WHERE qa_id=? AND qa_course_id=?"); 
+		$stmt->bind_param("ss", $qa_id, $get_current_course_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_current_qa_id, $get_current_qa_course_id, $get_current_qa_course_title, $get_current_qa_exam_id, $get_current_qa_question_number, $get_current_qa_question, $get_current_qa_text, $get_current_qa_type, $get_current_qa_alt_a, $get_current_qa_alt_b, $get_current_qa_alt_c, $get_current_qa_alt_d, $get_current_qa_alt_e, $get_current_qa_alt_f, $get_current_qa_alt_g, $get_current_qa_alt_h, $get_current_qa_alt_i, $get_current_qa_alt_j, $get_current_qa_alt_k, $get_current_qa_alt_l, $get_current_qa_alt_m, $get_current_qa_alt_n, $get_current_qa_correct_alternatives, $get_current_qa_points, $get_current_qa_hint, $get_current_qa_explanation) = $row;
 
 		if($get_current_qa_id == ""){
@@ -524,15 +532,12 @@ else{
 			if($process == "1"){
 				$inp_question = $_POST['inp_question'];
 				$inp_question = output_html($inp_question);
-				$inp_question_mysql = quote_smart($link, $inp_question);
 
 				$inp_text = $_POST['inp_text'];
 				$inp_text = output_html($inp_text);
-				$inp_text_mysql = quote_smart($link, $inp_text);
 	
 				$inp_type = $_POST['inp_type'];
 				$inp_type = output_html($inp_type);
-				$inp_type_mysql = quote_smart($link, $inp_type);
 
 
 				$letters = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N");
@@ -552,86 +557,109 @@ else{
 					}
 
 					if($letter_lowercase == "a"){
-						$inp_alt_a_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_a = "$inp_alt";
 					}
 					elseif($letter_lowercase == "b"){
-						$inp_alt_b_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_b = "$inp_alt";
 					}
 					elseif($letter_lowercase == "c"){
-						$inp_alt_c_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_c = "$inp_alt";
 					}
 					elseif($letter_lowercase == "d"){
-						$inp_alt_d_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_d = "$inp_alt";
 					}
 					elseif($letter_lowercase == "e"){
-						$inp_alt_e_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_e = "$inp_alt";
 					}
 					elseif($letter_lowercase == "f"){
-						$inp_alt_f_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_f = "$inp_alt";
 					}
 					elseif($letter_lowercase == "g"){
-						$inp_alt_g_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_g  = "$inp_alt";
 					}
 					elseif($letter_lowercase == "h"){
-						$inp_alt_h_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_h = "$inp_alt";
 					}
 					elseif($letter_lowercase == "i"){
-						$inp_alt_i_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_i = "$inp_alt";
 					}
 					elseif($letter_lowercase == "j"){
-						$inp_alt_j_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_j = "$inp_alt";
 					}
 					elseif($letter_lowercase == "k"){
-						$inp_alt_k_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_k = "$inp_alt";
 					}
 					elseif($letter_lowercase == "l"){
-						$inp_alt_l_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_l = "$inp_alt";
 					}
 					elseif($letter_lowercase == "m"){
-						$inp_alt_m_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_m = "$inp_alt";
 					}
 					elseif($letter_lowercase == "n"){
-						$inp_alt_n_mysql = quote_smart($link, $inp_alt);
+						$inp_alt_n = "$inp_alt";
 					}
 				}
-				$inp_correct_alternatives_mysql = quote_smart($link, $inp_correct_alternatives);
+				
 
 				$inp_points = $_POST['inp_points'];
 				$inp_points = output_html($inp_points);
-				$inp_points_mysql = quote_smart($link, $inp_points);
+				
 
 				$inp_hint = $_POST['inp_hint'];
 				$inp_hint = output_html($inp_hint);
-				$inp_hint_mysql = quote_smart($link, $inp_hint);
+				
 
 				$inp_explanation = $_POST['inp_explanation'];
 				$inp_explanation = output_html($inp_explanation);
-				$inp_explanation_mysql = quote_smart($link, $inp_explanation);
+				
 	
+				$stmt = $mysqli->prepare("UPDATE $t_courses_exams_qa SET 
+					qa_question=?, 
+					qa_text=?, 
+					qa_type=?, 
+					qa_alt_a=?, 
+					qa_alt_b=?, 
+					qa_alt_c=?, 
+					qa_alt_d=?, 
+					qa_alt_e=?, 
+					qa_alt_f=?, 
+					qa_alt_g=?, 
+					qa_alt_h=?, 
+					qa_alt_i=?, 
+					qa_alt_j=?, 
+					qa_alt_k=?, 
+					qa_alt_l=?, 
+					qa_alt_m=?, 
+					qa_alt_n=?, 
+					qa_correct_alternatives=?, 
+					qa_points=?, 
+					qa_hint=?, 
+					qa_explanation=? 
+					WHERE qa_id=?");
+				$stmt->bind_param("ssssssssssssssssssss", $inp_question, 
+					$inp_text, 
+					$inp_type, 
+					$inp_alt_a, 
+					$inp_alt_b, 
+					$inp_alt_c,  
+					$inp_alt_d, 
+					$inp_alt_e, 
+					$inp_alt_f, 
+					$inp_alt_g, 
+					$inp_alt_h, 
+					$inp_alt_i, 
+					$inp_alt_j, 
+					$inp_alt_k, 
+					$inp_alt_l, 
+					$inp_alt_m, 
+					$inp_alt_n, 
+					$inp_correct_alternatives, 
+					$inp_points, 
+					$inp_hint, 
+					$inp_explanation, 
+					$get_current_qa_id); 
+				$stmt->execute();
 
-				$result = mysqli_query($link, "UPDATE $t_courses_exams_qa SET 
-								qa_question=$inp_question_mysql, 
-								qa_text=$inp_text_mysql, 
-								qa_type=$inp_type_mysql, 
-								qa_alt_a=$inp_alt_a_mysql, 
-								qa_alt_b=$inp_alt_b_mysql, 
-								qa_alt_c=$inp_alt_c_mysql, 
-								qa_alt_d=$inp_alt_d_mysql, 
-								qa_alt_e=$inp_alt_e_mysql, 
-								qa_alt_f=$inp_alt_f_mysql, 
-								qa_alt_g=$inp_alt_g_mysql, 
-								qa_alt_h=$inp_alt_h_mysql, 
-								qa_alt_i=$inp_alt_i_mysql, 
-								qa_alt_j=$inp_alt_j_mysql, 
-								qa_alt_k=$inp_alt_k_mysql, 
-								qa_alt_l=$inp_alt_l_mysql, 
-								qa_alt_m=$inp_alt_m_mysql, 
-								qa_alt_n=$inp_alt_n_mysql, 
-								qa_correct_alternatives=$inp_correct_alternatives_mysql, 
-								qa_points=$inp_points_mysql, 
-								qa_hint=$inp_hint_mysql, 
-								qa_explanation=$inp_explanation_mysql 
-								WHERE qa_id=$get_current_qa_id") or die(mysqli_error($link));
 
 				$url = "index.php?open=$open&page=$page&course_id=$course_id&action=edit_question&qa_id=$get_current_qa_id&editor_language=$editor_language&ft=success&fm=question_saved";
 				header("Location: $url");
@@ -676,15 +704,15 @@ else{
 			<!-- Edit question form -->
 				<h2>Edit exam question</h2>
 				<script>
-				\$(document).ready(function(){
-					\$('[name=\"inp_question\"]').focus();
-				});
+				window.onload = function() {
+					document.getElementById(\"inp_question\").focus();
+				}
 				</script>
 			
 				<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;course_id=$course_id&amp;action=edit_question&amp;qa_id=$get_current_qa_id&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 				<p><b>Question:</b><br />
-				<input type=\"text\" name=\"inp_question\" value=\"$get_current_qa_question\" size=\"25\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
+				<input type=\"text\" name=\"inp_question\" id=\"inp_question\" value=\"$get_current_qa_question\" size=\"25\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
 				</p>
 
 				<p><b>Text:</b><br />
@@ -1029,11 +1057,13 @@ else{
 		else{
 			$qa_id = "";
 		}
-		$qa_id_mysql = quote_smart($link, $qa_id);
 
-		$query = "SELECT qa_id, qa_course_id, qa_course_title, qa_exam_id, qa_question_number, qa_question, qa_text, qa_type, qa_alt_a, qa_alt_b, qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, qa_alt_g, qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, qa_alt_l, qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, qa_hint, qa_explanation FROM $t_courses_exams_qa WHERE qa_id=$qa_id_mysql AND qa_course_id=$get_current_course_id";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		
+		$stmt = $mysqli->prepare("SELECT qa_id, qa_course_id, qa_course_title, qa_exam_id, qa_question_number, qa_question, qa_text, qa_type, qa_alt_a, qa_alt_b, qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, qa_alt_g, qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, qa_alt_l, qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, qa_hint, qa_explanation FROM $t_courses_exams_qa WHERE qa_id=? AND qa_course_id=?"); 
+		$stmt->bind_param("ss", $qa_id, $get_current_course_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_current_qa_id, $get_current_qa_course_id, $get_current_qa_course_title, $get_current_qa_exam_id, $get_current_qa_question_number, $get_current_qa_question, $get_current_qa_text, $get_current_qa_type, $get_current_qa_alt_a, $get_current_qa_alt_b, $get_current_qa_alt_c, $get_current_qa_alt_d, $get_current_qa_alt_e, $get_current_qa_alt_f, $get_current_qa_alt_g, $get_current_qa_alt_h, $get_current_qa_alt_i, $get_current_qa_alt_j, $get_current_qa_alt_k, $get_current_qa_alt_l, $get_current_qa_alt_m, $get_current_qa_alt_n, $get_current_qa_correct_alternatives, $get_current_qa_points, $get_current_qa_hint, $get_current_qa_explanation) = $row;
 
 		if($get_current_qa_id == ""){
@@ -1041,8 +1071,7 @@ else{
 		}
 		else{
 			if($process == "1"){
-				
-				$result = mysqli_query($link, "DELETE FROM $t_courses_exams_qa WHERE qa_id=$get_current_qa_id") or die(mysqli_error($link));
+				$mysqli->query("DELETE FROM $t_courses_exams_qa WHERE qa_id=$get_current_qa_id") or die($mysqli->error);
 
 				$url = "index.php?open=$open&page=$page&course_id=$course_id&editor_language=$editor_language&ft=success&fm=question_deleted";
 				header("Location: $url");

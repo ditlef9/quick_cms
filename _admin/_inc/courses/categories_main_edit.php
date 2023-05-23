@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/courses/edit_category_main.php
-* Version 
-* Date 16:06 03.05.2019
-* Copyright (c) 2008-2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -51,13 +50,14 @@ if(isset($_GET['main_category_id'])){
 else{
 	$main_category_id = "";
 }
-$main_category_id_mysql = quote_smart($link, $main_category_id);
 
 
 if($action == ""){
-	$query = "SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_icon_path, main_category_icon_16x16, main_category_icon_18x18, main_category_icon_24x24, main_category_icon_32x32, main_category_icon_36x36, main_category_icon_48x48, main_category_icon_96x96, main_category_icon_192x192, main_category_icon_260x260, main_category_header_logo, main_category_webdesign, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_icon_path, main_category_icon_16x16, main_category_icon_18x18, main_category_icon_24x24, main_category_icon_32x32, main_category_icon_36x36, main_category_icon_48x48, main_category_icon_96x96, main_category_icon_192x192, main_category_icon_260x260, main_category_header_logo, main_category_webdesign, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_title_clean, $get_current_main_category_description, $get_current_main_category_language, $get_current_main_category_icon_path, $get_current_main_category_icon_16x16, $get_current_main_category_icon_18x18, $get_current_main_category_icon_24x24, $get_current_main_category_icon_32x32, $get_current_main_category_icon_36x36, $get_current_main_category_icon_48x48, $get_current_main_category_icon_96x96, $get_current_main_category_icon_192x192, $get_current_main_category_icon_260x260, $get_current_main_category_header_logo, $get_current_main_category_webdesign, $get_current_main_category_created, $get_current_main_category_updated) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -68,32 +68,28 @@ if($action == ""){
 		if($process == "1"){
 			$inp_title = $_POST['inp_title'];
 			$inp_title = output_html($inp_title);
-			$inp_title_mysql = quote_smart($link, $inp_title);
 
 			$inp_title_clean = clean($inp_title);
-			$inp_title_clean_mysql = quote_smart($link, $inp_title_clean);
 
 			$inp_language = $_POST['inp_language'];
 			$inp_language = output_html($inp_language);
-			$inp_language_mysql = quote_smart($link, $inp_language);
 
 			$inp_webdesign = $_POST['inp_webdesign'];
 			$inp_webdesign = output_html($inp_webdesign);
-			$inp_webdesign_mysql = quote_smart($link, $inp_webdesign);
 
 
 
 			$datetime = date("Y-m-d H:i:s");
-			
-			$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-					main_category_title=$inp_title_mysql, 
-					main_category_title_clean=$inp_title_clean_mysql, 
-					main_category_language=$inp_language_mysql,
-					main_category_webdesign=$inp_webdesign_mysql, 
-					main_category_updated='$datetime'
-					WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
 
-
+			$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+				main_category_title=?, 
+				main_category_title_clean=?, 
+				main_category_language=?,
+				main_category_webdesign=?, 
+				main_category_updated=?
+				WHERE main_category_id=?");
+			$stmt->bind_param("ssssss", $inp_title, $inp_title_clean, $inp_language, $inp_webdesign, $datetime, $get_current_main_category_id); 
+			$stmt->execute();
 
 
 			// Folder
@@ -193,67 +189,86 @@ if($action == ""){
 								$inp_icon_mysql = quote_smart($link, $inp_name);
 							
 								if($icon_sizes[$x] == "16"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_16x16=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_16x16=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
+
 
 									$ft_icon_16 = "success";
 									$fm_icon_16 = "icon_uploaded";
 								}
 								if($icon_sizes[$x] == "18"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_18x18=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_18x18=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
 								}
 								if($icon_sizes[$x] == "24"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_24x24=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_24x24=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
 								}
 								if($icon_sizes[$x] == "32"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_32x32=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_32x32=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
 
 									$ft_icon_32 = "success";
 									$fm_icon_32 = "icon_uploaded";
 								}
 								if($icon_sizes[$x] == "36"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_36x36=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_36x36=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
 								}
 								if($icon_sizes[$x] == "48"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_48x48=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_48x48=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
 								}
 								if($icon_sizes[$x] == "96"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_96x96=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_96x96=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
 								}
 								if($icon_sizes[$x] == "192"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_192x192=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_192x192=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
 
 									$ft_icon_192 = "success";
 									$fm_icon_192 = "icon_uploaded";
 								}
 								if($icon_sizes[$x] == "260"){
-									$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_icon_path='$inp_icon_path', 
-										main_category_icon_260x260=$inp_icon_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+									$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+												main_category_icon_path=?, 
+												main_category_icon_260x260=?
+												WHERE main_category_id=?");
+									$stmt->bind_param("sss", $inp_icon_path, $inp_icon, $get_current_main_category_id); 
+									$stmt->execute();
 								}
 
 
@@ -336,12 +351,13 @@ if($action == ""){
 						}
 						else{
 							// All ok
-							$inp_header_logo_mysql = quote_smart($link, $inp_name);
+							$inp_header_logo = "$inp_name";
 
-							$result = mysqli_query($link, "UPDATE $t_courses_categories_main SET 
-										main_category_header_logo=$inp_header_logo_mysql
-										WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
-						
+							$stmt = $mysqli->prepare("UPDATE $t_courses_categories_main SET 
+								main_category_header_logo=?
+								WHERE main_category_id=?");
+							$stmt->bind_param("ss", $inp_header_logo, $$get_current_main_category_id); 
+							$stmt->execute();
 
 							$ft_header_logo = "success";
 							$fm_header_logo = "header_logo_uploaded";
@@ -372,8 +388,8 @@ if($action == ""){
 
 			// Get all information
 			$query = "SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_icon_path, main_category_icon_16x16, main_category_icon_18x18, main_category_icon_24x24, main_category_icon_32x32, main_category_icon_36x36, main_category_icon_48x48, main_category_icon_96x96, main_category_icon_260x260, main_category_header_logo, main_category_webdesign, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=$get_current_main_category_id";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
+			$result = $mysqli->query($query);
+			$row = $result->fetch_row();
 			list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_title_clean, $get_current_main_category_description, $get_current_main_category_language, $get_current_main_category_icon_path, $get_current_main_category_icon_16x16, $get_current_main_category_icon_18x18, $get_current_main_category_icon_24x24, $get_current_main_category_icon_32x32, $get_current_main_category_icon_36x36, $get_current_main_category_icon_48x48, $get_current_main_category_icon_96x96, $get_current_main_category_icon_260x260, $get_current_main_category_header_logo, $get_current_main_category_webdesign, $get_current_main_category_created, $get_current_main_category_updated) = $row;
 
 
@@ -419,23 +435,24 @@ if($action == ""){
 
 		<!-- Edit course form -->
 		
+
 		<script>
-		\$(document).ready(function(){
-			\$('[name=\"inp_title\"]').focus();
-		});
+		window.onload = function() {
+			document.getElementById(\"inp_title\").focus();
+		}
 		</script>
 			
 		<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;main_category_id=$get_current_main_category_id&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 		<p><b>Title:</b><br />
-		<input type=\"text\" name=\"inp_title\" value=\"$get_current_main_category_title\" size=\"25\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
+		<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"$get_current_main_category_title\" size=\"25\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
 		</p>
 
 		<p><b>Language:</b><br />
 		<select name=\"inp_language\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">\n";
 		$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_default FROM $t_languages_active";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_default) = $row;
 			echo"	<option value=\"$get_language_active_iso_two\""; if($get_language_active_iso_two == "$get_current_main_category_language"){ echo" selected=\"selected\""; } echo">$get_language_active_name</option>\n";
 		}

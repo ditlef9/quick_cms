@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/courses/categories_sub_edit.php
-* Version 
-* Date 11:39 15.09.2019
-* Copyright (c) 2008-2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-223 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -48,56 +47,62 @@ if(isset($_GET['sub_category_id'])){
 else{
 	$sub_category_id = "";
 }
-$sub_category_id_mysql = quote_smart($link, $sub_category_id);
+
 
 
 if($action == ""){
-	$query = "SELECT sub_category_id, sub_category_title, sub_category_title_clean, sub_category_description, sub_category_main_category_id, sub_category_main_category_title, sub_category_language, sub_category_created, sub_category_updated FROM $t_courses_categories_sub WHERE sub_category_id=$sub_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT sub_category_id, sub_category_title, sub_category_title_clean, sub_category_description, sub_category_main_category_id, sub_category_main_category_title, sub_category_language, sub_category_created, sub_category_updated FROM $t_courses_categories_sub WHERE sub_category_id=?"); 
+	$stmt->bind_param("s", $sub_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_sub_category_id, $get_current_sub_category_title, $get_current_sub_category_title_clean, $get_current_sub_category_description, $get_current_sub_category_main_category_id, $get_current_sub_category_main_category_title, $get_current_sub_category_language, $get_current_sub_category_created, $get_current_sub_category_updated) = $row;
 
+	
 	if($get_current_sub_category_id == ""){
 		echo"<p>Server error 404.</p>";
 	}
 	else{
 		// Find main category
-		$query = "SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=$get_current_sub_category_main_category_id";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=?"); 
+		$stmt->bind_param("s", $get_current_sub_category_main_category_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_title_clean, $get_current_main_category_description, $get_current_main_category_language, $get_current_main_category_created, $get_current_main_category_updated) = $row;
 
 
 		if($process == "1"){
 			$inp_title = $_POST['inp_title'];
 			$inp_title = output_html($inp_title);
-			$inp_title_mysql = quote_smart($link, $inp_title);
 
 			$inp_title_clean = clean($inp_title);
-			$inp_title_clean_mysql = quote_smart($link, $inp_title_clean);
 
 			$inp_main_category_id = $_POST['inp_main_category_id'];
 			$inp_main_category_id = output_html($inp_main_category_id);
-			$inp_main_category_id_mysql = quote_smart($link, $inp_main_category_id);
 
 			// Find (new) main category
-			$query = "SELECT main_category_id, main_category_title FROM $t_courses_categories_main WHERE main_category_id=$inp_main_category_id_mysql";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
+			$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title FROM $t_courses_categories_main WHERE main_category_id=?"); 
+			$stmt->bind_param("s", $inp_main_category_id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$row = $result->fetch_row();
 			list($get_new_main_category_id, $get_new_main_category_title) = $row;
 
-			$inp_main_category_title_mysql = quote_smart($link, $get_new_main_category_title);
+			$inp_main_category_title = "$get_new_main_category_title";
 
 
 			$datetime = date("Y-m-d H:i:s");
-			
-			$result = mysqli_query($link, "UPDATE $t_courses_categories_sub SET 
-					sub_category_title=$inp_title_mysql, 
-					sub_category_title_clean=$inp_title_clean_mysql, 
-					sub_category_main_category_id=$inp_main_category_id_mysql,
-					sub_category_main_category_title=$inp_main_category_title_mysql,
-					sub_category_updated='$datetime'
-					WHERE sub_category_id=$get_current_sub_category_id") or die(mysqli_error($link));
+			$stmt = $mysqli->prepare("UPDATE $t_courses_categories_sub SET 
+						sub_category_title=?, 
+						sub_category_title_clean=?, 
+						sub_category_main_category_id=?,
+						sub_category_main_category_title=?,
+						sub_category_updated=?
+						WHERE sub_category_id=?");
+			$stmt->bind_param("ssssss", $inp_title, $inp_title_clean, $inp_main_category_id, 
+						$inp_main_category_title, $datetime, $get_current_sub_category_id); 
+			$stmt->execute();
 
 
 			// Header
@@ -142,24 +147,26 @@ if($action == ""){
 
 		<!-- Edit course form -->
 		
+
 		<script>
-		\$(document).ready(function(){
-			\$('[name=\"inp_title\"]').focus();
-		});
+		window.onload = function() {
+			document.getElementById(\"inp_title\").focus();
+		}
 		</script>
 			
 		<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;sub_category_id=$get_current_sub_category_id&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 		<p><b>Title:</b><br />
-		<input type=\"text\" name=\"inp_title\" value=\"$get_current_sub_category_title\" size=\"25\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
+		<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"$get_current_sub_category_title\" size=\"25\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
 		</p>
 
 		<p><b>Main category:</b><br />
 		<select name=\"inp_main_category_id\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">\n";
-		$language_mysql = quote_smart($link, $get_current_sub_category_language);
-		$query = "SELECT main_category_id, main_category_title FROM $t_courses_categories_main WHERE main_category_language=$language_mysql ORDER BY main_category_title ASC";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title FROM $t_courses_categories_main WHERE main_category_language=? ORDER BY main_category_title ASC"); 
+		$stmt->bind_param("s", $get_current_sub_category_language);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		while($row = $result->fetch_row()) {
 			list($get_main_category_id, $get_main_category_title) = $row;
 			echo"	<option value=\"$get_main_category_id\""; if($get_main_category_id == "$get_current_sub_category_main_category_id"){ echo" selected=\"selected\""; } echo">$get_main_category_title</option>\n";
 		}

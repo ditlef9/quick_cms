@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/courses/categories_sub_delete.php
-* Version 
-* Date 11:39 15.09.2019
-* Copyright (c) 2008-2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -48,13 +47,14 @@ if(isset($_GET['sub_category_id'])){
 else{
 	$sub_category_id = "";
 }
-$sub_category_id_mysql = quote_smart($link, $sub_category_id);
 
 
 if($action == ""){
-	$query = "SELECT sub_category_id, sub_category_title, sub_category_title_clean, sub_category_description, sub_category_main_category_id, sub_category_main_category_title, sub_category_language, sub_category_created, sub_category_updated FROM $t_courses_categories_sub WHERE sub_category_id=$sub_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT sub_category_id, sub_category_title, sub_category_title_clean, sub_category_description, sub_category_main_category_id, sub_category_main_category_title, sub_category_language, sub_category_created, sub_category_updated FROM $t_courses_categories_sub WHERE sub_category_id=?"); 
+	$stmt->bind_param("s", $sub_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_sub_category_id, $get_current_sub_category_title, $get_current_sub_category_title_clean, $get_current_sub_category_description, $get_current_sub_category_main_category_id, $get_current_sub_category_main_category_title, $get_current_sub_category_language, $get_current_sub_category_created, $get_current_sub_category_updated) = $row;
 
 	if($get_current_sub_category_id == ""){
@@ -62,16 +62,19 @@ if($action == ""){
 	}
 	else{
 		// Find main category
-		$query = "SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=$get_current_sub_category_main_category_id";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_created, main_category_updated FROM $t_courses_categories_main WHERE main_category_id=?"); 
+		$stmt->bind_param("s", $get_current_sub_category_main_category_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_title_clean, $get_current_main_category_description, $get_current_main_category_language, $get_current_main_category_created, $get_current_main_category_updated) = $row;
 
 
 		if($process == "1"){
 			
-			
-			$result = mysqli_query($link, "DELETE FROM $t_courses_categories_sub WHERE sub_category_id=$get_current_sub_category_id") or die(mysqli_error($link));
+			if ($mysqli->query("DELETE FROM $t_courses_categories_sub WHERE sub_category_id=$get_current_sub_category_id") !== TRUE) {
+				echo "Error MySQLi delete: " . $mysqli->error; die;
+			}
 
 
 			// Header

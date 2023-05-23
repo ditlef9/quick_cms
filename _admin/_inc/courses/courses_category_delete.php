@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/courses/courses_category_delete.php
-* Version 
-* Date 16:06 03.05.2019
-* Copyright (c) 2008-2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
