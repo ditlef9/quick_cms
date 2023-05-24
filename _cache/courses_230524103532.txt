@@ -247,3 +247,248 @@ CREATE TABLE q_courses_lessons_read(
 
 
 
+DROP TABLE IF EXISTS q_courses_lessons_comments;
+
+CREATE TABLE q_courses_lessons_comments(
+ comment_id INT NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY(comment_id), 
+ comment_course_id INT,
+ comment_course_title VARCHAR (200),
+ comment_module_id INT,
+ comment_module_title VARCHAR (200),
+ comment_lesson_id INT,
+ comment_lesson_title VARCHAR (200),
+ comment_language VARCHAR (20),
+ comment_approved INT,
+ comment_datetime DATETIME,
+ comment_time VARCHAR (200),
+ comment_date_print VARCHAR (200),
+ comment_user_id INT,
+ comment_user_alias VARCHAR (250),
+ comment_user_image_path VARCHAR (250),
+ comment_user_image_file VARCHAR (250),
+ comment_user_ip VARCHAR (250),
+ comment_user_hostname VARCHAR (250),
+ comment_user_agent VARCHAR (250),
+ comment_title VARCHAR (250),
+ comment_text TEXT,
+ comment_rating INT,
+ comment_helpful_clicks INT,
+ comment_useless_clicks INT,
+ comment_marked_as_spam INT,
+ comment_spam_checked INT,
+ comment_spam_checked_comment TEXT);
+
+
+
+DROP TABLE IF EXISTS q_courses_modules_quizzes_index;
+
+CREATE TABLE q_courses_modules_quizzes_index(
+ quiz_id INT NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY(quiz_id), 
+ quiz_course_id INT,
+ quiz_course_title VARCHAR (200),
+ quiz_language VARCHAR (20),
+ quiz_total_questions INT,
+ quiz_total_points INT,
+ quiz_points_needed_to_pass INT);
+
+
+
+DROP TABLE IF EXISTS q_courses_modules_quizzes_qa;
+
+CREATE TABLE q_courses_modules_quizzes_qa(
+ qa_id INT NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY(qa_id), 
+ qa_course_id INT,
+ qa_course_title VARCHAR (200),
+ qa_quiz_id INT,
+ qa_question_number INT,
+ qa_question VARCHAR (200),
+ qa_text TEXT,
+ qa_type VARCHAR (200),
+ qa_alt_a VARCHAR (200),
+ qa_alt_b VARCHAR (200),
+ qa_alt_c VARCHAR (200),
+ qa_alt_d VARCHAR (200),
+ qa_alt_e VARCHAR (200),
+ qa_alt_f VARCHAR (200),
+ qa_alt_g VARCHAR (200),
+ qa_alt_h VARCHAR (200),
+ qa_alt_i VARCHAR (200),
+ qa_alt_j VARCHAR (200),
+ qa_alt_k VARCHAR (200),
+ qa_alt_l VARCHAR (200),
+ qa_alt_m VARCHAR (200),
+ qa_alt_n VARCHAR (200),
+ qa_correct_alternatives VARCHAR (200),
+ qa_points INT,
+ qa_hint TEXT,
+ qa_explanation TEXT);
+
+
+
+DROP TABLE IF EXISTS q_courses_modules_quizzes_user_records;
+
+CREATE TABLE q_courses_modules_quizzes_user_records(
+ record_id INT NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY(record_id), 
+ record_course_id INT,
+ record_course_title VARCHAR (200),
+ record_quiz_id INT,
+ record_user_id INT,
+ record_started_datetime DATETIME,
+ record_started_time VARCHAR (200),
+ record_started_saying VARCHAR (200),
+ record_is_closed INT,
+ record_ended_datetime DATETIME,
+ record_ended_time VARCHAR (200),
+ record_ended_saying VARCHAR (200),
+ record_finished_saying VARCHAR (200),
+ record_time_used VARCHAR (200),
+ record_percentage INT,
+ record_passed INT);
+
+
+
+DROP TABLE IF EXISTS q_courses_exams_index;
+
+CREATE TABLE q_courses_exams_index(
+ exam_id INT NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY(exam_id), 
+ exam_course_id INT,
+ exam_course_title VARCHAR (200),
+ exam_language VARCHAR (20),
+ exam_total_questions INT,
+ exam_total_points INT,
+ exam_points_needed_to_pass INT);
+
+
+
+DROP TABLE IF EXISTS q_courses_exams_qa;
+
+CREATE TABLE q_courses_exams_qa(
+ qa_id INT NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY(qa_id), 
+ qa_course_id INT,
+ qa_course_title VARCHAR (200),
+ qa_exam_id INT,
+ qa_question_number INT,
+ qa_question VARCHAR (200),
+ qa_text TEXT,
+ qa_type VARCHAR (200),
+ qa_alt_a VARCHAR (200),
+ qa_alt_b VARCHAR (200),
+ qa_alt_c VARCHAR (200),
+ qa_alt_d VARCHAR (200),
+ qa_alt_e VARCHAR (200),
+ qa_alt_f VARCHAR (200),
+ qa_alt_g VARCHAR (200),
+ qa_alt_h VARCHAR (200),
+ qa_alt_i VARCHAR (200),
+ qa_alt_j VARCHAR (200),
+ qa_alt_k VARCHAR (200),
+ qa_alt_l VARCHAR (200),
+ qa_alt_m VARCHAR (200),
+ qa_alt_n VARCHAR (200),
+ qa_correct_alternatives VARCHAR (200),
+ qa_points INT,
+ qa_hint TEXT,
+ qa_explanation TEXT);
+
+
+
+DROP TABLE IF EXISTS q_courses_exams_user_tries;
+
+CREATE TABLE q_courses_exams_user_tries(
+ try_id INT NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY(try_id), 
+ try_course_id INT,
+ try_course_title VARCHAR (200),
+ try_exam_id INT,
+ try_user_id INT,
+ try_started_datetime DATETIME,
+ try_started_time VARCHAR (200),
+ try_started_saying VARCHAR (200),
+ try_is_closed INT,
+ try_ended_datetime DATETIME,
+ try_ended_time VARCHAR (200),
+ try_ended_saying VARCHAR (200),
+ try_finished_saying VARCHAR (200),
+ try_time_used VARCHAR (200),
+ try_percentage INT,
+ try_passed INT);
+
+
+
+DROP TABLE IF EXISTS q_courses_exams_user_tries_qa;
+
+CREATE TABLE q_courses_exams_user_tries_qa(
+ try_qa_id INT NOT NULL AUTO_INCREMENT,
+ PRIMARY KEY(try_qa_id), 
+ try_qa_course_id INT,
+ try_qa_course_title VARCHAR (200),
+ try_qa_exam_id INT,
+ try_qa_try_id INT,
+ try_qa_user_id INT,
+ try_qa_qa_id INT,
+ try_qa_alt_a VARCHAR (200),
+ try_qa_alt_b VARCHAR (200),
+ try_qa_alt_c VARCHAR (200),
+ try_qa_alt_d VARCHAR (200),
+ try_qa_alt_e VARCHAR (200),
+ try_qa_alt_f VARCHAR (200),
+ try_qa_alt_g VARCHAR (200),
+ try_qa_alt_h VARCHAR (200),
+ try_qa_alt_i VARCHAR (200),
+ try_qa_alt_j VARCHAR (200),
+ try_qa_alt_k VARCHAR (200),
+ try_qa_alt_l VARCHAR (200),
+ try_qa_alt_m VARCHAR (200),
+ try_qa_alt_n VARCHAR (200),
+ try_qa_points_awarded DOUBLE,
+ try_qa_is_correct INT);
+
+
+
+
+
+INSERT INTO q_courses_liquidbase(
+liquidbase_id, liquidbase_dir, liquidbase_file, liquidbase_run_datetime, liquidbase_run_saying)
+VALUES 
+('1', 'courses', 'categories_main_003.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('2', 'courses', 'categories_sub.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('3', 'courses', 'courses_title_translations_001.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('4', 'courses', 'exams_index.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('5', 'courses', 'exams_qa.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('6', 'courses', 'exams_user_tries.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('7', 'courses', 'exams_user_tries_qa.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('8', 'courses', 'index.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('9', 'courses', 'index_stats_monthly.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('10', 'courses', 'lessons.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('11', 'courses', 'lessons_comments.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('12', 'courses', 'lessons_images.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('13', 'courses', 'lessons_read.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('14', 'courses', 'modules.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('15', 'courses', 'modules_images.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('16', 'courses', 'modules_quizzes_index.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('17', 'courses', 'modules_quizzes_qa.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('18', 'courses', 'modules_quizzes_user_records.php', '2023-05-21 07:37:35', '21 May 2023 07:37'),
+('19', 'courses', 'modules_read.php', '2023-05-21 07:37:44', '21 May 2023 07:37'),
+('20', 'courses', 'title_translations.php', '2023-05-21 07:37:45', '21 May 2023 07:37'),
+('24', 'courses', 'users_enrolled.php', '2023-05-21 07:40:39', '21 May 2023 07:40');
+
+INSERT INTO q_courses_title_translations(
+courses_title_translation_id, courses_title_translation_title, courses_title_translation_language)
+VALUES 
+('1', 'Courses', 'en');
+
+INSERT INTO q_courses_categories_main(
+main_category_id, main_category_title, main_category_title_clean, main_category_description, main_category_language, main_category_icon_path, main_category_icon_16x16, main_category_icon_18x18, main_category_icon_24x24, main_category_icon_32x32, main_category_icon_36x36, main_category_icon_48x48, main_category_icon_96x96, main_category_icon_192x192, main_category_icon_260x260, main_category_header_logo, main_category_webdesign, main_category_created, main_category_updated)
+VALUES 
+('1', 'PHP', 'php', '', 'en', '', '', '', '', '', '', '', '', '', '', '', 'same_as_website', '2023-05-24 10:00:01', '2023-05-24 10:00:01');
+
+INSERT INTO q_courses_categories_sub(
+sub_category_id, sub_category_title, sub_category_title_clean, sub_category_description, sub_category_main_category_id, sub_category_main_category_title, sub_category_language, sub_category_created, sub_category_updated)
+VALUES 
+('1', 'PHP MySQLi', 'php_mysqli', '', '1', 'PHP', '', '2023-05-24 10:00:07', '2023-05-24 10:00:07');
