@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/comments/courses_write_to_file_include.php
-* Version 
-* Date 15:13 15.09.2019
-* Copyright (c) 2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2019-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -15,16 +14,16 @@ if(!(isset($define_access_to_control_panel))){
 }
 
 
-			// Mkdir
-			if(!(is_dir("../$get_current_course_title_clean"))){
-				mkdir("../$get_current_course_title_clean");
-			}
+// Mkdir
+if(!(is_dir("../$get_current_course_title_clean"))){
+	mkdir("../$get_current_course_title_clean");
+}
 
-			// Create file
-			$datetime_print = date("j M Y H:i");
-			$year = date("Y");
-			$page_id = date("ymdhis");
-			$input="<?php
+// Create file
+$datetime_print = date("j M Y H:i");
+$year = date("Y");
+$page_id = date("ymdhis");
+$input="<?php
 /**
 *
 * File: $get_current_course_title_clean/index.php
@@ -80,13 +79,13 @@ include(\"\$root/courses/_includes/course.php\");
 include(\"\$root/_webdesign/\$webdesignSav/footer.php\");
 ?>";
 
-			$fh = fopen("../$get_current_course_title_clean/index.php", "w+") or die("can not open file");
-			fwrite($fh, $input);
-			fclose($fh);
+	$fh = fopen("../$get_current_course_title_clean/index.php", "w+") or die("can not open file");
+	fwrite($fh, $input);
+	fclose($fh);
 
-			// _course.txt
-			$datetime = date("Y-m-d H:i:s");
-			$input_course_txt ="<?php
+	// _course.txt
+	$datetime = date("Y-m-d H:i:s");
+	$input_course_txt ="<?php
 \$course_txt_file_generated_datetime	= \"$datetime\";
 
 \$course_title_sav 			= \"$get_current_course_title\";
@@ -109,21 +108,21 @@ include(\"\$root/_webdesign/\$webdesignSav/footer.php\");
 \$course_icon_f_sav			= \"$get_current_course_icon_260\"; // 260x260
 ?>";
 
-			$fh = fopen("../$get_current_course_title_clean/_course.php", "w+") or die("can not open file");
-			fwrite($fh, $input_course_txt);
-			fclose($fh);
+	$fh = fopen("../$get_current_course_title_clean/_course.php", "w+") or die("can not open file");
+	fwrite($fh, $input_course_txt);
+	fclose($fh);
 
 
-			// _modules_and_lessons.php + modules files
-			$total_modules = 0;
-			$total_lessons = 0;
-			$input_modules_and_lessons = "<?php";
-			$query = "SELECT module_id, module_course_id, module_course_title, module_number, module_title, module_title_clean, module_content FROM $t_courses_modules WHERE module_course_id=$get_current_course_id ORDER BY module_number ASC";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
-				list($get_module_id, $get_module_course_id, $get_module_course_title, $get_module_number, $get_module_title, $get_module_title_clean, $get_module_content) = $row;
+	// _modules_and_lessons.php + modules files
+	$total_modules = 0;
+	$total_lessons = 0;
+	$input_modules_and_lessons = "<?php";
+	$query = "SELECT module_id, module_course_id, module_course_title, module_number, module_title, module_title_clean, module_content FROM $t_courses_modules WHERE module_course_id=$get_current_course_id ORDER BY module_number ASC";
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
+		list($get_module_id, $get_module_course_id, $get_module_course_title, $get_module_number, $get_module_title, $get_module_title_clean, $get_module_content) = $row;
 				
-				$input_modules_and_lessons = $input_modules_and_lessons . "
+		$input_modules_and_lessons = $input_modules_and_lessons . "
 
 /*- $get_module_title -------------------------------------- */
 \$module_title_sav[$total_modules] = \"$get_module_title\";";
@@ -200,8 +199,8 @@ include(\"\$root/_webdesign/\$webdesignSav/footer.php\");
 
 				$lesson_counter = 0;
 				$query_lessons = "SELECT lesson_id, lesson_number, lesson_title, lesson_title_clean, lesson_content FROM $t_courses_lessons WHERE lesson_module_id=$get_module_id ORDER BY lesson_number ASC";
-				$result_lessons = mysqli_query($link, $query_lessons);
-				while($row_lessons = mysqli_fetch_row($result_lessons)) {
+				$result_lessons = $mysqli->query($query_lessons);
+				while($row_lessons = $result_lessons->fetch_row()) {
 					list($get_lesson_id, $get_lesson_number, $get_lesson_title, $get_lesson_title_clean, $get_lesson_content) = $row_lessons;
 
 					$input_modules_and_lessons = $input_modules_and_lessons . "
@@ -293,8 +292,8 @@ include(\"\$root/_webdesign/\$webdesignSav/footer.php\");
 ";
 			$x = 0;
 			$query = "SELECT qa_id, qa_course_id, qa_course_title, qa_exam_id, qa_question_number, qa_question, qa_text, qa_type, qa_alt_a, qa_alt_b, qa_alt_c, qa_alt_d, qa_alt_e, qa_alt_f, qa_alt_g, qa_alt_h, qa_alt_i, qa_alt_j, qa_alt_k, qa_alt_l, qa_alt_m, qa_alt_n, qa_correct_alternatives, qa_points, qa_hint, qa_explanation FROM $t_courses_exams_qa WHERE qa_course_id=$get_current_course_id ORDER BY qa_question_number ASC";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_qa_id, $get_qa_course_id, $get_qa_course_title, $get_qa_exam_id, $get_qa_question_number, $get_qa_question, $get_qa_text, $get_qa_type, $get_qa_alt_a, $get_qa_alt_b, $get_qa_alt_c, $get_qa_alt_d, $get_qa_alt_e, $get_qa_alt_f, $get_qa_alt_g, $get_qa_alt_h, $get_qa_alt_i, $get_qa_alt_j, $get_qa_alt_k, $get_qa_alt_l, $get_qa_alt_m, $get_qa_alt_n, $get_qa_correct_alternatives, $get_qa_points, $get_qa_hint, $get_qa_explanation) = $row;
 				
 				$input_exam = $input_exam . "
@@ -472,10 +471,11 @@ else{
 include(\"\$root/_admin/_translations/site/\$l/courses/ts_navigation.php\");
 
 // Find course
-\$course_title_mysql = quote_smart(\$link, \$courseTitleSav);
-\$query = \"SELECT course_id, course_title, course_title_clean, course_is_active, course_front_page_intro, course_description, course_contents, course_language, course_main_category_id, course_main_category_title, course_sub_category_id, course_sub_category_title, course_intro_video_embedded, course_image_file, course_image_thumb, course_icon_48, course_icon_64, course_icon_96, course_modules_count, course_lessons_count, course_quizzes_count, course_users_enrolled_count, course_read_times, course_read_times_ip_block, course_created, course_updated FROM \$t_courses_index WHERE course_title=\$course_title_mysql\";
-\$result = mysqli_query(\$link, \$query);
-\$row = mysqli_fetch_row(\$result);
+\$stmt = \$mysqli->prepare(\"SELECT course_id, course_title, course_title_clean, course_is_active, course_front_page_intro, course_description, course_contents, course_language, course_main_category_id, course_main_category_title, course_sub_category_id, course_sub_category_title, course_intro_video_embedded, course_image_file, course_image_thumb, course_icon_48, course_icon_64, course_icon_96, course_modules_count, course_lessons_count, course_quizzes_count, course_users_enrolled_count, course_read_times, course_read_times_ip_block, course_created, course_updated FROM \$t_courses_index WHERE course_title=?\"); 
+\$stmt->bind_param(\"s\", \$courseTitleSav);
+\$stmt->execute();
+\$result = \$stmt->get_result();
+\$row = \$result->fetch_row();
 list(\$get_current_course_id, \$get_current_course_title, \$get_current_course_title_clean, \$get_current_course_is_active, \$get_current_course_front_page_intro, \$get_current_course_description, \$get_current_course_contents, \$get_current_course_language, \$get_current_course_main_category_id, \$get_current_course_main_category_title, \$get_current_course_sub_category_id, \$get_current_course_sub_category_title, \$get_current_course_intro_video_embedded, \$get_current_course_image_file, \$get_current_course_image_thumb, \$get_current_course_icon_48, \$get_current_course_icon_64, \$get_current_course_icon_96, \$get_current_course_modules_count, \$get_current_course_lessons_count, \$get_current_course_quizzes_count, \$get_current_course_users_enrolled_count, \$get_current_course_read_times, \$get_current_course_read_times_ip_block, \$get_current_course_created, \$get_current_course_updated) = \$row;
 
 if(\$get_current_course_id != \"\"){
@@ -484,36 +484,41 @@ if(\$get_current_course_id != \"\"){
 	if(isset(\$_SESSION['user_id']) && isset(\$_SESSION['security'])){
 		// Get user
 		\$my_user_id = \$_SESSION['user_id'];
-		\$my_user_id_mysql = quote_smart(\$link, \$my_user_id);
 		\$my_security = \$_SESSION['security'];
-		\$my_security_mysql = quote_smart(\$link, \$my_security);
 	
 		// Am I enrolled?
-		\$query = \"SELECT enrolled_id, enrolled_course_id, enrolled_course_title, enrolled_course_title_clean, enrolled_user_id, enrolled_started_datetime, enrolled_started_saying, enrolled_percentage_done, enrolled_has_completed_exam, enrolled_exam_total_questions, enrolled_exam_correct_answers, enrolled_exam_correct_percentage, enrolled_completed_datetime, enrolled_completed_saying FROM \$t_courses_users_enrolled WHERE enrolled_course_id=\$get_current_course_id AND enrolled_user_id=\$my_user_id_mysql\";
-		\$result = mysqli_query(\$link, \$query);
-		\$row = mysqli_fetch_row(\$result);
+		\$stmt = \$mysqli->prepare(\"SELECT enrolled_id, enrolled_course_id, enrolled_course_title, enrolled_course_title_clean, enrolled_user_id, enrolled_started_datetime, enrolled_started_saying, enrolled_percentage_done, enrolled_has_completed_exam, enrolled_exam_total_questions, enrolled_exam_correct_answers, enrolled_exam_correct_percentage, enrolled_completed_datetime, enrolled_completed_saying FROM \$t_courses_users_enrolled WHERE enrolled_course_id=? AND enrolled_user_id=?\"); 
+		\$stmt->bind_param(\"ss\", \$get_current_course_id, \$my_user_id);
+		\$stmt->execute();
+		\$result = \$stmt->get_result();
+		\$row = \$result->fetch_row();
 		list(\$get_current_enrolled_id, \$get_current_enrolled_course_id, \$get_current_enrolled_course_title, \$get_current_enrolled_course_title_clean, \$get_current_enrolled_user_id, \$get_current_enrolled_started_datetime, \$get_current_enrolled_started_saying, \$get_current_enrolled_percentage_done, \$get_current_enrolled_has_completed_exam, \$get_current_enrolled_exam_total_questions, \$get_current_enrolled_exam_correct_answers, \$get_current_enrolled_exam_correct_percentage, \$get_current_enrolled_completed_datetime, \$get_current_enrolled_completed_saying) = \$row;
 		if(\$get_current_enrolled_id == \"\"){
 			// Insert
 			\$datetime = date(\"Y-m-d H:i:s\");
 			\$date_saying = date(\"j. M Y\");
-			\$inp_course_title_mysql = quote_smart(\$link, \$get_current_course_title);
-			\$inp_course_title_clean_mysql = quote_smart(\$link, \$get_current_course_title_clean);
+			\$zero = 0;
 
-			mysqli_query(\$link, \"INSERT INTO \$t_courses_users_enrolled 
-			(enrolled_id, enrolled_course_id, enrolled_course_title, enrolled_course_title_clean, enrolled_user_id, enrolled_started_datetime, enrolled_started_saying, enrolled_percentage_done, enrolled_has_completed_exam) 
-			VALUES 
-			(NULL, \$get_current_course_id, \$inp_course_title_mysql, \$inp_course_title_clean_mysql, \$my_user_id_mysql, '\$datetime', '\$date_saying', '0', '0')\")
-			or die(mysqli_error(\$link));
+			\$stmt = $mysqli->prepare(\"INSERT INTO \$t_courses_users_enrolled 
+				(enrolled_id, enrolled_course_id, enrolled_course_title, enrolled_course_title_clean, enrolled_user_id, enrolled_started_datetime, 
+				enrolled_started_saying, enrolled_percentage_done, enrolled_has_completed_exam)  
+				VALUES 
+				(NULL,?,?,?,?,
+				?,?,?)\");
+			\$stmt->bind_param(\"ssssss\", \$get_current_course_id, \$get_current_course_title, \$get_current_course_title_clean, \$my_user_id, \$datetime, 
+				\$date_saying, \$zero, \$zero); 
+			\$stmt->execute();
 
 			// Endrolled in course
 			\$inp_course_users_enrolled_count = \$get_current_course_users_enrolled_count + 1;
-			\$result = mysqli_query(\$link, \"UPDATE \$t_courses_index SET course_users_enrolled_count=\$inp_course_users_enrolled_count WHERE course_id=\$get_current_course_id\");
+			\$mysqli->query(\"UPDATE \$t_courses_index SET course_users_enrolled_count=\$inp_course_users_enrolled_count WHERE course_id=\$get_current_course_id\") or die($mysqli->error);
 
 			// Get enrolled ID
-			\$query = \"SELECT enrolled_id FROM \$t_courses_users_enrolled WHERE enrolled_course_id=\$get_current_course_id AND enrolled_user_id=\$my_user_id_mysql\";
-			\$result = mysqli_query(\$link, \$query);
-			\$row = mysqli_fetch_row(\$result);
+			\$stmt = \$mysqli->prepare(\"SELECT enrolled_id FROM \$t_courses_users_enrolled WHERE enrolled_course_id=? AND enrolled_user_id=?\"); 
+			\$stmt->bind_param(\"ss\", \$get_current_course_id, \$my_user_id);
+			\$stmt->execute();
+			\$result = \$stmt->get_result();
+			\$row = \$result->fetch_row();
 			list(\$get_current_enrolled_id) = \$row;
 
 
@@ -528,36 +533,44 @@ if(\$get_current_course_id != \"\"){
 
 	// Modules
 	\$query = \"SELECT module_id, module_course_id, module_course_title, module_number, module_title, module_title_clean FROM \$t_courses_modules WHERE module_course_id=\$get_current_course_id ORDER BY module_number ASC\";
-	\$result = mysqli_query(\$link, \$query);
-	while(\$row = mysqli_fetch_row(\$result)) {
+	\$result = \$mysqli->query(\$query);
+	while(\$row = \$result->fetch_row()) {
 		list(\$get_module_id, \$get_module_course_id, \$get_module_course_title, \$get_module_number, \$get_module_title, \$get_module_title_clean) = \$row;
 
 		// Did I complete this module?
 		if(isset(\$my_user_id)){
-			\$query_m = \"SELECT module_read_id FROM \$t_courses_modules_read WHERE read_course_id=\$get_current_course_id AND read_module_id=\$get_module_id AND read_user_id=\$my_user_id_mysql\";
-			\$result_m = mysqli_query(\$link, \$query_m);
-			\$row_m = mysqli_fetch_row(\$result_m);
+
+			\$stmt = \$mysqli->prepare(\"SELECT module_read_id FROM \$t_courses_modules_read WHERE read_course_id=? AND read_module_id=? AND read_user_id=?\"); 
+			\$stmt->bind_param(\"sss\", \$get_current_course_id, \$get_module_id, \$my_user_id);
+			\$stmt->execute();
+			\$result_m = \$stmt->get_result();
+			\$row_m = \$result_m->fetch_row();
 			list(\$get_module_read_id) = \$row_m;
 
 
 			if(\$get_module_read_id == \"\" && \$get_module_id == \"\$module_id\"){
-				\$inp_course_title_mysql = quote_smart(\$link, \$get_current_course_title);
-				\$inp_module_title_mysql = quote_smart(\$link, \$get_module_title);
+				\$stmt = \$mysqli->prepare(\"INSERT INTO \$t_courses_modules_read 
+					(module_read_id, read_course_id, read_course_title, read_module_id, read_module_title, 
+					read_user_id) 
+					VALUES 
+					(NULL,?,?,?,?,
+					?)\");
+				\$stmt->bind_param(\"sssss\", \$get_current_course_id, \$get_current_course_title, \$get_module_id, \$get_module_title, 
+					\$my_user_id); 
+				\$stmt->execute();
 
-				mysqli_query(\$link, \"INSERT INTO \$t_courses_modules_read 
-				(module_read_id, read_course_id, read_course_title, read_module_id, read_module_title, read_user_id) 
-				VALUES 
-				(NULL, \$get_current_course_id, \$inp_course_title_mysql, \$get_module_id, \$inp_module_title_mysql, \$my_user_id_mysql)\");
-
-				// Give point
-				\$query_u = \"SELECT user_id, user_name, user_alias, user_points FROM \$t_users WHERE user_id=\$my_user_id_mysql\";
-				\$result_u = mysqli_query(\$link, \$query_u);
-				\$row_u = mysqli_fetch_row(\$result_u);
+				// Give point :: Fetch user points
+				\$stmt = $mysqli->prepare(\"SELECT user_id, user_name, user_alias, user_points FROM \$t_users WHERE user_id=?\"); 
+				\$stmt->bind_param(\"s\", \$my_user_id);
+				\$stmt->execute();
+				\$result_u = \$stmt->get_result();
+				\$row_u = \$result_u->fetch_row();
 				list(\$get_my_user_id, \$get_my_user_name, \$get_my_user_alias, \$get_my_user_points) = \$row_u;
 				
 				\$inp_user_points = \$get_my_user_points +1;
 
-				\$result_u = mysqli_query(\$link, \"UPDATE \$t_users SET user_points=\$inp_user_points WHERE user_id=\$get_my_user_id\");
+				\$mysqli->query(\"UPDATE \$t_users SET user_points=\$inp_user_points WHERE user_id=\$get_my_user_id\") or die(\$mysqli->error);
+				
 			}
 
 		}
@@ -592,43 +605,50 @@ if(\$get_current_course_id != \"\"){
 		}
 		// Get lessons
 		\$query_lessons = \"SELECT lesson_id, lesson_number, lesson_title, lesson_title_clean, lesson_title_length, lesson_title_short FROM \$t_courses_lessons WHERE lesson_module_id=\$get_module_id ORDER BY lesson_number ASC\";
-		\$result_lessons = mysqli_query(\$link, \$query_lessons);
-		while(\$row_lessons = mysqli_fetch_row(\$result_lessons)) {
+		\$result_lessons = \$mysqli->query(\$query_lessons);
+		while(\$row_lessons = \$result_lessons->fetch_row()) {
 			list(\$get_lesson_id, \$get_lesson_number, \$get_lesson_title, \$get_lesson_title_clean, \$get_lesson_title_length, \$get_lesson_title_short) = \$row_lessons;
 
 			// Did I complete this lesson?
 			if(isset(\$my_user_id)){
-				\$query_m = \"SELECT lesson_read_id FROM \$t_courses_lessons_read WHERE read_course_id=\$get_current_course_id AND read_lesson_id=\$get_lesson_id AND read_user_id=\$my_user_id_mysql\";
-				\$result_m = mysqli_query(\$link, \$query_m);
-				\$row_m = mysqli_fetch_row(\$result_m);
+				\$stmt =\ $mysqli->prepare(\"SELECT lesson_read_id FROM \$t_courses_lessons_read WHERE read_course_id=? AND read_lesson_id=? AND read_user_id=?\"); 
+				\$stmt->bind_param(\"s\", \$get_current_course_id, \$get_lesson_id, \$my_user_id);
+				\$stmt->execute();
+				\$result_m = \$stmt->get_result();
+				\$row_m = \$result_m->fetch_row();
 				list(\$get_lesson_read_id) = \$row_m;
 
 				if(\$get_lesson_read_id == \"\" && \$get_lesson_id == \"\$lesson_id\"){
-					\$inp_course_title_mysql = quote_smart(\$link, \$get_current_course_title);
-					\$inp_module_title_mysql = quote_smart(\$link, \$get_module_course_title);
-					\$inp_lesson_title_mysql = quote_smart(\$link, \$get_lesson_title);
-
-					mysqli_query(\$link, \"INSERT INTO \$t_courses_lessons_read 
-					(lesson_read_id, read_course_id, read_course_title, read_module_id, read_module_title, read_lesson_id, read_lesson_title, read_user_id) 
-					VALUES 
-					(NULL, \$get_current_course_id, \$inp_course_title_mysql, \$get_module_id, \$inp_module_title_mysql, \$get_lesson_id, \$inp_lesson_title_mysql, \$my_user_id_mysql)\");
+					\$stmt = $mysqli->prepare(\"INSERT INTO \$t_courses_lessons_read 
+						(lesson_read_id, read_course_id, read_course_title, read_module_id, read_module_title, 
+						read_lesson_id, read_lesson_title, read_user_id) 
+						VALUES 
+						(NULL,?,?,?,?,
+						?,?,?)\");
+					\$stmt->bind_param(\"sssssss\", \$get_current_course_id, \$get_current_course_title, \$get_module_id, \$get_module_course_title, 
+						\$get_lesson_id, \$get_lesson_title, \$my_user_id); 
+					\$stmt->execute();
 					
 					// Read ID
-					\$query_m = \"SELECT lesson_read_id FROM \$t_courses_lessons_read WHERE read_course_id=\$get_current_course_id AND read_lesson_id=\$get_lesson_id AND read_user_id=\$my_user_id_mysql\";
-					\$result_m = mysqli_query(\$link, \$query_m);
-					\$row_m = mysqli_fetch_row(\$result_m);
+					\$stmt =\ $mysqli->prepare(\"SELECT lesson_read_id FROM \$t_courses_lessons_read WHERE read_course_id=? AND read_lesson_id=? AND read_user_id=?\"); 
+					\$stmt->bind_param(\"s\", \$get_current_course_id, \$get_lesson_id, \$my_user_id);
+					\$stmt->execute();
+					\$result_m = \$stmt->get_result();
+					\$row_m = \$result_m->fetch_row();
 					list(\$get_lesson_read_id) = \$row_m;
 
-					// Give point
-					\$query_u = \"SELECT user_id, user_name, user_alias, user_points FROM \$t_users WHERE user_id=\$my_user_id_mysql\";
-					\$result_u = mysqli_query(\$link, \$query_u);
-					\$row_u = mysqli_fetch_row(\$result_u);
+					// Give point :: Fetch user points
+					\$stmt = $mysqli->prepare(\"SELECT user_id, user_name, user_alias, user_points FROM \$t_users WHERE user_id=?\"); 
+					\$stmt->bind_param(\"s\", \$my_user_id);
+					\$stmt->execute();
+					\$result_u = \$stmt->get_result();
+					\$row_u = \$result_u->fetch_row();
 					list(\$get_my_user_id, \$get_my_user_name, \$get_my_user_alias, \$get_my_user_points) = \$row_u;
-
-					\$inp_user_points = \$get_my_user_points+1;
-
-					\$result_u = mysqli_query(\$link, \"UPDATE \$t_users SET user_points=\$inp_user_points WHERE user_id=\$get_my_user_id\");
-
+					
+					\$inp_user_points = \$get_my_user_points +1;
+	
+					\$mysqli->query(\"UPDATE \$t_users SET user_points=\$inp_user_points WHERE user_id=\$get_my_user_id\") or die(\$mysqli->error);
+					
 				}
 
 			}
@@ -660,17 +680,20 @@ if(\$get_current_course_id != \"\"){
 
 	// Find exam
 	\$query = \"SELECT exam_id, exam_course_id, exam_course_title, exam_language, exam_total_questions, exam_total_points, exam_points_needed_to_pass FROM \$t_courses_exams_index WHERE exam_course_id=\$get_current_course_id\";
-	\$result = mysqli_query(\$link, \$query);
-	\$row = mysqli_fetch_row(\$result);
+	\$result = \$mysqli->query(\$query);
+	\$row = \$result->fetch_row();
 	list(\$get_current_exam_id, \$get_current_exam_course_id, \$get_current_exam_course_title, \$get_current_exam_language, \$get_current_exam_total_questions, \$get_current_exam_total_points, \$get_current_exam_points_needed_to_pass) = \$row;
 	if(\$get_current_exam_id != \"\"){
 
 		// Check if I've completed exam
 		\$get_current_try_id = \"\";
 		if(isset(\$my_user_id)){
-			\$query_m = \"SELECT try_id, try_course_id, try_course_title, try_exam_id, try_user_id, try_started_datetime, try_started_time, try_started_saying, try_is_closed, try_ended_datetime, try_ended_time, try_ended_saying, try_finished_saying, try_time_used, try_percentage, try_passed FROM \$t_courses_exams_user_tries WHERE try_course_id=\$get_current_course_id AND try_user_id=\$my_user_id_mysql AND try_passed=1\";
-			\$result_m = mysqli_query(\$link, \$query_m);
-			\$row_m = mysqli_fetch_row(\$result_m);
+
+			\$stmt = \$mysqli->prepare(\"SELECT try_id, try_course_id, try_course_title, try_exam_id, try_user_id, try_started_datetime, try_started_time, try_started_saying, try_is_closed, try_ended_datetime, try_ended_time, try_ended_saying, try_finished_saying, try_time_used, try_percentage, try_passed FROM \$t_courses_exams_user_tries WHERE try_course_id=? AND try_user_id=? AND try_passed=1\"); 
+			\$stmt->bind_param(\"ss\", \$get_current_course_id, $my_user_id);
+			\$stmt->execute();
+			\$result_m = \$stmt->get_result();
+			\$row_m = \$result_m->fetch_row();
 			list(\$get_current_try_id, \$get_current_try_course_id, \$get_current_try_course_title, \$get_current_try_exam_id, \$get_current_try_user_id, \$get_current_try_started_datetime, \$get_current_try_started_time, \$get_current_try_started_saying, \$get_current_try_is_closed, \$get_current_try_ended_datetime, \$get_current_try_ended_time, \$get_current_try_ended_saying, \$get_current_try_finished_saying, \$get_current_try_time_used, \$get_current_try_percentage, \$get_current_try_passed) = \$row_m;
 		}
 

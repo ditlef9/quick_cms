@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/courses/backup.php
-* Version 14:45 28.09.2021
-* Copyright (c) 2021 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2021-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -103,21 +103,36 @@ $tables_array = array("$t_courses_liquidbase",
 
 /*- Functions -------------------------------------------------------------------------- */
 function delete_directory($dirname) {
-	if (is_dir($dirname))
-		$dir_handle = opendir($dirname);
-	if (!$dir_handle)
+	
+	if(!(is_dir("$dirname"))){
+		echo"$dirname doesnt exists";
 		return false;
-	while($file = readdir($dir_handle)) {
-		if ($file != "." && $file != "..") {
-			if (!is_dir($dirname."/".$file))
-			unlink($dirname."/".$file);
-		else
-                	delete_directory($dirname.'/'.$file);
-         	}
-     	}
-     	closedir($dir_handle);
-     	rmdir($dirname);
-    	return true;
+	}
+	if ($handle = opendir($dirname)) {
+		$files_and_dirs = array();   
+		while (false !== ($file_or_dir = readdir($handle))) {
+			if ($file_or_dir === '.') continue;
+			if ($file_or_dir === '..') continue;
+			array_push($files_and_dirs, $file_or_dir);
+		}
+
+
+
+		sort($files_and_dirs);
+		foreach ($files_and_dirs as $file_and_dir){
+			if(!(is_dir("$dirname/$file_and_dir"))){
+				// is file
+				unlink("$dirname/$file_and_dir");
+			}
+			else{
+				// is dir
+				$new_dirname = "$dirname/$file_and_dir";
+				delete_directory($new_dirname);
+				rmdir("$new_dirname");
+			}
+		}
+	} // handle
+	return true;
 }
 
 
@@ -152,9 +167,10 @@ elseif($action == "export"){
 		$backup_file = "courses_" . $backup_id . ".txt";
 
 		// Reset ips
-		mysqli_query($link, "UPDATE $t_courses_index SET course_read_times_ip_block=''") or die(mysqli_error($link));
-		mysqli_query($link, "UPDATE $t_courses_modules SET module_read_ipblock=''") or die(mysqli_error($link));
-		mysqli_query($link, "UPDATE $t_courses_lessons SET lesson_read_times_ipblock=''") or die(mysqli_error($link));
+		$mysqli->query("UPDATE $t_courses_index SET course_read_times_ip_block=''") or die($mysqli->error);
+		$mysqli->query("UPDATE $t_courses_modules SET module_read_ipblock=''") or die($mysqli->error);
+		$mysqli->query("UPDATE $t_courses_lessons SET lesson_read_times_ipblock=''") or die($mysqli->error);
+
 
 		// Delete old files
 		delete_directory("../_cache/");
@@ -203,14 +219,14 @@ CREATE TABLE $tables_array[$table_no](
 			// Fields
 			$x = 0;
 			$query = "SHOW COLUMNS FROM $tables_array[$table_no]";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_column_name) = $row;
 
 				// Get information about that column
 				$query_column = "SELECT COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, COLUMN_TYPE, COLUMN_KEY, EXTRA FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$tables_array[$table_no]' AND COLUMN_NAME='$get_column_name'";
-				$result_column = mysqli_query($link, $query_column);
-				$row_column = mysqli_fetch_row($result_column);
+				$result_column = $mysqli->query($query_column);
+				$row_column = $result_column->fetch_row();
 				list($get_column_name, $get_column_default, $get_is_nullable, $get_data_type, $get_character_maximum_lenght, $get_mumeric_precision, $get_column_type, $get_column_key, $get_extra) = $row_column;
 
 				$get_data_type = strtoupper($get_data_type);
@@ -265,7 +281,7 @@ CREATE TABLE $tables_array[$table_no](
 			// Next table
 			$next_table_no = $table_no+1;
 			echo"
-			<meta http-equiv=\"refresh\" content=\"0; url=index.php?open=courses&amp;page=backup&amp;action=export&amp;mode=header&amp;table_no=$next_table_no&amp;backup_id=$backup_id&amp;editor_language=$editor_language&amp;l=$l\" />
+			<meta http-equiv=\"refresh\" content=\"2; url=index.php?open=courses&amp;page=backup&amp;action=export&amp;mode=header&amp;table_no=$next_table_no&amp;backup_id=$backup_id&amp;editor_language=$editor_language&amp;l=$l\" />
 			";
 
 
@@ -273,7 +289,7 @@ CREATE TABLE $tables_array[$table_no](
 		else{
 			echo"Done with header, starting with content!";
 			echo"
-			<meta http-equiv=\"refresh\" content=\"0; url=index.php?open=courses&amp;page=backup&amp;action=export&amp;mode=content&amp;table_no=0&amp;backup_id=$backup_id&amp;editor_language=$editor_language&amp;l=$l\" />
+			<meta http-equiv=\"refresh\" content=\"3; url=index.php?open=courses&amp;page=backup&amp;action=export&amp;mode=content&amp;table_no=0&amp;backup_id=$backup_id&amp;editor_language=$editor_language&amp;l=$l\" />
 			";
 		}
 
@@ -298,18 +314,21 @@ CREATE TABLE $tables_array[$table_no](
 INSERT INTO $tables_array[$table_no](
 ";
 			// Fields
+			echo"<p><b>$tables_array[$table_no]</b><br />\n";
 			$count_fields = 0;
 			$table_column_types = array();
 			$query = "SHOW COLUMNS FROM $tables_array[$table_no]";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_column_name) = $row;
 
 				// Get information about that column
+				echo"$get_column_name<br />";
 				$query_column = "SELECT COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, COLUMN_TYPE, COLUMN_KEY, EXTRA FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$tables_array[$table_no]' AND COLUMN_NAME='$get_column_name'";
-				$result_column = mysqli_query($link, $query_column);
-				$row_column = mysqli_fetch_row($result_column);
+				$result_column = $mysqli->query($query_column);
+				$row_column = $result_column->fetch_row();
 				list($get_column_name, $get_column_default, $get_is_nullable, $get_data_type, $get_character_maximum_lenght, $get_mumeric_precision, $get_column_type, $get_column_key, $get_extra) = $row_column;
+
 
 				$get_data_type = strtoupper($get_data_type);
 				$get_extra = strtoupper($get_extra);
@@ -336,8 +355,8 @@ VALUES ";
 			// Fetch data
 			$count_rows = 0;
 			$query = "SELECT * FROM $tables_array[$table_no]";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 
 				if($count_rows > 0){
 					$insert_statement = $insert_statement . ",";
@@ -366,7 +385,7 @@ VALUES ";
 						$input_data = "NULL";
 					}
 					else{
-						$input_data =  quote_smart($link, $row[$x]);
+						$input_data = "'" . $row[$x] . "'";
 					}
 
 
@@ -394,7 +413,7 @@ VALUES ";
 			// Next table
 			$next_table_no = $table_no+1;
 			echo"
-			<meta http-equiv=\"refresh\" content=\"1; url=index.php?open=courses&amp;page=backup&amp;action=export&amp;mode=content&amp;table_no=$next_table_no&amp;backup_id=$backup_id&amp;editor_language=$editor_language&amp;l=$l\" />
+			<meta http-equiv=\"refresh\" content=\"2; url=index.php?open=courses&amp;page=backup&amp;action=export&amp;mode=content&amp;table_no=$next_table_no&amp;backup_id=$backup_id&amp;editor_language=$editor_language&amp;l=$l\" />
 			";
 
 
@@ -402,7 +421,7 @@ VALUES ";
 		else{
 			echo"Done!";
 			echo"
-			<meta http-equiv=\"refresh\" content=\"1; url=index.php?open=courses&amp;page=backup&amp;action=export&amp;mode=download&amp;backup_id=$backup_id&amp;ft=success&fm=backup_created&amp;editor_language=$editor_language&amp;l=$l\" />
+			<meta http-equiv=\"refresh\" content=\"3; url=index.php?open=courses&amp;page=backup&amp;action=export&amp;mode=download&amp;backup_id=$backup_id&amp;ft=success&fm=backup_created&amp;editor_language=$editor_language&amp;l=$l\" />
 			";
 		}
 

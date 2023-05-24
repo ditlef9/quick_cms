@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/comments/courses_scan_for_courses.php
-* Version 
-* Date 20:17 30.10.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -22,8 +21,6 @@ if(isset($_GET['category_id'])){
 else{
 	$category_id = "";
 }
-$category_id_mysql = quote_smart($link, $category_id);
-
 
 /*- Functions ------------------------------------------------------------------------ */
 function get_string_between($string, $start, $end){
@@ -72,7 +69,7 @@ if($action == ""){
 			like this:<br /><br /><br />
 			course_title: Algoritmer og datastrukturer<br /><br />
 
-course_short_introduction: Algoritmer er en programmeringskode som gjør en definert jobb. For eksempel å se om et tall er et primtall eller ikke.<br /><br />
+course_short_introduction: Algoritmer er en programmeringskode som gjï¿½r en definert jobb. For eksempel ï¿½ se om et tall er et primtall eller ikke.<br /><br />
 
 course_long_introduction: &lt;p&gt;This long course will..&lt;/p&gt;<br /><br />
 
