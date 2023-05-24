@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/downloads.php
-* Version 23:04 17.11.2018
-* Copyright (c) 2008-2018 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -70,8 +70,8 @@ if($action == ""){
 		";
 		// Get all categories
 		$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories ORDER BY main_category_title ASC";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_main_category_id, $get_main_category_title, $get_main_category_icon_path, $get_main_category_icon_file) = $row;
 
 			echo"			";

@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/categories.php
-* Version 15.00 03.03.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -74,8 +74,8 @@ if($action == ""){
 		";
 		// Get all categories
 		$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories ORDER BY main_category_title ASC";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_main_category_id, $get_main_category_title, $get_main_category_icon_path, $get_main_category_icon_file) = $row;
 
 			echo"			";
@@ -87,10 +87,12 @@ if($action == ""){
 	";
 } // action == ""
 elseif($action == "open_category"){
-	$main_category_id_mysql = quote_smart($link, $main_category_id);
-	$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	// Main category
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -153,8 +155,8 @@ elseif($action == "open_category"){
 				";
 				// Get all categories
 				$query = "SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_parent_id=$get_current_main_category_id ORDER BY sub_category_title ASC";
-				$result = mysqli_query($link, $query);
-				while($row = mysqli_fetch_row($result)) {
+				$result = $mysqli->query($query);
+				while($row = $result->fetch_row()) {
 					list($get_sub_category_id, $get_sub_category_title) = $row;
 
 					echo"			";
@@ -170,10 +172,12 @@ elseif($action == "open_category"){
 
 } // action == open_category
 elseif($action == "edit_category"){
-	$main_category_id_mysql = quote_smart($link, $main_category_id);
-	$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	// Main category
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -183,33 +187,37 @@ elseif($action == "edit_category"){
 		if($process == "1"){
 			$inp_title = $_POST['inp_title'];
 			$inp_title = output_html($inp_title);
-			$inp_title_mysql = quote_smart($link, $inp_title);
 			if(empty($inp_title)){
 				echo"No title";die;
 			}
 
 			$inp_title_clean = clean($inp_title);
-			$inp_title_clean_mysql = quote_smart($link, $inp_title_clean);
 
 			// Update
-			mysqli_query($link, "UPDATE $t_downloads_main_categories SET main_category_title=$inp_title_mysql, main_category_title_clean=$inp_title_clean_mysql WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+			$stmt = $mysqli->prepare("UPDATE $t_downloads_main_categories SET 
+				main_category_title=?, 
+				main_category_title_clean=? 
+				WHERE main_category_id=?");
+			$stmt->bind_param("sss", $inp_title_mysql, $inp_title_clean, $get_current_main_category_id); 
+			$stmt->execute();
 
-		
+
 
 			// Translations
 			$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag, language_active_default FROM $t_languages_active";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_flag, $get_language_active_default) = $row;
 	
 				$inp_value = $_POST["inp_title_$get_language_active_iso_two"];
 				$inp_value = output_html($inp_value);
-				$inp_value_mysql = quote_smart($link, $inp_value);
 
-				$inp_l_mysql = quote_smart($link, $get_language_active_iso_two);
+				$stmt = $mysqli->prepare("UPDATE $t_downloads_main_categories_translations SET 
+					main_category_translation_value=? WHERE
+					main_category_id=? AND main_category_translation_language=?");
+				$stmt->bind_param("sss", $inp_value, $get_current_main_category_id, $get_language_active_iso_two); 
+				$stmt->execute();
 
-				mysqli_query($link, "UPDATE $t_downloads_main_categories_translations SET main_category_translation_value=$inp_value_mysql WHERE
-				 main_category_id=$get_current_main_category_id AND  main_category_translation_language=$inp_l_mysql") or die(mysqli_error($link));
 
 			}
 
@@ -260,13 +268,13 @@ elseif($action == "edit_category"){
 						else{
 							// Update image
 							$inp_icon_file = $get_current_main_category_id . "." . $extension;
-							$inp_icon_file_mysql = quote_smart($link, $inp_icon_file);
 
 							$inp_icon_path = "_zipped/_icons";
-							$inp_icon_path_mysql = quote_smart($link, $inp_icon_path);
 						
-							mysqli_query($link, "UPDATE $t_downloads_main_categories SET main_category_icon_path=$inp_icon_path_mysql, main_category_icon_file=$inp_icon_file_mysql WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
-						
+							$stmt = $mysqli->prepare("UPDATE $t_downloads_main_categories SET main_category_icon_path=?, main_category_icon_file=? WHERE main_category_id=?");
+							$stmt->bind_param("sss", $inp_icon_path, $inp_icon_file, $get_current_main_category_id); 
+							$stmt->execute();
+
 
 						}  // if($width == "" OR $height == ""){
 					}
@@ -375,16 +383,16 @@ elseif($action == "edit_category"){
 			
 			<!-- Focus -->
 			<script>
-				\$(document).ready(function(){
-					\$('[name=\"inp_title\"]').focus();
-				});
+				window.onload = function() {
+					document.getElementById(\"inp_title\").focus();
+				}
 			</script>
 			<!-- //Focus -->
 
 			<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;action=$action&amp;main_category_id=$main_category_id&amp;l=$l&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 			<p><b>Title:</b><br />
-			<input type=\"text\" name=\"inp_title\" value=\"$get_current_main_category_title\" size=\"25\" />
+			<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"$get_current_main_category_title\" size=\"25\" />
 			</p>
 
 			<p>New icon 48x48:<br />
@@ -393,24 +401,28 @@ elseif($action == "edit_category"){
 			";
 
 			$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag, language_active_default FROM $t_languages_active";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_flag, $get_language_active_default) = $row;
 
 				$flag = $get_language_active_flag . "_16x16.png";
 
-				$inp_l_mysql = quote_smart($link, $get_language_active_iso_two);
-				$query_t = "SELECT main_category_translation_id, main_category_translation_value FROM $t_downloads_main_categories_translations WHERE main_category_id='$get_current_main_category_id' AND main_category_translation_language=$inp_l_mysql";
-				$result_t = mysqli_query($link, $query_t);
-				$row_t = mysqli_fetch_row($result_t);
+				$stmt = $mysqli->prepare("SELECT main_category_translation_id, main_category_translation_value FROM $t_downloads_main_categories_translations WHERE main_category_id=? AND main_category_translation_language=?"); 
+				$stmt->bind_param("ss", $get_current_main_category_id, $get_language_active_iso_two);
+				$stmt->execute();
+				$result_t = $stmt->get_result();
+				$row_t = $result_t->fetch_row();
 				list($get_main_category_translation_id, $get_main_category_translation_value) = $row_t;
 
 				if($get_main_category_translation_id == ""){
-					mysqli_query($link, "INSERT INTO $t_downloads_main_categories_translations
-					(main_category_translation_id, main_category_id, main_category_translation_language, main_category_translation_value) 
-					VALUES 
-					(NULL, '$get_current_main_category_id', $inp_l_mysql, '')")
-					or die(mysqli_error($link));
+					$inp_main_category_translation_value = "";
+					$stmt = $mysqli->prepare("INSERT INTO $t_downloads_main_categories_translations
+						(main_category_translation_id, main_category_id, main_category_translation_language, main_category_translation_value) 
+						VALUES 
+						(NULL,?,?,?)");
+					$stmt->bind_param("sss", $get_current_main_category_id, $get_language_active_iso_two, $$inp_main_category_translation_value); 
+					$stmt->execute();
+
 				}
 
 				echo"
@@ -441,10 +453,12 @@ elseif($action == "edit_category"){
 
 } // action == edit_category
 elseif($action == "delete_category"){
-	$main_category_id_mysql = quote_smart($link, $main_category_id);
-	$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	// Main category
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -452,12 +466,13 @@ elseif($action == "delete_category"){
 	}
 	else{
 		if($process == "1"){
-			mysqli_query($link, "DELETE FROM $t_downloads_main_categories WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
-			mysqli_query($link, "DELETE FROM $t_downloads_main_categories_translations WHERE main_category_id=$get_current_main_category_id") or die(mysqli_error($link));
+			$mysqli->query("DELETE FROM $t_downloads_main_categories WHERE main_category_id=$get_current_main_category_id") or die($mysqli->error);
+			$mysqli->query("DELETE FROM $t_downloads_main_categories_translations WHERE main_category_id=$get_current_main_category_id") or die($mysqli->error);
 
 			if(file_exists("../$get_current_main_category_icon_path/$get_current_main_category_icon_file")){
 				unlink("../$get_current_main_category_icon_path/$get_current_main_category_icon_file");
 			}
+
 			// Send success
 			$url = "index.php?open=$open&page=$page&editor_language=$editor_language&ft=success&fm=category_deleted";
 			header("Location: $url");
@@ -516,47 +531,46 @@ elseif($action == "new_category"){
 	if($process == "1"){
 		$inp_title = $_POST['inp_title'];
 		$inp_title = output_html($inp_title);
-		$inp_title_mysql = quote_smart($link, $inp_title);
 		if(empty($inp_title)){
 			echo"No title";die;
 		}
 
 
 		$inp_title_clean = clean($inp_title);
-		$inp_title_clean_mysql = quote_smart($link, $inp_title_clean);
 
 		$inp_icon_path = "_zipped/_icons";
-		$inp_icon_path_mysql = quote_smart($link, $inp_icon_path);
 
 		$datetime = date("Y-m-d H:i:s");
 
 		// Insert
-		mysqli_query($link, "INSERT INTO $t_downloads_main_categories
-		(main_category_id, main_category_title, main_category_title_clean, main_category_icon_path, main_category_created) 
-		VALUES 
-		(NULL, $inp_title_mysql, $inp_title_clean_mysql, $inp_icon_path_mysql, '$datetime')")
-		or die(mysqli_error($link));
+		$stmt = $mysqli->prepare("INSERT INTO $t_downloads_main_categories
+			(main_category_id, main_category_title, main_category_title_clean, main_category_icon_path, main_category_created) 
+			VALUES 
+			(NULL,?,?,?,?)");
+		$stmt->bind_param("ssss", $inp_title, $inp_title_clean, $inp_icon_path, $datetime); 
+		$stmt->execute();
+
 
 		// Get ID
 		$query = "SELECT main_category_id FROM $t_downloads_main_categories WHERE main_category_created='$datetime'";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$result = $mysqli->query($query);
+		$row = $result->fetch_row();
 		list($get_main_category_id) = $row;
 
 		// Translations
 		$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag, language_active_default FROM $t_languages_active";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_flag, $get_language_active_default) = $row;
 	
 			$inp_l_mysql = quote_smart($link, $get_language_active_iso_two);
 
-			mysqli_query($link, "INSERT INTO $t_downloads_main_categories_translations
-			(main_category_translation_id, main_category_id, main_category_translation_language, main_category_translation_value) 
-			VALUES 
-			(NULL, '$get_main_category_id', $inp_l_mysql, $inp_title_mysql)")
-			or die(mysqli_error($link));
-
+			$stmt = $mysqli->prepare("INSERT INTO $t_downloads_main_categories_translations
+				(main_category_translation_id, main_category_id, main_category_translation_language, main_category_translation_value) 
+				VALUES 
+				(NULL,?,?,?,?)");
+			$stmt->bind_param("ssss", $get_main_category_id, $get_language_active_iso_two, $inp_title); 
+			$stmt->execute();
 		}
 
 		// Icon
@@ -616,9 +630,11 @@ elseif($action == "new_category"){
 					
 						// Update image
 						$inp_icon_file = $get_main_category_id . "." . $extension;
-						$inp_icon_file_mysql = quote_smart($link, $inp_icon_file);
 
-						mysqli_query($link, "UPDATE $t_downloads_main_categories SET main_category_icon_file=$inp_icon_file_mysql WHERE main_category_id=$get_main_category_id") or die(mysqli_error($link));
+						$stmt = $mysqli->prepare("UPDATE $t_downloads_main_categories SET main_category_icon_file=? WHERE main_category_id=?");
+						$stmt->bind_param("ss", $inp_icon_file, $$get_main_category_id); 
+						$stmt->execute();
+				
 					} // if($width == "" OR $height == ""){
 				}  // if move_file
 			}
@@ -693,16 +709,16 @@ elseif($action == "new_category"){
 			
 		<!-- Focus -->
 		<script>
-			\$(document).ready(function(){
-				\$('[name=\"inp_title\"]').focus();
-			});
+		window.onload = function() {
+			document.getElementById(\"inp_title\").focus();
+		}
 		</script>
 		<!-- //Focus -->
 
 		<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;action=$action&amp;l=$l&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 		<p><b>Title:</b><br />
-		<input type=\"text\" name=\"inp_title\" value=\"\" size=\"25\" tabindex=\""; $tabindex=$tabindex+1; echo"$tabindex\" />
+		<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"\" size=\"25\" tabindex=\""; $tabindex=$tabindex+1; echo"$tabindex\" />
 		</p>
 
 		<p>Icon 48x48:<br />
@@ -720,10 +736,12 @@ elseif($action == "new_category"){
 	";
 } // action == new category
 elseif($action == "new_sub_category"){
-	$main_category_id_mysql = quote_smart($link, $main_category_id);
-	$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	// Main category
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -733,48 +751,47 @@ elseif($action == "new_sub_category"){
 		if($process == "1"){
 			$inp_title = $_POST['inp_title'];
 			$inp_title = output_html($inp_title);
-			$inp_title_mysql = quote_smart($link, $inp_title);
 			if(empty($inp_title)){
 				echo"No title";die;
 			}
 
 			$inp_title_clean = clean($inp_title);
-			$inp_title_clean_mysql = quote_smart($link, $inp_title_clean);
 
 			// Create 
 			$datetime = date("Y-m-d H:i:s");
 
 			// Insert
-			mysqli_query($link, "INSERT INTO $t_downloads_sub_categories
-			(sub_category_id, sub_category_parent_id, sub_category_title, sub_category_title_clean, sub_category_created) 
-			VALUES 
-			(NULL, $get_current_main_category_id, $inp_title_mysql, $inp_title_clean_mysql, '$datetime')")
-			or die(mysqli_error($link));
+			$stmt = $mysqli->prepare("INSERT INTO $t_downloads_sub_categories
+				(sub_category_id, sub_category_parent_id, sub_category_title, sub_category_title_clean, sub_category_created) 
+				VALUES 
+				(NULL,?,?,?,?)");
+			$stmt->bind_param("ssss", $get_current_main_category_id, $inp_title, $inp_title_clean, $datetime); 
+			$stmt->execute();
 
 			// Get ID
 			$query = "SELECT sub_category_id FROM $t_downloads_sub_categories WHERE sub_category_created='$datetime'";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
+			$result = $mysqli->query($query);
+			$row = $result->fetch_row();
 			list($get_sub_category_id) = $row;
 
 			// Translations
 			$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag, language_active_default FROM $t_languages_active";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_flag, $get_language_active_default) = $row;
 	
-				$inp_l_mysql = quote_smart($link, $get_language_active_iso_two);
 
 				$inp_value = $_POST["inp_title_$get_language_active_iso_two"];
 				$inp_value = output_html($inp_value);
-				$inp_value_mysql = quote_smart($link, $inp_value);
 
 
-				mysqli_query($link, "INSERT INTO $t_downloads_sub_categories_translations
-				(sub_category_translation_id, sub_category_id, sub_category_translation_language, sub_category_translation_value) 
-				VALUES 
-				(NULL, '$get_sub_category_id', $inp_l_mysql, $inp_value_mysql)")
-				or die(mysqli_error($link));
+				$stmt = $mysqli->prepare("INSERT INTO $t_downloads_sub_categories_translations
+					(sub_category_translation_id, sub_category_id, sub_category_translation_language, sub_category_translation_value) 
+					VALUES 
+					(NULL,?,?,?)");
+				$stmt->bind_param("sss", $get_sub_category_id, $get_language_active_iso_two, $inp_value); 
+				$stmt->execute();
+
 
 			}
 
@@ -820,22 +837,22 @@ elseif($action == "new_sub_category"){
 			
 			<!-- Focus -->
 			<script>
-				\$(document).ready(function(){
-					\$('[name=\"inp_title\"]').focus();
-				});
+			window.onload = function() {
+				document.getElementById(\"inp_title\").focus();
+			}
 			</script>
 			<!-- //Focus -->
 
 			<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;action=$action&amp;main_category_id=$main_category_id&amp;l=$l&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 			<p><b>Title:</b><br />
-			<input type=\"text\" name=\"inp_title\" value=\"\" size=\"25\" />
+			<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"\" size=\"25\" />
 			</p>
 			";
 
 			$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag, language_active_default FROM $t_languages_active";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_flag, $get_language_active_default) = $row;
 
 				$flag = $get_language_active_flag . "_16x16.png";
@@ -867,10 +884,12 @@ elseif($action == "new_sub_category"){
 
 } // action == new sub category
 elseif($action == "open_sub_category"){
-	$main_category_id_mysql = quote_smart($link, $main_category_id);
-	$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	// Main category
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -878,10 +897,11 @@ elseif($action == "open_sub_category"){
 	}
 	else{
 		// Sub category
-		$sub_category_id_mysql = quote_smart($link, $sub_category_id);
-		$query = "SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=$sub_category_id_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$stmt = $mysqli->prepare("SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=?"); 
+		$stmt->bind_param("s", $sub_category_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
 		list($get_current_sub_category_id, $get_sub_category_title) = $row;
 
 		if($get_current_sub_category_id == ""){
@@ -940,10 +960,12 @@ elseif($action == "open_sub_category"){
 	} // main category found
 } // action == open_sub_category
 elseif($action == "edit_sub_category"){
-	$main_category_id_mysql = quote_smart($link, $main_category_id);
-	$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	// Main category
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -951,11 +973,12 @@ elseif($action == "edit_sub_category"){
 	}
 	else{
 		// Sub category
-		$sub_category_id_mysql = quote_smart($link, $sub_category_id);
-		$query = "SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=$sub_category_id_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
-		list($get_current_sub_category_id, $get_current_sub_category_title) = $row;
+		$stmt = $mysqli->prepare("SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=?"); 
+		$stmt->bind_param("s", $sub_category_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
+		list($get_current_sub_category_id, $get_sub_category_title) = $row;
 
 		if($get_current_sub_category_id == ""){
 			echo"<p>Not found</p>";
@@ -965,26 +988,25 @@ elseif($action == "edit_sub_category"){
 			if($process == "1"){
 				$inp_title = $_POST['inp_title'];
 				$inp_title = output_html($inp_title);
-				$inp_title_mysql = quote_smart($link, $inp_title);
 				if(empty($inp_title)){
 					echo"No title";die;
 				}
 
 				$inp_title_clean = clean($inp_title);
-				$inp_title_clean_mysql = quote_smart($link, $inp_title_clean);
 
 				// Create 
 				$datetime = date("Y-m-d H:i:s");
 
-				// Insert
-				mysqli_query($link, "UPDATE $t_downloads_sub_categories SET sub_category_title=$inp_title_mysql, sub_category_title_clean=$inp_title_clean_mysql WHERE sub_category_id=$get_current_sub_category_id")
-				or die(mysqli_error($link));
+				// Update sub category
+				$stmt = $mysqli->prepare("UPDATE $t_downloads_sub_categories SET sub_category_title=$inp_title_mysql, sub_category_title_clean=? WHERE sub_category_id=?");
+				$stmt->bind_param("ss", $inp_title, $$get_current_sub_category_id); 
+				$stmt->execute();
 
 
 				// Translations
 				$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag, language_active_default FROM $t_languages_active";
-				$result = mysqli_query($link, $query);
-				while($row = mysqli_fetch_row($result)) {
+				$result = $mysqli->query($query);
+				while($row = $result->fetch_row()) {
 					list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_flag, $get_language_active_default) = $row;
 	
 					$inp_l_mysql = quote_smart($link, $get_language_active_iso_two);
@@ -993,10 +1015,12 @@ elseif($action == "edit_sub_category"){
 					$inp_value = output_html($inp_value);
 					$inp_value_mysql = quote_smart($link, $inp_value);
 
+					$stmt = $mysqli->prepare("UPDATE $t_downloads_sub_categories_translations SET 
+						sub_category_translation_value=? 
+						WHERE sub_category_id=? AND sub_category_translation_language=?");
+					$stmt->bind_param("sss", $inp_value, $get_current_sub_category_id, $get_language_active_iso_two); 
+					$stmt->execute();
 
-					mysqli_query($link, "UPDATE $t_downloads_sub_categories_translations SET sub_category_translation_value=$inp_value_mysql WHERE sub_category_id=$get_current_sub_category_id AND
-								sub_category_translation_language=$inp_l_mysql")
-					or die(mysqli_error($link));
 
 				}
 
@@ -1061,22 +1085,22 @@ elseif($action == "edit_sub_category"){
 			
 				<!-- Focus -->
 				<script>
-					\$(document).ready(function(){
-						\$('[name=\"inp_title\"]').focus();
-					});
+				window.onload = function() {
+					document.getElementById(\"inp_title\").focus();
+				}
 				</script>
 				<!-- //Focus -->
 
 				<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;action=$action&amp;main_category_id=$main_category_id&amp;sub_category_id=$sub_category_id&amp;l=$l&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 				<p><b>Title:</b><br />
-				<input type=\"text\" name=\"inp_title\" value=\"$get_current_sub_category_title\" size=\"25\" />
+				<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"$get_current_sub_category_title\" size=\"25\" />
 				</p>
 				";
 
 				$query = "SELECT language_active_id, language_active_name, language_active_iso_two, language_active_flag, language_active_default FROM $t_languages_active";
-				$result = mysqli_query($link, $query);
-				while($row = mysqli_fetch_row($result)) {
+				$result = $mysqli->query($query);
+				while($row = $result->fetch_row()) {
 					list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two, $get_language_active_flag, $get_language_active_default) = $row;
 
 					$flag = $get_language_active_flag . "_16x16.png";
@@ -1084,19 +1108,22 @@ elseif($action == "edit_sub_category"){
 					$inp_l_mysql = quote_smart($link, $get_language_active_iso_two);
 
 					// Get translation
-					$query_t = "SELECT sub_category_id, sub_category_translation_value FROM $t_downloads_sub_categories_translations WHERE sub_category_id='$get_current_sub_category_id' AND sub_category_translation_language=$inp_l_mysql";
-					$result_t = mysqli_query($link, $query_t);
-					$row_t = mysqli_fetch_row($result_t);
+					$stmt = $mysqli->prepare("SELECT sub_category_id, sub_category_translation_value FROM $t_downloads_sub_categories_translations WHERE sub_category_id=? AND sub_category_translation_language=?"); 
+					$stmt->bind_param("ss", $get_current_sub_category_id, $get_language_active_iso_two);
+					$stmt->execute();
+					$result_t = $stmt->get_result();
+					$row_t = $result_t->fetch_row();
 					list($get_sub_category_id, $get_sub_category_translation_value) = $row_t;
 
 					if($get_sub_category_id == ""){
 						// Create it
-						
-						mysqli_query($link, "INSERT INTO $t_downloads_sub_categories_translations
+						$inp_sub_category_translation_value = "";
+						$stmt = $mysqli->prepare("INSERT INTO $t_downloads_sub_categories_translations
 						(sub_category_translation_id, sub_category_id, sub_category_translation_language, sub_category_translation_value) 
 						VALUES 
-						(NULL, '$get_current_sub_category_id', $inp_l_mysql, '')")
-						or die(mysqli_error($link));
+						(NULL,?,?,?)");
+						$stmt->bind_param("sss", $get_current_sub_category_id, $get_language_active_iso_two, $inp_sub_category_translation_value); 
+						$stmt->execute();
 					}
 
 					echo"
@@ -1126,10 +1153,12 @@ elseif($action == "edit_sub_category"){
 	} // main category found
 } // action == edit_sub_category
 elseif($action == "delete_sub_category"){
-	$main_category_id_mysql = quote_smart($link, $main_category_id);
-	$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	// Main category
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -1137,11 +1166,12 @@ elseif($action == "delete_sub_category"){
 	}
 	else{
 		// Sub category
-		$sub_category_id_mysql = quote_smart($link, $sub_category_id);
-		$query = "SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=$sub_category_id_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
-		list($get_current_sub_category_id, $get_current_sub_category_title) = $row;
+		$stmt = $mysqli->prepare("SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=?"); 
+		$stmt->bind_param("s", $sub_category_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
+		list($get_current_sub_category_id, $get_sub_category_title) = $row;
 
 		if($get_current_sub_category_id == ""){
 			echo"<p>Not found</p>";
@@ -1150,8 +1180,8 @@ elseif($action == "delete_sub_category"){
 
 			if($process == "1"){
 				// Delete
-				mysqli_query($link, "DELETE FROM $t_downloads_sub_categories WHERE sub_category_id=$get_current_sub_category_id")or die(mysqli_error($link));
-				mysqli_query($link, "DELETE FROM $t_downloads_sub_categories_translations WHERE sub_category_id=$get_current_sub_category_id") or die(mysqli_error($link));
+				$mysqli->query("DELETE FROM $t_downloads_sub_categories WHERE sub_category_id=$get_current_sub_category_id") or die($mysqli->error);
+				$mysqli->query("DELETE FROM $t_downloads_sub_categories_translations WHERE sub_category_id=$get_current_sub_category_id") or die($mysqli->error);
 
 			
 

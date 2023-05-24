@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/downloads_3_open_sub_category.php
-* Version 23:04 17.11.2018
-* Copyright (c) 2008-2018 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -45,10 +45,12 @@ else{
 
 /*- Scriptstart ---------------------------------------------------------------------- */
 if($action == ""){
-	$main_category_id_mysql = quote_smart($link, $main_category_id);
-	$query = "SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$main_category_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	// Main category
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 
 	if($get_current_main_category_id == ""){
@@ -56,11 +58,12 @@ if($action == ""){
 	}
 	else{
 		// Sub category
-		$sub_category_id_mysql = quote_smart($link, $sub_category_id);
-		$query = "SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=$sub_category_id_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
-		list($get_current_sub_category_id, $get_current_sub_category_title) = $row;
+		$stmt = $mysqli->prepare("SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=?"); 
+		$stmt->bind_param("s", $sub_category_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
+		list($get_current_sub_category_id, $get_sub_category_title) = $row;
 
 		if($get_current_sub_category_id == ""){
 			echo"<p>Not found</p>";
@@ -106,8 +109,8 @@ if($action == ""){
 				";
 				// Get all downloads
 				$query = "SELECT download_id, download_title, download_introduction, download_image_path, download_image_store FROM $t_downloads_index WHERE download_sub_category_id=$get_current_sub_category_id ORDER BY download_title ASC";
-				$result = mysqli_query($link, $query);
-				while($row = mysqli_fetch_row($result)) {
+				$result = $mysqli->query($query);
+				while($row = $result->fetch_row()) {
 					list($get_download_id, $get_download_title, $get_download_introduction, $get_download_image_path, $get_download_image_store) = $row;
 
 					echo"

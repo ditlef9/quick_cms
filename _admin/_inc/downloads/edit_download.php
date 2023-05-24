@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/edit_download.php
-* Version 15.00 03.03.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -54,10 +54,11 @@ else{
 
 /*- Scriptstart ---------------------------------------------------------------------- */
 // Find the download
-$download_id_mysql = quote_smart($link, $download_id);
-$query = "SELECT download_id, download_title, download_language, download_introduction, download_description, download_image_path, download_image_store, download_image_store_thumb, download_image_thumb_a, download_image_thumb_b, download_image_thumb_c, download_image_thumb_d, download_image_file_a, download_image_file_b, download_image_file_c, download_image_file_d, download_read_more_url, download_main_category_id, download_sub_category_id, download_dir, download_internal_external, download_file, download_file_external_url, download_type, download_version, download_file_size, download_file_date, download_last_download, download_hits, download_unique_hits, download_ip_block, download_tag_a, download_tag_b, download_tag_c, download_created_datetime, download_have_to_be_logged_in_to_download FROM $t_downloads_index WHERE download_id=$download_id_mysql";
-$result = mysqli_query($link, $query);
-$row = mysqli_fetch_row($result);
+$stmt = $mysqli->prepare("SELECT download_id, download_title, download_language, download_introduction, download_description, download_image_path, download_image_store, download_image_store_thumb, download_image_thumb_a, download_image_thumb_b, download_image_thumb_c, download_image_thumb_d, download_image_file_a, download_image_file_b, download_image_file_c, download_image_file_d, download_read_more_url, download_main_category_id, download_sub_category_id, download_dir, download_internal_external, download_file, download_file_external_url, download_type, download_version, download_file_size, download_file_date, download_last_download, download_hits, download_unique_hits, download_ip_block, download_tag_a, download_tag_b, download_tag_c, download_created_datetime, download_have_to_be_logged_in_to_download FROM $t_downloads_index WHERE download_id=?"); 
+$stmt->bind_param("s", $download_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_row();
 list($get_current_download_id, $get_current_download_title, $get_current_download_language, $get_current_download_introduction, $get_current_download_description, $get_current_download_image_path, $get_download_image_store, $get_download_image_store_thumb, $get_current_download_image_thumb_a, $get_current_download_image_thumb_b, $get_current_download_image_thumb_c, $get_current_download_image_thumb_d, $get_current_download_image_file_a, $get_current_download_image_file_b, $get_current_download_image_file_c, $get_current_download_image_file_d, $get_current_download_read_more_url, $get_current_download_main_category_id, $get_current_download_sub_category_id, $get_current_download_dir, $get_current_download_internal_external, $get_current_download_file, $get_current_download_file_external_url, $get_current_download_type, $get_current_download_version, $get_current_download_file_size, $get_current_download_file_date, $get_current_download_last_download, $get_current_download_hits, $get_current_download_unique_hits, $get_current_download_ip_block, $get_current_download_tag_a, $get_current_download_tag_b, $get_current_download_tag_c, $get_current_download_created_datetime, $get_current_download_have_to_be_logged_in_to_download) = $row;
 
 if($get_current_download_id == ""){
@@ -80,32 +81,36 @@ else{
 	}
 	*/
 
-	$editor_language_mysql = quote_smart($link, $get_current_download_language);
+	// $editor_language_mysql = quote_smart($link, $get_current_download_language);
 
 	// Main category
-	$query = "SELECT main_category_id, main_category_title, main_category_title_clean, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=$get_current_download_main_category_id";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
-	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_title_clean, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
+	$stmt = $mysqli->prepare("SELECT main_category_id, main_category_title, main_category_icon_path, main_category_icon_file FROM $t_downloads_main_categories WHERE main_category_id=?"); 
+	$stmt->bind_param("s", $get_current_download_main_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
+	list($get_current_main_category_id, $get_current_main_category_title, $get_current_main_category_icon_path, $get_current_main_category_icon_file) = $row;
 	if(!(is_dir("../_zipped/$get_current_main_category_title_clean"))){
 		mkdir("../_zipped/$get_current_main_category_title_clean");
 	}
 
 	// Main category translation
-	$query = "SELECT main_category_translation_id, main_category_translation_value FROM $t_downloads_main_categories_translations WHERE main_category_id=$get_current_download_main_category_id AND main_category_translation_language=$editor_language_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT main_category_translation_id, main_category_translation_value FROM $t_downloads_main_categories_translations WHERE main_category_id=? AND main_category_translation_language=?"); 
+	$stmt->bind_param("ss", $get_current_download_main_category_id, $editor_language);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_main_category_translation_id, $get_current_main_category_translation_value) = $row;
 
-
 	// Sub category
-	$sub_category_mysql = quote_smart($link, $get_current_download_sub_category_id);
-	$query = "SELECT sub_category_id, sub_category_title, sub_category_title_clean FROM $t_downloads_sub_categories WHERE sub_category_id=$sub_category_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
-	list($get_current_sub_category_id, $get_current_sub_category_title, $get_current_sub_category_title_clean) = $row;
+	$stmt = $mysqli->prepare("SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_id=?"); 
+	$stmt->bind_param("s", $get_current_download_sub_category_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
+	list($get_current_sub_category_id, $get_sub_category_title) = $row;
 	if($get_current_sub_category_id == ""){
-		// echo"<div class=\"info\"><p>Please choose a sub category for the download. Current is $get_current_download_main_category_id<br />$query</p></div>";
+		echo"<div class=\"info\"><p>Please choose a sub category for the download. Current is $get_current_download_main_category_id<br />$query</p></div>";
 	}
 	else{
 		if(!(is_dir("../_zipped/$get_current_main_category_title_clean/$get_current_sub_category_title_clean"))){
@@ -114,20 +119,24 @@ else{
 	}
 
 	// Sub category translation
-	$query = "SELECT sub_category_translation_id, sub_category_translation_value FROM $t_downloads_sub_categories_translations WHERE sub_category_id=$sub_category_mysql AND sub_category_translation_language=$editor_language_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT sub_category_translation_id, sub_category_translation_value FROM $t_downloads_sub_categories_translations WHERE sub_category_id=? AND sub_category_translation_language=?"); 
+	$stmt->bind_param("ss", $get_current_download_sub_category_id, $editor_language);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_sub_category_translation_id, $get_current_sub_category_translation_value) = $row;
 	if($get_current_sub_category_translation_id == ""){
 		echo"<div class=\"info\"><p>Missing sub category translation... Creating it!</p></div>";
 		
-		$inp_value_mysql = quote_smart($link, $get_current_sub_category_title);
+		$inp_value = "$get_current_sub_category_title";
 
-		mysqli_query($link, "INSERT INTO $t_downloads_sub_categories_translations
-		(sub_category_translation_id, sub_category_id, sub_category_translation_language, sub_category_translation_value) 
-		VALUES 
-		(NULL, $sub_category_mysql, $editor_language_mysql, $inp_value_mysql)")
-		or die(mysqli_error($link));
+		$stmt = $mysqli->prepare("INSERT INTO $t_downloads_sub_categories_translations
+			(sub_category_translation_id, sub_category_id, sub_category_translation_language, sub_category_translation_value) 
+			VALUES 
+			(NULL,?,?,?)");
+		$stmt->bind_param("sss", $get_current_download_sub_category_id, $editor_language, $inp_value); 
+		$stmt->execute();
+
 	}
 
 
@@ -135,13 +144,11 @@ else{
 		if($process == "1"){
 			$inp_title = $_POST['inp_title'];
 			$inp_title = output_html($inp_title);
-			$inp_title_mysql = quote_smart($link, $inp_title);
 			if(empty($inp_title)){
 				echo"No title";die;
 			}
 
 			$inp_title_length = strlen($inp_title);
-			$inp_title_length_mysql = quote_smart($link, $inp_title_length);
 
 			if($inp_title_length  > 27){
 				$inp_title_short = substr($inp_title, 0, 27);
@@ -150,31 +157,24 @@ else{
 			else{
 				$inp_title_short = "";
 			}
-			$inp_title_short_mysql = quote_smart($link, $inp_title_short);
 
 			$inp_introduction = $_POST['inp_introduction'];
 			$inp_introduction = output_html($inp_introduction);
-			$inp_introduction_mysql = quote_smart($link, $inp_introduction);
 			
-
 			$inp_description = $_POST['inp_description'];
 
 			$inp_language = $_POST['inp_language'];
 			$inp_language = output_html($inp_language);
-			$inp_language_mysql = quote_smart($link, $inp_language);
 
 			$inp_main_category_id = $_POST['inp_main_category_id'];
 			$inp_main_category_id = output_html($inp_main_category_id);
-			$inp_main_category_id_mysql = quote_smart($link, $inp_main_category_id);
 
 			$inp_sub_category_id = $_POST['inp_sub_category_id'];
 			$inp_sub_category_id = output_html($inp_sub_category_id);
 			if($inp_sub_category_id == ""){ $inp_sub_category_id = "0"; }
-			$inp_sub_category_id_mysql = quote_smart($link, $inp_sub_category_id);
 
 			$inp_read_more_url = $_POST['inp_read_more_url'];
 			$inp_read_more_url = output_html($inp_read_more_url);
-			$inp_read_more_url_mysql = quote_smart($link, $inp_read_more_url);
 
 			$inp_tags = $_POST['inp_tags'];
 			$inp_tags = output_html($inp_tags);
@@ -199,13 +199,9 @@ else{
 				$inp_tag_b = $inp_tags_array[1];
 				$inp_tag_c = $inp_tags_array[2];
 			}
-			$inp_tag_a_mysql = quote_smart($link, $inp_tag_a);
-			$inp_tag_b_mysql = quote_smart($link, $inp_tag_b);
-			$inp_tag_c_mysql = quote_smart($link, $inp_tag_c);
 			
 			$inp_have_to_be_logged_in_to_download = $_POST['inp_have_to_be_logged_in_to_download'];
 			$inp_have_to_be_logged_in_to_download = output_html($inp_have_to_be_logged_in_to_download);
-			$inp_have_to_be_logged_in_to_download_mysql = quote_smart($link, $inp_have_to_be_logged_in_to_download);
 			
 
 			// Datetime
@@ -214,24 +210,43 @@ else{
 			$datetime_saying = date("j M Y H:i");
 
 			// Update
-			$result = mysqli_query($link, "UPDATE $t_downloads_index SET 
-							download_title=$inp_title_mysql,
-							download_title_short=$inp_title_short_mysql,
-							download_title_length=$inp_title_length_mysql, 
-							download_language=$inp_language_mysql, download_introduction=$inp_introduction_mysql, 
-				download_read_more_url=$inp_read_more_url_mysql, download_main_category_id=$inp_main_category_id_mysql, download_sub_category_id=$inp_sub_category_id_mysql,
-				download_tag_a=$inp_tag_a_mysql, download_tag_b=$inp_tag_b_mysql, download_tag_c=$inp_tag_c_mysql, download_updated_datetime='$datetime', download_updated_print='$date_print',
-				download_have_to_be_logged_in_to_download=$inp_have_to_be_logged_in_to_download_mysql
-				 WHERE download_id='$get_current_download_id'") or die(mysqli_error($link));
-
-			// Insert content
-			$sql = "UPDATE $t_downloads_index SET download_description=? WHERE download_id='$get_current_download_id'";
-			$stmt = $link->prepare($sql);
-			$stmt->bind_param("s", $inp_description);
+			$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET 
+				download_title=?,
+				download_title_short=?,
+				download_title_length=?, 
+				download_language=?, 
+				download_introduction=?, 
+				download_description=?,
+				download_read_more_url=?, 
+				download_main_category_id=?, 
+				download_sub_category_id=?,
+				download_tag_a=?, 
+				download_tag_b=?, 
+				download_tag_c=?, 
+				download_updated_datetime=?, 
+				download_updated_print=?,
+				download_have_to_be_logged_in_to_download=?
+				WHERE download_id=?");
+			$stmt->bind_param("sssssssssssssss", 
+				$inp_title, 
+				$inp_title_short, 
+				$inp_title_length, 
+				$inp_language, 
+				$inp_introduction, 
+				$inp_description,
+				$inp_read_more_url, 
+				$inp_main_category_id,
+				$inp_sub_category_id,
+				$inp_tag_a,
+				$inp_tag_b,
+				$inp_tag_c,
+				$datetime,
+				$date_print,
+				$inp_have_to_be_logged_in_to_download,
+				$get_current_download_id
+				); 
 			$stmt->execute();
-			if ($stmt->errno) {
-				echo "FAILURE!!! " . $stmt->error; die;
-			}
+
 
 			// Title
 			if(!(file_exists("_translations/site/$inp_language/downloads/ts_downloads.php"))){
@@ -256,15 +271,16 @@ else{
 			$row_exists = mysqli_fetch_row($result_exists);
 			list($get_index_id) = $row_exists;
 			if($get_index_id != ""){
-				$result = mysqli_query($link, "UPDATE $t_search_engine_index SET 
-							index_title=$inp_index_title_mysql,
-							index_short_description=$inp_introduction_mysql, 
-							index_keywords=$inp_index_keywords_mysql, 
-							index_updated_datetime='$datetime',
-							index_updated_datetime_print='$datetime_saying'
-							 WHERE index_id=$get_index_id") or die(mysqli_error($link));
+				$stmt = $mysqli->prepare("UPDATE $t_search_engine_index SET 
+						index_title=?,
+						index_short_description=?, 
+						index_keywords=?, 
+						index_updated_datetime=?,
+						index_updated_datetime_print=?
+						WHERE index_id=?");
+				$stmt->bind_param("ssssss", $inp_index_title, $inp_introduction, $inp_index_keywords, $datetime, $datetime_saying, $get_index_id); 
+				$stmt->execute();
 
-				
 			}
 
 
@@ -321,7 +337,7 @@ else{
 		
 		<!-- Edit download form -->
 			<!-- TinyMCE -->
-							<script type=\"text/javascript\" src=\"_javascripts/tinymce/tinymce.min.js\"></script>
+				<script type=\"text/javascript\" src=\"_javascripts/tinymce/tinymce.min.js\"></script>
 				<script>
 				tinymce.init({
 					selector: 'textarea.editor',
@@ -364,16 +380,16 @@ else{
 
 			<!-- Focus -->
 			<script>
-				\$(document).ready(function(){
-					\$('[name=\"inp_title\"]').focus();
-				});
+			window.onload = function() {
+				document.getElementById(\"inp_title\").focus();
+			}
 			</script>
 			<!-- //Focus -->
 
 			<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;action=$action&amp;download_id=$download_id&amp;sub_category_id=$get_current_download_sub_category_id&amp;main_category_id=$get_current_download_main_category_id&amp;l=$l&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 			<p><b>Title:</b><br />
-			<input type=\"text\" name=\"inp_title\" value=\"$get_current_download_title\" size=\"25\" style=\"width: 99%;\" />
+			<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"$get_current_download_title\" size=\"25\" style=\"width: 99%;\" />
 			</p>
 
 			<p><b>Introduction:</b><br />
@@ -387,8 +403,8 @@ else{
 			<p>Language:<br />
 			<select name=\"inp_language\">\n";
 			$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two) = $row;
 				echo"		<option value=\"$get_language_active_iso_two\""; if($get_language_active_iso_two == "$get_current_download_language"){ echo" selected=\"selected\""; } echo">$get_language_active_name</option>\n";
 			}
@@ -397,8 +413,8 @@ else{
 			<p>Main category:<br />
 			<select name=\"inp_main_category_id\">\n";
 			$query = "SELECT main_category_id, main_category_title FROM $t_downloads_main_categories ORDER BY main_category_title ASC";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_main_category_id, $get_main_category_title) = $row;
 				echo"		<option value=\"$get_main_category_id\""; if($get_main_category_id == "$get_current_download_main_category_id"){ echo" selected=\"selected\""; } echo">$get_main_category_title</option>\n";
 			}
@@ -409,8 +425,8 @@ else{
 			<option value=\"\""; if($get_current_download_sub_category_id == ""){ echo" selected=\"selected\""; } echo"> </option>\n";
 
 			$query = "SELECT sub_category_id, sub_category_title FROM $t_downloads_sub_categories WHERE sub_category_parent_id='$get_current_download_main_category_id' ORDER BY sub_category_title ASC";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_sub_category_id, $get_sub_category_title) = $row;
 				echo"		<option value=\"$get_sub_category_id\""; if($get_sub_category_id == "$get_current_download_sub_category_id"){ echo" selected=\"selected\""; } echo">$get_sub_category_title</option>\n";
 			}
@@ -477,15 +493,14 @@ else{
 			// Version
 			$inp_version = $_POST['inp_version'];
 			$inp_version = output_html($inp_version);
-			$inp_version_mysql = quote_smart($link, $inp_version);
 
-			$result = mysqli_query($link, "UPDATE $t_downloads_index SET download_version=$inp_version_mysql WHERE download_id='$get_current_download_id'") or die(mysqli_error($link));
-			
+			$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET download_version=? WHERE download_id=?");
+			$stmt->bind_param("ss", $inp_version, $get_current_download_id); 
+			$stmt->execute();
 
 			// External 
 			$inp_internal_external = $_POST['inp_internal_external'];
 			$inp_internal_external = output_html($inp_internal_external);
-			$inp_internal_external_mysql = quote_smart($link, $inp_internal_external);
 			
 			if($inp_internal_external == "internal"){
 
@@ -499,15 +514,12 @@ else{
 				else{
 					$inp_download_dir = "_zipped/$get_current_main_category_title_clean/$get_current_sub_category_title_clean";
 				}
-				$inp_download_dir_mysql = quote_smart($link, $inp_download_dir);
 
 				// Type
 				$inp_type = getExtension($file);
-				$inp_type_mysql = quote_smart($link, $inp_type);
 
 				// File
 				$inp_file = str_replace(".$inp_type", "", $file);
-				$inp_file_mysql = quote_smart($link, $inp_file);
 
 				// Upload
 			
@@ -523,34 +535,47 @@ else{
 
 						// File size
 						$inp_file_size = format_size (filesize("../$inp_download_dir/$inp_file.$inp_type"));
-						$inp_file_size_mysql = quote_smart($link, $inp_file_size);
 
 						// File date
 						$inp_file_date = date('Y-m-d',filemtime("../$inp_download_dir/$inp_file.$inp_type"));
-						$inp_file_date_mysql = quote_smart($link, $inp_file_date);
 
 					
 						$inp_file_date_print = date('j M Y',filemtime("../$inp_download_dir/$inp_file.$inp_type"));
-						$inp_file_date_print_mysql = quote_smart($link, $inp_file_date_print);
 
 						// Now date
 						$datetime = date("Y-m-d H:i:s");
 						$date_print = date('j M Y');
 
-						// Update
-						$result = mysqli_query($link, "UPDATE $t_downloads_index SET 
-										download_internal_external='internal',
-										download_file_external_url='',
-										download_dir=$inp_download_dir_mysql, 
-										download_file=$inp_file_mysql, 	
-										download_type=$inp_type_mysql,  
-										download_file_size=$inp_file_size_mysql, 
-										download_file_date=$inp_file_date_mysql, 
-										download_file_date_print=$inp_file_date_print_mysql,
-										download_updated_datetime='$datetime', 
-										download_updated_print='$date_print' 
-										 WHERE download_id='$get_current_download_id'") or die(mysqli_error($link));
+						$inp_internal_external = "internal";
+						$inp_file_external_url = "";
 
+						// Update
+						$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET 
+								download_internal_external=?,
+								download_file_external_url=?,
+								download_dir=?, 
+								download_file=?, 	
+								download_type=?,  
+								download_file_size=?, 
+								download_file_date=?, 
+								download_file_date_print=?,
+								download_updated_datetime=?, 
+								download_updated_print=? 
+								WHERE download_id=?");
+						$stmt->bind_param("sssssssssss", $inp_internal_external,
+							$inp_file_external_url,
+							$inp_download_dir,
+							$inp_file,
+							$inp_type,
+							$inp_file_size,
+							$inp_file_date,
+							$inp_file_date_print,
+							$datetime,
+							$date_print,
+							$get_current_download_id
+							); 
+						$stmt->execute();
+				
 						$url = "index.php?open=downloads&page=edit_download&download_id=$download_id&action=file&main_category_id=$main_category_id&sub_category_id=$sub_category_id&l=$l&editor_language=$editor_language&ft=success&fm=changes_saved";
 						header("Location: $url");
 						exit;
@@ -567,36 +592,49 @@ else{
 				// External URL
 				$inp_file_external_url = $_POST['inp_file_external_url'];
 				$inp_file_external_url = output_html($inp_file_external_url);
-				$inp_file_external_url_mysql = quote_smart($link, $inp_file_external_url);
-
-
 				// Type
 				$inp_type = substr($inp_file_external_url, strrpos($inp_file_external_url, '.') + 1);
-				$inp_type_mysql = quote_smart($link, $inp_type);
 
 				// File -> 
 				$inp_file = substr($inp_file_external_url, strrpos($inp_file_external_url, '/') + 1);
 				$inp_file = str_replace(".$inp_type", "", $inp_file);
-				$inp_file_mysql = quote_smart($link, $inp_file);
 
 				// Now date
 				$datetime = date("Y-m-d H:i:s");
 				$date_print = date('j M Y');
 
-				// Update
+				$inp_internal_external = "external";
+				$inp_dir = "";
+				$inp_file_size = 0;
 
-				$result = mysqli_query($link, "UPDATE $t_downloads_index SET 
-										download_internal_external='external',
-										download_file_external_url=$inp_file_external_url_mysql,
-										download_dir='', 
-										download_file=$inp_file_mysql, 	
-										download_type=$inp_type_mysql,  
-										download_file_size='', 
-										download_file_date='$datetime', 
-										download_file_date_print='$date_print', 
-										download_updated_datetime='$datetime', 
-										download_updated_print='$date_print' 
-										 WHERE download_id='$get_current_download_id'") or die(mysqli_error($link));
+				// Update
+				$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET 
+					download_internal_external=?,
+					download_file_external_url=?,
+					download_dir=?, 
+					download_file=?, 	
+					download_type=?,  
+					download_file_size=?, 
+					download_file_date=?, 
+					download_file_date_print=?, 
+					download_updated_datetime=?, 
+					download_updated_print=?
+					WHERE download_id=?");
+				$stmt->bind_param("ssssssssss", $inp_internal_external,
+					$inp_file_external_url,
+					$inp_dir,
+					$inp_file,
+					$inp_type,
+					$inp_file_size,
+					$datetime,
+					$date_print,
+					$datetime,
+					$date_print,
+					$get_current_download_id); 
+				$stmt->execute();
+
+
+
 			} // external
 
 
@@ -884,14 +922,14 @@ else{
 							// Update image
 							if($mode == "upload_store_image"){
 								$inp_img = $get_current_download_id . "_store_image." . $extension;
-								$inp_img_mysql = quote_smart($link, $inp_img);
 
 								$inp_img_thumb = $get_current_download_id . "_store_image_thumb." . $extension;
-								$inp_img_thumb_mysql = quote_smart($link, $inp_img_thumb);
 
-								mysqli_query($link, "UPDATE $t_downloads_index SET download_image_path=$inp_img_path_mysql, 
-									download_image_store=$inp_img_mysql, download_image_store_thumb=$inp_img_thumb_mysql WHERE download_id=$get_current_download_id") or die(mysqli_error($link));
 
+								$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET download_image_path=?, 
+									download_image_store=?, download_image_store_thumb=? WHERE download_id=?");
+								$stmt->bind_param("ssss", $inp_img_path, $inp_img, $inp_img_thumb, $get_current_download_id); 
+								$stmt->execute();
 
 							}
 							elseif($mode == "img_a"){
@@ -901,38 +939,47 @@ else{
 								$inp_img_thumb = $get_current_download_id . "_img_a_thumb." . $extension;
 								$inp_img_thumb_mysql = quote_smart($link, $inp_img_thumb);
 
-								mysqli_query($link, "UPDATE $t_downloads_index SET download_image_path=$inp_img_path_mysql, 
-									download_image_file_a=$inp_img_mysql, download_image_thumb_a=$inp_img_thumb_mysql WHERE download_id=$get_current_download_id") or die(mysqli_error($link));
+								
+								$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET 
+									download_image_path=?, download_image_file_a=?, download_image_thumb_a=? WHERE download_id=?");
+								$stmt->bind_param("ssss", $inp_img_path, $inp_img, $inp_img_thumb, $get_current_download_id); 
+								$stmt->execute();
+
+								
 							}
 							elseif($mode == "img_b"){
 								$inp_img = $get_current_download_id . "_img_b." . $extension;
-								$inp_img_mysql = quote_smart($link, $inp_img);
 
 								$inp_img_thumb = $get_current_download_id . "_img_b_thumb." . $extension;
-								$inp_img_thumb_mysql = quote_smart($link, $inp_img_thumb);
 
-								mysqli_query($link, "UPDATE $t_downloads_index SET download_image_path=$inp_img_path_mysql, 
-									download_image_file_b=$inp_img_mysql, download_image_thumb_b=$inp_img_thumb_mysql WHERE download_id=$get_current_download_id") or die(mysqli_error($link));
+								$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET 
+									download_image_path=?, download_image_file_b=?, download_image_thumb_b=? WHERE download_id=?");
+								$stmt->bind_param("ssss", $inp_img_path, $inp_img, $inp_img_thumb, $get_current_download_id); 
+								$stmt->execute();
+
 							}
 							elseif($mode == "img_c"){
 								$inp_img = $get_current_download_id . "_img_c." . $extension;
-								$inp_img_mysql = quote_smart($link, $inp_img);
 
 								$inp_img_thumb = $get_current_download_id . "_img_c_thumb." . $extension;
-								$inp_img_thumb_mysql = quote_smart($link, $inp_img_thumb);
 
-								mysqli_query($link, "UPDATE $t_downloads_index SET download_image_path=$inp_img_path_mysql, 
-									download_image_file_c=$inp_img_mysql, download_image_thumb_c=$inp_img_thumb_mysql WHERE download_id=$get_current_download_id") or die(mysqli_error($link));
+								$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET 
+									download_image_path=?, download_image_file_c=?, download_image_thumb_c=? WHERE download_id=?");
+								$stmt->bind_param("ssss", $inp_img_path, $inp_img, $inp_img_thumb, $get_current_download_id); 
+								$stmt->execute();
+
 							}
 							elseif($mode == "img_d"){
 								$inp_img = $get_current_download_id . "_img_d." . $extension;
-								$inp_img_mysql = quote_smart($link, $inp_img);
 
 								$inp_img_thumb = $get_current_download_id . "_img_d_thumb." . $extension;
-								$inp_img_thumb_mysql = quote_smart($link, $inp_img_thumb);
 
-								mysqli_query($link, "UPDATE $t_downloads_index SET download_image_path=$inp_img_path_mysql, 
-									download_image_file_d=$inp_img_mysql, download_image_thumb_d=$inp_img_thumb_mysql WHERE download_id=$get_current_download_id") or die(mysqli_error($link));
+								
+								$stmt = $mysqli->prepare("UPDATE $t_downloads_index SET 
+									download_image_path=?, download_image_file_d=?, download_image_thumb_d=? WHERE download_id=?");
+								$stmt->bind_param("ssss", $inp_img_path, $inp_img, $inp_img_thumb, $get_current_download_id); 
+								$stmt->execute();
+
 							}
 
 							$ft_image = "success";
@@ -1132,7 +1179,7 @@ else{
 	elseif($action == "delete"){
 		if($process == "1"){
 			// Update
-			$result = mysqli_query($link, "DELETE FROM $t_downloads_index WHERE download_id='$get_current_download_id'") or die(mysqli_error($link));
+			$mysqli->query("DELETE FROM $t_downloads_index WHERE download_id='$get_current_download_id'") or die($mysqli->error);
 
 			$url = "index.php?open=downloads&page=downloads_2_open_main_category&main_category_id=$get_current_download_main_category_id&l=$l&editor_language=$editor_language&ft=success&fm=download_deleted";
 			header("Location: $url");

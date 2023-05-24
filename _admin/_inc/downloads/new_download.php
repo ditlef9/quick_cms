@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/new_download.php
-* Version 15.00 03.03.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -53,12 +53,11 @@ if($action == ""){
 	if($process == "1"){
 		$inp_title = $_POST['inp_title'];
 		$inp_title = output_html($inp_title);
-		$inp_title_mysql = quote_smart($link, $inp_title);
 		if(empty($inp_title)){
 			echo"No title";die;
 		}
+
 		$inp_title_length = strlen($inp_title);
-		$inp_title_length_mysql = quote_smart($link, $inp_title_length);
 
 		if($inp_title_length  > 27){
 			$inp_title_short = substr($inp_title, 0, 27);
@@ -67,35 +66,38 @@ if($action == ""){
 		else{
 			$inp_title_short = "";
 		}
-		$inp_title_short_mysql = quote_smart($link, $inp_title_short);
 
 		$inp_language = $_POST['inp_language'];
 		$inp_language = output_html($inp_language);
-		$inp_language_mysql = quote_smart($link, $inp_language);
 
 		$inp_main_category_id = $_POST['inp_main_category_id'];
 		$inp_main_category_id = output_html($inp_main_category_id);
-		$inp_main_category_id_mysql = quote_smart($link, $inp_main_category_id);
 
+		$inp_sub_category_id = 0;
+		$inp_internal_external = "internal";
 		
 		// Insert
 		$datetime = date("Y-m-d H:i:s");
 		$date_print = date('j M Y');
 		$datetime_saying = date("j M Y H:i");
 
-		mysqli_query($link, "INSERT INTO $t_downloads_index
-		(download_id, download_title, download_title_short, download_title_length, download_language, 
-		download_main_category_id, download_sub_category_id, download_internal_external, download_created_datetime, download_updated_datetime, 
-		download_updated_print) 
-		VALUES 
-		(NULL, $inp_title_mysql, $inp_title_short_mysql, $inp_title_length_mysql, $inp_language_mysql, 
-		$inp_main_category_id_mysql, '0', 'internal', '$datetime', '$datetime', '$date_print')")
-		or die(mysqli_error($link));
-
+		$stmt = $mysqli->prepare("INSERT INTO $t_downloads_index
+			(download_id, download_title, download_title_short, download_title_length, download_language, 
+			download_main_category_id, download_sub_category_id, download_internal_external, download_created_datetime, download_updated_datetime, 
+			download_updated_print) 
+			VALUES 
+			(NULL,?,?,?,?,
+			?,?,?,?,?,
+			?)");
+		$stmt->bind_param("ssssssssss", $inp_title, $inp_title_short, $inp_title_length, $inp_language, 
+			$inp_main_category_id, $inp_sub_category_id, $inp_internal_external, $datetime, $datetime, $date_print); 
+		$stmt->execute();
+		if ($stmt->errno) { echo "Error MySQLi insert: " . $stmt->error; die; }
+		
 		// Fetch ID
 		$query = "SELECT download_id FROM $t_downloads_index WHERE download_created_datetime='$datetime'";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
+		$result = $mysqli->query($query);
+		$row = $result->fetch_row();
 		list($get_current_download_id) = $row;
 
 		// Title

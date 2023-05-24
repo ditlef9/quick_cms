@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/backup.php
-* Version 14:45 28.09.2021
-* Copyright (c) 2021 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2021-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -117,8 +117,8 @@ elseif($action == "db_backup"){
 		$backup_file = "downloads_" . $backup_id . ".sql";
 
 		// Reset ips
-		mysqli_query($link, "UPDATE $t_downloads_index SET download_ip_block=''") or die(mysqli_error($link));
-		mysqli_query($link, "UPDATE $t_downloads_comments SET comment_by_user_ip=''") or die(mysqli_error($link));
+		$mysqli->query("UPDATE $t_downloads_index SET download_ip_block=''") or die($mysqli->error);
+		$mysqli->query("UPDATE $t_downloads_comments SET comment_by_user_ip=''") or die($mysqli->error);
 
 		// Delete old files
 		delete_directory("../_cache/");
@@ -167,14 +167,14 @@ CREATE TABLE $tables_array[$table_no](
 			// Fields
 			$x = 0;
 			$query = "SHOW COLUMNS FROM $tables_array[$table_no]";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_column_name) = $row;
 
 				// Get information about that column
 				$query_column = "SELECT COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, COLUMN_TYPE, COLUMN_KEY, EXTRA FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$tables_array[$table_no]' AND COLUMN_NAME='$get_column_name'";
-				$result_column = mysqli_query($link, $query_column);
-				$row_column = mysqli_fetch_row($result_column);
+				$result_column = $mysqli->query($query_column);
+				$row_column = $result_column->fetch_row();
 				list($get_column_name, $get_column_default, $get_is_nullable, $get_data_type, $get_character_maximum_lenght, $get_mumeric_precision, $get_column_type, $get_column_key, $get_extra) = $row_column;
 
 				$get_data_type = strtoupper($get_data_type);
@@ -265,14 +265,14 @@ INSERT INTO $tables_array[$table_no](
 			$count_fields = 0;
 			$table_column_types = array();
 			$query = "SHOW COLUMNS FROM $tables_array[$table_no]";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_column_name) = $row;
 
 				// Get information about that column
 				$query_column = "SELECT COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, COLUMN_TYPE, COLUMN_KEY, EXTRA FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$tables_array[$table_no]' AND COLUMN_NAME='$get_column_name'";
-				$result_column = mysqli_query($link, $query_column);
-				$row_column = mysqli_fetch_row($result_column);
+				$result_column = $mysqli->query($query_column);
+				$row_column = $result_column->fetch_row();
 				list($get_column_name, $get_column_default, $get_is_nullable, $get_data_type, $get_character_maximum_lenght, $get_mumeric_precision, $get_column_type, $get_column_key, $get_extra) = $row_column;
 
 				$get_data_type = strtoupper($get_data_type);
@@ -300,8 +300,8 @@ VALUES ";
 			// Fetch data
 			$count_rows = 0;
 			$query = "SELECT * FROM $tables_array[$table_no]";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 
 				if($count_rows > 0){
 					$insert_statement = $insert_statement . ",";
@@ -330,7 +330,7 @@ VALUES ";
 						$input_data = "NULL";
 					}
 					else{
-						$input_data =  quote_smart($link, $row[$x]);
+						$input_data = "'" . $row[$x] . "'";
 					}
 
 
