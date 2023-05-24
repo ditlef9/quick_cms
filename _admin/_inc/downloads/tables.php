@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/tables.php
-* Version 11:55 30.12.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -15,15 +15,15 @@ if(!(isset($define_access_to_control_panel))){
 
 /*- Functions ------------------------------------------------------------------------ */
 function fix_utf($value){
-	$value = str_replace("Ã¸", "�", $value);
-	$value = str_replace("Ã¥", "�", $value);
+	$value = str_replace("Ã¸", "�", $value);
+	$value = str_replace("Ã¥", "�", $value);
 
-        return $value;
+	return $value;
 }
 function fix_local($value){
 	$value = htmlentities($value);
 
-        return $value;
+	return $value;
 }
 /*- Tables ---------------------------------------------------------------------------- */
 $t_downloads_liquidbase				= $mysqlPrefixSav . "downloads_liquidbase";
@@ -57,24 +57,21 @@ if($action == ""){
 
 	<!-- liquidbase-->
 	";
-	$query = "SELECT * FROM $t_downloads_liquidbase LIMIT 1";
-	$result = mysqli_query($link, $query);
-	if($result !== FALSE){
-		// Count rows
-		$row_cnt = mysqli_num_rows($result);
-		echo"
-		<p>$t_downloads_liquidbase: $row_cnt</p>
-		";
+	if (!$mysqli -> query("CREATE TABLE IF NOT EXISTS $t_downloads_liquidbase(
+		liquidbase_id INT NOT NULL AUTO_INCREMENT,
+		PRIMARY KEY(liquidbase_id), 
+		 liquidbase_dir VARCHAR(200), 
+		 liquidbase_file VARCHAR(200), 
+		 liquidbase_run_datetime DATETIME, 
+		 liquidbase_run_saying VARCHAR(200))")) {
+		echo("MySQLI create table error: " . $mysqli -> error); die;
 	}
-	else{
-		mysqli_query($link, "CREATE TABLE $t_downloads_liquidbase(
-		  liquidbase_id INT NOT NULL AUTO_INCREMENT,
-		  PRIMARY KEY(liquidbase_id), 
-		   liquidbase_dir VARCHAR(200), 
-		   liquidbase_file VARCHAR(200), 
-		   liquidbase_run_datetime DATETIME, 
-		   liquidbase_run_saying VARCHAR(200))")
-	  	 or die(mysqli_error());
+	$query = "SELECT count(liquidbase_id) FROM $t_downloads_liquidbase";
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
+	list($sql_count_liquidbase_id) = $row;
+
+	if ($sql_count_liquidbase_id == 0){
 
 		// If refererer then refresh to that page
 		if(isset($_GET['refererer'])) {
@@ -96,7 +93,7 @@ if($action == ""){
 			</table>
 
 		
-			<meta http-equiv=\"refresh\" content=\"2;url=index.php?open=$open&amp;page=$refererer&amp;editor_language=$editor_language&amp;l=$l&amp;ft=success&amp;fm=module_installed\">
+			<meta http-equiv=\"refresh\" content=\"4;url=index.php?open=$open&amp;page=$refererer&amp;editor_language=$editor_language&amp;l=$l&amp;ft=success&amp;fm=module_installed\">
 			";
 		}
 	}
@@ -131,12 +128,12 @@ if($action == ""){
 				if(!(is_dir("_inc/downloads/_liquidbase_db_scripts/$liquidbase_name"))){
 
 					// Has it been executed?
-					$inp_liquidbase_module_mysql = quote_smart($link, "");
-					$inp_liquidbase_name_mysql = quote_smart($link, $liquidbase_name);
+					$inp_liquidbase_module = "";
+					$inp_liquidbase_name =  "$liquidbase_name";
 					
-					$query = "SELECT liquidbase_id FROM $t_downloads_liquidbase WHERE liquidbase_dir=$inp_liquidbase_module_mysql AND liquidbase_file=$inp_liquidbase_name_mysql";
-					$result = mysqli_query($link, $query);
-					$row = mysqli_fetch_row($result);
+					$query = "SELECT liquidbase_id FROM $t_downloads_liquidbase WHERE liquidbase_dir='$inp_liquidbase_module' AND liquidbase_file='$inp_liquidbase_name'";
+					$result = $mysqli->query($query);
+					$row = $result->fetch_row();
 					list($get_liquidbase_id) = $row;
 					if($get_liquidbase_id == ""){
 						// Date
@@ -145,11 +142,13 @@ if($action == ""){
 
 
 						// Insert
-						mysqli_query($link, "INSERT INTO $t_downloads_liquidbase
-						(liquidbase_id, liquidbase_dir, liquidbase_file, liquidbase_run_datetime, liquidbase_run_saying) 
-						VALUES 
-						(NULL, $inp_liquidbase_module_mysql, $inp_liquidbase_name_mysql, '$datetime', '$run_saying')")
-						or die(mysqli_error($link));
+						$stmt = $mysqli->prepare("INSERT INTO $t_downloads_liquidbase 
+							(liquidbase_id, liquidbase_dir, liquidbase_file, liquidbase_run_datetime, liquidbase_run_saying) 
+							VALUES 
+							(NULL,?,?,?,?)");
+						$stmt->bind_param("ssss", $inp_liquidbase_module, $inp_liquidbase_name, $datetime, $run_saying); 
+						$stmt->execute();
+
 
 						// Run code
 						include("_inc/downloads/_liquidbase_db_scripts/$liquidbase_name");
@@ -182,8 +181,8 @@ if($action == ""){
 	";
 
 	$query = "SELECT liquidbase_id, liquidbase_dir, liquidbase_file, liquidbase_run_datetime, liquidbase_run_saying FROM $t_downloads_liquidbase ORDER BY liquidbase_id DESC";
-	$result = mysqli_query($link, $query);
-	while($row = mysqli_fetch_row($result)) {
+	$result = $mysqli->query($query);
+	while($row = $result->fetch_row()) {
 		list($get_liquidbase_id, $get_liquidbase_dir, $get_liquidbase_file, $get_liquidbase_run_datetime, $get_liquidbase_run_saying) = $row;
 
 		// Style
@@ -227,18 +226,19 @@ elseif($action == "delete"){
 	}
 	else{
 		$liquidbase_id = "";
-	}
-	$liquidbase_id_mysql = quote_smart($link, $liquidbase_id);
-	$query = "SELECT liquidbase_id, liquidbase_file, liquidbase_run_datetime FROM $t_downloads_liquidbase WHERE liquidbase_id=$liquidbase_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	}	
+	$stmt = $mysqli->prepare("SELECT liquidbase_id, liquidbase_file, liquidbase_run_datetime FROM $t_downloads_liquidbase WHERE liquidbase_id=?"); 
+	$stmt->bind_param("s", $liquidbase_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_liquidbase_id, $get_liquidbase_file, $get_liquidbase_run_datetime) = $row;
 
 	if($get_liquidbase_id != ""){
 		if($process == "1"){
 
-			mysqli_query($link, "DELETE FROM $t_downloads_liquidbase WHERE liquidbase_id=$get_liquidbase_id") or die(mysqli_error($link));
-
+			$mysqli->query("DELETE FROM $t_downloads_liquidbase WHERE liquidbase_id=$get_liquidbase_id") or die($mysqli->error);
+			
 			$url = "index.php?open=$open&page=$page&ft=success&fm=deleted";
 			header("Location: $url");
 			exit;

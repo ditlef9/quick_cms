@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/default.php
-* Version 15.00 03.03.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -16,25 +16,34 @@ if(!(isset($define_access_to_control_panel))){
 
 /*- Check if setup is run ------------------------------------------------------------- */
 $t_downloads_liquidbase		= $mysqlPrefixSav . "downloads_liquidbase";
-$t_ads_index 			= $mysqlPrefixSav . "ads_index";
-$query = "SELECT * FROM $t_downloads_liquidbase LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
+$t_ads_index 				= $mysqlPrefixSav . "ads_index";
 
+$liquidbase_exists = false;
+$ads_index_exists = false;
+$query = "SHOW TABLES";
+$result = $mysqli->query($query);
+if($result !== false) {
+	if($result->num_rows > 0) {
+		while($row = $result->fetch_row()) {
+			if($row[0] == "$t_downloads_liquidbase"){
+				$liquidbase_exists = true;
+			}
+			if($row[0] == "$t_ads_index"){
+				$ads_index_exists = true;
+			}
+		}
+  	}
 }
-else{
+else echo "Error Unable to check tables " . $mysqli->error;
+
+if(!($liquidbase_exists)){
 	echo"
 	<div class=\"info\"><p><img src=\"_design/gfx/loading_22.gif\" alt=\"loading_22.gif\" /> Running downloads setup</p></div>
 	<meta http-equiv=\"refresh\" content=\"1;url=index.php?open=$open&amp;page=tables&amp;refererer=default&amp;editor_language=$editor_language&amp;l=$l\" />
 	";
 } // setup has not runned
 
-$query = "SELECT * FROM $t_ads_index LIMIT 1";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
-
-}
-else{
+if(!($ads_index_exists)){
 	echo"
 	<div class=\"info\"><p><img src=\"_design/gfx/loading_22.gif\" alt=\"loading_22.gif\" /> Running ads setup</p></div>
 	<meta http-equiv=\"refresh\" content=\"2;url=index.php?open=ads&amp;page=tables&amp;refererer=default&amp;editor_language=$editor_language&amp;l=$l\" />
@@ -66,9 +75,8 @@ echo"
 
 	// Navigation
 	$query = "SELECT navigation_id FROM $t_pages_navigation WHERE navigation_url_path='downloads/index.php'";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
-	list($get_navigation_id) = $row;
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
 	if($get_navigation_id == ""){
 		echo"
 		<a href=\"index.php?open=pages&amp;page=navigation&amp;action=new_auto_insert&amp;module=downloads&amp;editor_language=$editor_language&amp;l=$l&amp;process=1\" class=\"btn_default\">Create navigation</a>

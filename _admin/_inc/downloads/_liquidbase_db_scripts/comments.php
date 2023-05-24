@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/downloads/_liquibase/downloads_comments.php
-* Version 1.0.0
-* Date 12:57 24.03.2021
-* Copyright (c) 2021 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2021-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -16,23 +15,11 @@ if(!(isset($define_access_to_control_panel))){
 
 /*- Tables ---------------------------------------------------------------------------- */
 
-$result = mysqli_query($link, "DROP TABLE IF EXISTS $t_downloads_comments") or die(mysqli_error($link)); 
+echo"<span>Creating table $t_downloads_comments<br /></span>\n";
 
+$mysqli->query("DROP TABLE IF EXISTS $t_downloads_comments");
 
-echo"
-	<!-- downloads_comments -->
-	";
-	$query = "SELECT * FROM $t_downloads_comments";
-	$result = mysqli_query($link, $query);
-	if($result !== FALSE){
-		// Count rows
-		$row_cnt = mysqli_num_rows($result);
-		echo"
-		<p>$t_downloads_comments: $row_cnt</p>
-		";
-	}
-	else{
-		mysqli_query($link, "CREATE TABLE $t_downloads_comments(
+if (!$mysqli -> query("CREATE TABLE $t_downloads_comments(
 	  	 comment_id INT NOT NULL AUTO_INCREMENT,
 	 	  PRIMARY KEY(comment_id), 
 	  	   comment_download_id INT,
@@ -55,11 +42,8 @@ echo"
 	  	   comment_reported INT,
 	  	   comment_reported_by_user_id INT,
 	  	   comment_reported_reason TEXT,
-	  	   comment_reported_checked INT)")
-		   or die(mysqli_error());
-	}
-	echo"
-	<!-- //downloads_comments -->
+	  	   comment_reported_checked INT)")) {
+	echo("MySQLI create table error: " . $mysqli -> error); die;
+}
 
-";
 ?>

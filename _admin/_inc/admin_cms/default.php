@@ -723,8 +723,11 @@ elseif($action == "add_to_favorite_and_visit"){
 		}
 
 		// Get ID of dashboard
-		$query = "SELECT navigation_id FROM $t_admin_navigation WHERE navigation_url='dashboard' AND navigation_user_id=$my_user_id_mysql";
-		$result = $mysqli->query($query);
+		$inp_navigation_url = "dashboard";
+		$stmt = $mysqli->prepare("SELECT navigation_id FROM $t_admin_navigation WHERE navigation_url=? AND navigation_user_id=?"); 
+		$stmt->bind_param("ss", inp_navigation_url, $my_user_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 		$row = $result->fetch_row();
 		list($get_dashboard_navigation_id) = $row;
 

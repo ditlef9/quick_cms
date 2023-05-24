@@ -50,7 +50,7 @@ if($result !== false) {
 				$liquidbase_exists = true;
 				break;
 			}
-    	}
+    		}
   	}
 }
 else echo "Error Unable to check tables " . $mysqli->error;
