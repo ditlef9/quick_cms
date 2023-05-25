@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/ads/delete_advertiser.php
-* Version 1
-* Date 08:57 17.05.2019
-* Copyright (c) 2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2019-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -32,12 +31,13 @@ if(isset($_GET['advertiser_id'])) {
 else{
 	$advertiser_id = "";
 }
-$advertiser_id_mysql = quote_smart($link, $advertiser_id);
 
 // Advisor
-$query = "SELECT advertiser_id, advertiser_name, advertiser_website, advertiser_contact_name, advertiser_contact_email, advertiser_contact_phone FROM $t_ads_advertisers WHERE advertiser_id=$advertiser_id_mysql";
-$result = mysqli_query($link, $query);
-$row = mysqli_fetch_row($result);
+$stmt = $mysqli->prepare("SELECT advertiser_id, advertiser_name, advertiser_website, advertiser_contact_name, advertiser_contact_email, advertiser_contact_phone FROM $t_ads_advertisers WHERE advertiser_id=?"); 
+$stmt->bind_param("s", $inp_user_email);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_row();
 list($get_current_advertiser_id, $get_current_advertiser_name, $get_current_advertiser_website, $get_current_advertiser_contact_name, $get_current_advertiser_contact_email, $get_current_advertiser_contact_phone) = $row;
 
 if($get_current_advertiser_id == ""){
@@ -50,9 +50,7 @@ else{
 
 	if($process == "1"){
 		
-
-		$result = mysqli_query($link, "DELETE FROM $t_ads_advertisers WHERE advertiser_id=$get_current_advertiser_id");
-
+		$mysqli->query("DELETE FROM $t_ads_advertisers WHERE advertiser_id=$get_current_advertiser_id") or die($mysqli->error);
 
 		$url = "index.php?open=ads&page=advertisers&editor_language=$editor_language&ft=success&fm=advertiser_deleted";
 		header("Location: $url");

@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/ads/advertisers.php
-* Version 1.0.0
-* Date 20:32 01.05.2019
-* Copyright (c) 2008-2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -62,8 +61,8 @@ if($action == ""){
 
 
 			$query = "SELECT advertiser_id, advertiser_name FROM $t_ads_advertisers ORDER BY advertiser_name ASC";
-			$result = mysqli_query($link, $query);
-			while($row = mysqli_fetch_row($result)) {
+			$result = $mysqli->query($query);
+			while($row = $result->fetch_row()) {
 				list($get_advertiser_id, $get_advertiser_name) = $row;
 				echo"
 				<li><a href=\"index.php?open=$open&amp;page=edit_advertiser&amp;advertiser_id=$get_advertiser_id&amp;editor_language=$editor_language&amp;l=$l\">$get_advertiser_name</a></li>

@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/ads/default.php
-* Version 1.0.0
-* Date 20:32 01.05.2019
-* Copyright (c) 2008-2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -20,11 +19,22 @@ $t_ads_advertisers	= $mysqlPrefixSav . "ads_advertisers";
 
 
 /*- Check if installed ---------------------------------------------------------------- */
-$query = "SELECT * FROM $t_ads_index";
-$result = mysqli_query($link, $query);
-if($result !== FALSE){
+$ads_index_exists = false;
+$query = "SHOW TABLES";
+$result = $mysqli->query($query);
+if($result !== false) {
+	if($result->num_rows > 0) {
+		while($row = $result->fetch_row()) {
+			if($row[0] == "$t_ads_index"){
+				$ads_index_exists = true;
+				break;
+			}
+    		}
+  	}
 }
-else{
+else echo "Error Unable to check tables " . $mysqli->error;
+
+if(!($ads_index_exists)){
 	echo"
 	<div class=\"info\"><p><img src=\"_design/gfx/loading_22.gif\" alt=\"loading_22.gif\" /> Running setup</p></div>
 	<meta http-equiv=\"refresh\" content=\"1;url=index.php?open=ads&amp;page=tables&amp;refererer=default&amp;editor_language=$editor_language&amp;l=$l\" />

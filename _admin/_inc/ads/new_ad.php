@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/ads/new_ad.php
-* Version 1
-* Date 08:57 17.05.2019
-* Copyright (c) 2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2019-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -29,37 +28,28 @@ $tabindex = 0;
 if($process == "1"){
 	$inp_internal_name = $_POST['inp_internal_name'];
 	$inp_internal_name = output_html($inp_internal_name);
-	$inp_internal_name_mysql = quote_smart($link, $inp_internal_name);
 
 	$inp_active = $_POST['inp_active'];
 	$inp_active = output_html($inp_active);
-	$inp_active_mysql = quote_smart($link, $inp_active);
-
 
 	$inp_title = $_POST['inp_title'];
 	$inp_title = output_html($inp_title);
-	$inp_title_mysql = quote_smart($link, $inp_title);
 
 	$inp_text = $_POST['inp_text'];
 	$inp_text = output_html($inp_text);
-	$inp_text_mysql = quote_smart($link, $inp_text);
 
 	$inp_url = $_POST['inp_url'];
 	$inp_url = output_html($inp_url);
 	$inp_url = str_replace("&amp;", "&", $inp_url);
-	$inp_url_mysql = quote_smart($link, $inp_url);
 
 	$inp_language = $_POST['inp_language'];
 	$inp_language = output_html($inp_language);
-	$inp_language_mysql = quote_smart($link, $inp_language);
 
 	$inp_placement = $_POST['inp_placement'];
 	$inp_placement = output_html($inp_placement);
-	$inp_placement_mysql = quote_smart($link, $inp_placement);
 
 	$inp_advertiser_id = $_POST['inp_advertiser_id'];
 	$inp_advertiser_id = output_html($inp_advertiser_id);
-	$inp_advertiser_id_mysql = quote_smart($link, $inp_advertiser_id);
 
 	$datetime = date("y-m-d H:i:s");
 
@@ -69,7 +59,6 @@ if($process == "1"){
 		$inp_active_from_day = "00";
 	}
 	$inp_active_from_day = output_html($inp_active_from_day);
-	$inp_active_from_day_mysql = quote_smart($link, $inp_active_from_day);
 
 
 	$inp_active_from_month = $_POST['inp_active_from_month'];
@@ -77,21 +66,17 @@ if($process == "1"){
 		$inp_active_from_month = "00";
 	}
 	$inp_active_from_month = output_html($inp_active_from_month);
-	$inp_active_from_month_mysql = quote_smart($link, $inp_active_from_month);
 
 	$inp_active_from_year = $_POST['inp_active_from_year'];
 	if($inp_active_from_year == ""){
 		$inp_active_from_year = "0000";
 	}
 	$inp_active_from_year = output_html($inp_active_from_year);
-	$inp_active_from_year_mysql = quote_smart($link, $inp_active_from_year);
 	
 	$inp_active_from = $inp_active_from_year . "-" . $inp_active_from_month . "-" . $inp_active_from_day . " 00:00:00";
-	$inp_active_from_mysql = quote_smart($link, $inp_active_from);
 
 	// Active from time
 	$inp_active_from_time = strtotime($inp_active_from);
-	$inp_active_from_time_mysql = quote_smart($link, $inp_active_from_time);
 	
 	// Active from saying
 	if($inp_active_from_month == "1" OR $inp_active_from_month == "01"){
@@ -134,8 +119,8 @@ if($process == "1"){
 		$inp_active_from_month_saying = "";
 	}
 	$inp_active_from_saying = $inp_active_from_day . " " . $inp_active_from_month_saying  . " " . $inp_active_from_year;
-	$inp_active_from_saying_mysql = quote_smart($link, $inp_active_from_saying);
 
+	$inp_active_from_hour = "00";
 
 
 	// Active to 
@@ -144,7 +129,6 @@ if($process == "1"){
 		$inp_active_to_day = "01";
 	}
 	$inp_active_to_day = output_html($inp_active_to_day);
-	$inp_active_to_day_mysql = quote_smart($link, $inp_active_to_day);
 
 
 	$inp_active_to_month = $_POST['inp_active_to_month'];
@@ -152,21 +136,17 @@ if($process == "1"){
 		$inp_active_to_month = "01";
 	}
 	$inp_active_to_month = output_html($inp_active_to_month);
-	$inp_active_to_month_mysql = quote_smart($link, $inp_active_to_month);
 
 	$inp_active_to_year = $_POST['inp_active_to_year'];
 	if($inp_active_to_year == ""){
 		$inp_active_to_year = "9999";
 	}
 	$inp_active_to_year = output_html($inp_active_to_year);
-	$inp_active_to_year_mysql = quote_smart($link, $inp_active_to_year);
 	
 	$inp_active_to = $inp_active_to_year . "-" . $inp_active_to_month . "-" . $inp_active_to_day . " 00:00:00";
-	$inp_active_to_mysql = quote_smart($link, $inp_active_to);
 
 	// Active from time
 	$inp_active_to_time = strtotime($inp_active_to);
-	$inp_active_to_time_mysql = quote_smart($link, $inp_active_to_time);
 	
 	// Active to saying
 	if($inp_active_to_month == "1" OR $inp_active_to_month == "01"){
@@ -209,50 +189,60 @@ if($process == "1"){
 		$inp_active_to_month_saying = "";
 	}
 	$inp_active_to_saying = $inp_active_to_day . " " . $inp_active_to_month_saying  . " " . $inp_active_to_year;
-	$inp_active_to_saying_mysql = quote_smart($link, $inp_active_to_saying);
+
+	$inp_active_to_hour = "00";
+
+	// Code
+	$inp_html_code = $_POST['inp_html_code'];
+
+	$inp_clicks = 0;
+	$inp_unique_clicks = 0;
 
 	// Me
 	$my_user_id = $_SESSION['admin_user_id'];
 	$my_user_id = output_html($my_user_id);
-	$my_user_id_mysql = quote_smart($link, $my_user_id);
-	$query = "SELECT user_id, user_email, user_name, user_alias, user_language, user_last_online, user_rank, user_login_tries FROM $t_users WHERE user_id=$my_user_id_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	
+	$stmt = $mysqli->prepare("SELECT user_id, user_email, user_name, user_alias, user_language, user_last_online, user_rank, user_login_tries FROM $t_users WHERE user_id=?"); 
+	$stmt->bind_param("s", $my_user_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_my_user_id, $get_my_user_email, $get_my_user_name, $get_my_user_alias, $get_my_user_language, $get_my_user_last_online, $get_my_user_rank, $get_my_user_login_tries) = $row;
 
-	$inp_my_user_alias_mysql = quote_smart($link, $get_my_user_alias);
+	$stmt = $mysqli->prepare("INSERT INTO $t_ads_index
+		(ad_id, ad_internal_name, ad_active, ad_html_code, ad_title, 
+		ad_text, ad_url, ad_language, ad_placement, ad_advertiser_id, 
+		ad_active_from_datetime, ad_active_from_time, ad_active_from_saying, ad_active_from_year, ad_active_from_month, 
+		ad_active_from_day, ad_active_from_hour, ad_active_to_datetime, ad_active_to_time, ad_active_to_saying,
+		ad_active_to_year, ad_active_to_month, ad_active_to_day, ad_active_to_hour, ad_clicks, 
+		ad_unique_clicks, ad_created_by_user_id, ad_created_by_user_alias, ad_created_datetime, ad_updated_by_user_id, 
+		ad_updated_by_user_alias, ad_updated_datetime) 
+		VALUES 
+		(NULL,?,?,?,?,
+		?,?,?,?,?,
+		?,?,?,?,?,
+		?,?,?,?,?,
+		?,?,?,?,?,
+		?,?,?,?,?,
+		?,?)");
+	$stmt->bind_param("ssssssssssssssssssssssssssssss",  $inp_internal_name, $inp_active, $inp_html_code, $inp_title,
+		$inp_text, $inp_url, $inp_language, $inp_placement, $inp_advertiser_id,
+		$inp_active_from, $inp_active_from_time, $inp_active_from_saying, $inp_active_from_year, $inp_active_from_month, 
+		$inp_active_from_day, $inp_active_from_hour, $inp_active_to, $inp_active_to_time, $inp_active_to_saying, 
+		$inp_active_to_year, $inp_active_to_month, $inp_active_to_day, $inp_active_to_hour,  $inp_clicks,
+		$inp_unique_clicks, $get_my_user_id, $get_my_user_name, $datetime,  $get_my_user_id,
+		$get_my_user_name, $datetime); 
+	$stmt->execute();
+	if ($stmt->errno) { echo "Error MySQLi insert: " . $stmt->error; die; }
 
-	mysqli_query($link, "INSERT INTO $t_ads_index
-	(ad_id, ad_internal_name, ad_active, ad_title, ad_text, ad_url, ad_language, ad_placement, ad_advertiser_id, 
-	ad_active_from_datetime, ad_active_from_time, ad_active_from_saying, ad_active_from_year, ad_active_from_month, ad_active_from_day, ad_active_from_hour, 
-	ad_active_to_datetime, ad_active_to_time, ad_active_to_saying, ad_active_to_year, ad_active_to_month, ad_active_to_day, ad_active_to_hour, 
-	ad_clicks, ad_unique_clicks, ad_created_by_user_id, ad_created_by_user_alias, ad_created_datetime, ad_updated_by_user_id, ad_updated_by_user_alias, 
-	ad_updated_datetime) 
-	VALUES 
-	(NULL, $inp_internal_name_mysql, $inp_active_mysql, $inp_title_mysql, $inp_text_mysql, $inp_url_mysql, 
-	$inp_language_mysql, $inp_placement_mysql, $inp_advertiser_id_mysql, 
-	$inp_active_from_mysql, $inp_active_from_time_mysql, $inp_active_from_saying_mysql, $inp_active_from_year_mysql, $inp_active_from_month_mysql, $inp_active_from_day_mysql, '00', 
-	$inp_active_to_mysql, $inp_active_to_time_mysql, $inp_active_to_saying_mysql, $inp_active_to_year_mysql, $inp_active_to_month_mysql, $inp_active_to_day_mysql, '00', 
-	0, 0, $get_my_user_id, $inp_my_user_alias_mysql, '$datetime', $get_my_user_id, $inp_my_user_alias_mysql, 
-	'$datetime')")
-	or die(mysqli_error($link));
+
 
 	// Get ID
 	$query = "SELECT ad_id FROM $t_ads_index WHERE ad_created_datetime='$datetime'";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
 	list($get_current_ad_id) = $row;
 	
-	// Code
-	$inp_html_code = $_POST['inp_html_code'];
-	
-	$sql = "UPDATE $t_ads_index SET ad_html_code=? WHERE ad_id=$get_current_ad_id";
-	$stmt = $link->prepare($sql);
-	$stmt->bind_param("s", $inp_code);
-	$stmt->execute();
-	if ($stmt->errno) {
-		echo "FAILURE!!! " . $stmt->error; die;
-	}
 	
 	// Image
 	$image_ft = "";
@@ -279,66 +269,70 @@ if($process == "1"){
 	}
 	
 
-		$image_target_path = $inp_image_path . "/" . $get_current_ad_id . "." . $image_file_type;
-		if($image_file_type == "jpg" OR $image_file_type == "png" OR $image_file_type == "gif"){
-			if(move_uploaded_file($_FILES['inp_image']['tmp_name'], "../$image_target_path")) {
+	$image_target_path = $inp_image_path . "/" . $get_current_ad_id . "." . $image_file_type;
+	if($image_file_type == "jpg" OR $image_file_type == "png" OR $image_file_type == "gif"){
+		if(move_uploaded_file($_FILES['inp_image']['tmp_name'], "../$image_target_path")) {
 
-				// Sjekk om det faktisk er et bilde som er lastet opp
-				$image_size = getimagesize("../$image_target_path");
-				if(is_numeric($image_size[0]) && is_numeric($image_size[1])){
-					// Dette bildet er OK
-					// Insert into db
-
-
-					$inp_image_path_mysql = quote_smart($link, $inp_image_path);
-					$inp_image_file_mysql = quote_smart($link, $get_current_ad_id . "." . $image_file_type);
-
-					$result = mysqli_query($link, "UPDATE $t_ads_index SET ad_image_path=$inp_image_path_mysql, ad_image_file=$inp_image_file_mysql WHERE ad_id=$get_current_ad_id") or die(mysqli_error($link));
-
-					$image_ft = "success";
-					$image_fm = "image_uploaded";
+			// Sjekk om det faktisk er et bilde som er lastet opp
+			$image_size = getimagesize("../$image_target_path");
+			if(is_numeric($image_size[0]) && is_numeric($image_size[1])){
+				// Dette bildet er OK
+				// Insert into db
 
 
-				} // numeric width and height
-				else{
-					unlink("../$image_target_path");
-					$image_ft = "warning";
-           				$image_fm = "cant_get_file_size_of_image_" . "../$image_target_path";
+				$inp_image_file = $get_current_ad_id . "." . $image_file_type;
+
+				$stmt = $mysqli->prepare("UPDATE $t_ads_index SET ad_image_path=?, ad_image_file=? WHERE ad_id=?");
+				$stmt->bind_param("sss", $$inp_image_path, $inp_image_file, $get_current_ad_id); 
+				$stmt->execute();
+				if ($stmt->errno) {
+					echo "Error MySQLi update: " . $stmt->error; die;
 				}
-			} // move uploaded file
+
+				$image_ft = "success";
+				$image_fm = "image_uploaded";
+
+
+			} // numeric width and height
 			else{
-				switch ($_FILES['inp_image']['error']) {
-					case UPLOAD_ERR_OK:
-						$image_ft = "warning";
-           					$image_fm = "photo_unknown_error";
-						break;
-					case UPLOAD_ERR_NO_FILE:
-						$image_ft = "warning";
-           					$image_fm = "no_file_selected";
-						break;
-					case UPLOAD_ERR_INI_SIZE:
-						$image_ft = "warning";
-           					$image_fm = "photo_exceeds_filesize";
-						break;
-					case UPLOAD_ERR_FORM_SIZE:
-						$image_ft = "warning";
-           					$image_fm = "photo_exceeds_filesize_form";
-						break;
-					default:
-						$image_ft = "warning";
-           					$image_fm = "unknown_upload_error";
-						break;
-				}
-					
-				
-			}
-		} // jpg, png, gif
-		else{
-			if($image_file_type != ""){
+				unlink("../$image_target_path");
 				$image_ft = "warning";
-        	   		$image_fm = "unknown_file_type_" . $image_file_type;
+				$image_fm = "cant_get_file_size_of_image_" . "../$image_target_path";
 			}
+		} // move uploaded file
+		else{
+			switch ($_FILES['inp_image']['error']) {
+				case UPLOAD_ERR_OK:
+					$image_ft = "warning";
+						$image_fm = "photo_unknown_error";
+					break;
+				case UPLOAD_ERR_NO_FILE:
+					$image_ft = "warning";
+						$image_fm = "no_file_selected";
+					break;
+				case UPLOAD_ERR_INI_SIZE:
+					$image_ft = "warning";
+						$image_fm = "photo_exceeds_filesize";
+					break;
+				case UPLOAD_ERR_FORM_SIZE:
+					$image_ft = "warning";
+						$image_fm = "photo_exceeds_filesize_form";
+					break;
+				default:
+					$image_ft = "warning";
+						$image_fm = "unknown_upload_error";
+					break;
+			}
+				
+			
 		}
+	} // jpg, png, gif
+	else{
+		if($image_file_type != ""){
+			$image_ft = "warning";
+			$image_fm = "unknown_file_type_" . $image_file_type;
+		}
+	}
 
 
 
@@ -361,15 +355,15 @@ echo"
 
 <!-- Form -->
 	<script>
-	\$(document).ready(function(){
-		\$('[name=\"inp_internal_name\"]').focus();
-	});
+	window.onload = function() {
+		document.getElementById(\"inp_internal_name\").focus();
+	}
 	</script>
 			
 	<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 	<p><b>Internal name:</b><br />
-	<input type=\"text\" name=\"inp_internal_name\" value=\"\" size=\"40\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
+	<input type=\"text\" name=\"inp_internal_name\" id=\"inp_internal_name\" value=\"\" size=\"40\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
 	</p>
 
 	<p><b>Active:</b><br />

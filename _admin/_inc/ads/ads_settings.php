@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/ads/ads_settings.php
-* Version 15.00 03.03.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */

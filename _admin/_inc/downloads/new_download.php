@@ -111,22 +111,35 @@ if($action == ""){
 
 		// Search engine
 		$inp_index_title = "$inp_title | $l_downloads";
-		$inp_index_title_mysql = quote_smart($link, $inp_index_title);
 
 		$inp_index_url = "downloads/view_download.php?download_id=$get_current_download_id";
-		$inp_index_url_mysql = quote_smart($link, $inp_index_url);
+		$inp_index_short_description = "";
+		$inp_index_keywords = "";
+		$inp_index_module_name = "downloads";
+		$inp_index_module_part_name = "downloads";
+		$inp_index_module_part_id = 0;
+		$inp_index_reference_name = "download_id";
+		$inp_index_has_access_control = 0;
+		$inp_index_is_ad = 0;
+		$inp_index_unique_hits = 0;
 
-		mysqli_query($link, "INSERT INTO $t_search_engine_index 
-		(index_id, index_title, index_url, index_short_description, index_keywords, 
-		index_module_name, index_module_part_name, index_module_part_id, index_reference_name, index_reference_id, 
-		index_has_access_control, index_is_ad, index_created_datetime, index_created_datetime_print, index_language, 
-		index_unique_hits) 
-		VALUES 
-		(NULL, $inp_index_title_mysql, $inp_index_url_mysql, '', '', 
-		'downloads', 'downloads', 0, 'download_id', $get_current_download_id, 
-		0, 0, '$datetime', '$datetime_saying', $inp_language_mysql,
-		0)")
-		or die(mysqli_error($link));
+		$stmt = $mysqli->prepare("INSERT INTO $t_search_engine_index 
+			(index_id, index_title, index_url, index_short_description, index_keywords, 
+			index_module_name, index_module_part_name, index_module_part_id, index_reference_name, index_reference_id, 
+			index_has_access_control, index_is_ad, index_created_datetime, index_created_datetime_print, index_language, 
+			index_unique_hits) 
+			VALUES 
+			(NULL,?,?,?,?,
+			?,?,?,?,?,
+			?,?,?,?,?,
+			?)");
+		$stmt->bind_param("sssssssssssssss", inp_index_title, $inp_index_url, $inp_index_short_description, $inp_index_keywords, 
+			$inp_index_module_name, $inp_index_module_part_name, $inp_index_module_part_id, $inp_index_reference_name, $get_current_download_id, 
+			$inp_index_has_access_control, $inp_index_is_ad, $datetime, $datetime_saying, $inp_language,
+			$inp_index_unique_hits); 
+		$stmt->execute();
+		if ($stmt->errno) { echo "Error MySQLi insert: " . $stmt->error; die; }
+
 
 		$url = "index.php?open=$open&page=edit_download&download_id=$get_current_download_id&main_category_id=$inp_main_category_id&editor_language=$editor_language";
 		header("Location: $url");
@@ -153,16 +166,16 @@ if($action == ""){
 	<!-- New download form -->
 		<!-- Focus -->
 		<script>
-			\$(document).ready(function(){
-				\$('[name=\"inp_title\"]').focus();
-			});
+		window.onload = function() {
+			document.getElementById(\"inp_title\").focus();
+		}
 		</script>
 		<!-- //Focus -->
 
 		<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;l=$l&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 		<p><b>Title:</b><br />
-		<input type=\"text\" name=\"inp_title\" value=\"\" size=\"25\" style=\"width: 99%;\" />
+		<input type=\"text\" name=\"inp_title\" id=\"inp_title\" value=\"\" size=\"25\" style=\"width: 99%;\" />
 		</p>
 
 		<p>Language:<br />

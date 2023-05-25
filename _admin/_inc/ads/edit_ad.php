@@ -2,9 +2,8 @@
 /**
 *
 * File: _admin/_inc/ads/edit_ad.php
-* Version 1
-* Date 08:57 17.05.2019
-* Copyright (c) 2019 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2019-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -31,13 +30,13 @@ if(isset($_GET['ad_id'])) {
 else{
 	$ad_id = "";
 }
-$ad_id_mysql = quote_smart($link, $ad_id);
-
-// Advisor
-$query = "SELECT ad_id, ad_internal_name, ad_active, ad_html_code, ad_title, ad_text, ad_url, ad_language, ad_image_path, ad_image_file, ad_video_file, ad_placement, ad_advertiser_id, ad_active_from_datetime, ad_active_from_time, ad_active_from_saying, ad_active_from_year, ad_active_from_month, ad_active_from_day, ad_active_from_hour, ad_active_to_datetime, ad_active_to_time, ad_active_to_saying, ad_active_to_year, ad_active_to_month, ad_active_to_day, ad_active_to_hour, ad_clicks, ad_unique_clicks, ad_unique_clicks_ip_block, ad_created_by_user_id, ad_created_by_user_alias, ad_created_datetime, ad_updated_by_user_id, ad_updated_by_user_alias, ad_updated_datetime FROM $t_ads_index WHERE ad_id=$ad_id_mysql";
-$result = mysqli_query($link, $query);
-$row = mysqli_fetch_row($result);
-list($get_current_ad_id, $get_current_ad_internal_name, $get_current_ad_active, $get_current_ad_html_code, $get_current_ad_title, $get_current_ad_text, $get_current_ad_url, $get_current_ad_language, $get_current_ad_image_path, $get_current_ad_image_file, $get_current_ad_video_file, $get_current_ad_placement, $get_current_ad_advertiser_id, $get_current_ad_active_from_datetime, $get_current_ad_active_from_time, $get_current_ad_active_from_saying, $get_current_ad_active_from_year, $get_current_ad_active_from_month, $get_current_ad_active_from_day, $get_current_ad_active_from_hour, $get_current_ad_active_to_datetime, $get_current_ad_active_to_time, $get_current_ad_active_to_saying, $get_current_ad_active_to_year, $get_current_ad_active_to_month, $get_current_ad_active_to_day, $get_current_ad_active_to_hour, $get_current_ad_clicks, $get_current_ad_unique_clicks, $get_current_ad_unique_clicks_ip_block, $get_current_ad_created_by_user_id, $get_current_ad_created_by_user_alias, $get_current_ad_created_datetime, $get_current_ad_updated_by_user_id, $get_current_ad_updated_by_user_alias, $get_current_ad_updated_datetime) = $row;
+// Ad
+$stmt = $mysqli->prepare("SELECT ad_id, ad_active, ad_html_code, ad_title, ad_text, ad_url, ad_language, ad_image_path, ad_image_file, ad_video_file, ad_placement, ad_advertiser_id, ad_active_from_datetime, ad_active_from_time, ad_active_from_saying, ad_active_from_year, ad_active_from_month, ad_active_from_day, ad_active_from_hour, ad_active_to_datetime, ad_active_to_time, ad_active_to_saying, ad_active_to_year, ad_active_to_month, ad_active_to_day, ad_active_to_hour, ad_clicks, ad_unique_clicks, ad_unique_clicks_ip_block, ad_created_by_user_id, ad_created_by_user_alias, ad_created_datetime, ad_updated_by_user_id, ad_updated_by_user_alias, ad_updated_datetime FROM $t_ads_index WHERE ad_id=?"); 
+$stmt->bind_param("s", $ad_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_row();
+list($get_current_ad_id, $get_current_ad_active, $get_current_ad_html_code, $get_current_ad_title, $get_current_ad_text, $get_current_ad_url, $get_current_ad_language, $get_current_ad_image_path, $get_current_ad_image_file, $get_current_ad_video_file, $get_current_ad_placement, $get_current_ad_advertiser_id, $get_current_ad_active_from_datetime, $get_current_ad_active_from_time, $get_current_ad_active_from_saying, $get_current_ad_active_from_year, $get_current_ad_active_from_month, $get_current_ad_active_from_day, $get_current_ad_active_from_hour, $get_current_ad_active_to_datetime, $get_current_ad_active_to_time, $get_current_ad_active_to_saying, $get_current_ad_active_to_year, $get_current_ad_active_to_month, $get_current_ad_active_to_day, $get_current_ad_active_to_hour, $get_current_ad_clicks, $get_current_ad_unique_clicks, $get_current_ad_unique_clicks_ip_block, $get_current_ad_created_by_user_id, $get_current_ad_created_by_user_alias, $get_current_ad_created_datetime, $get_current_ad_updated_by_user_id, $get_current_ad_updated_by_user_alias, $get_current_ad_updated_datetime) = $row;
 
 if($get_current_ad_id == ""){
 	echo"<p>Ad not found</p>";
@@ -50,36 +49,28 @@ else{
 	if($process == "1"){
 		$inp_internal_name = $_POST['inp_internal_name'];
 		$inp_internal_name = output_html($inp_internal_name);
-		$inp_internal_name_mysql = quote_smart($link, $inp_internal_name);
 
 		$inp_active = $_POST['inp_active'];
 		$inp_active = output_html($inp_active);
-		$inp_active_mysql = quote_smart($link, $inp_active);
 
 		$inp_title = $_POST['inp_title'];
 		$inp_title = output_html($inp_title);
-		$inp_title_mysql = quote_smart($link, $inp_title);
 
 		$inp_text = $_POST['inp_text'];
 		$inp_text = output_html($inp_text);
-		$inp_text_mysql = quote_smart($link, $inp_text);
 
 		$inp_url = $_POST['inp_url'];
 		$inp_url = output_html($inp_url);
 		$inp_url = str_replace("&amp;", "&", $inp_url);
-		$inp_url_mysql = quote_smart($link, $inp_url);
 
 		$inp_language = $_POST['inp_language'];
 		$inp_language = output_html($inp_language);
-		$inp_language_mysql = quote_smart($link, $inp_language);
 
 		$inp_placement = $_POST['inp_placement'];
 		$inp_placement = output_html($inp_placement);
-		$inp_placement_mysql = quote_smart($link, $inp_placement);
 
 		$inp_advertiser_id = $_POST['inp_advertiser_id'];
 		$inp_advertiser_id = output_html($inp_advertiser_id);
-		$inp_advertiser_id_mysql = quote_smart($link, $inp_advertiser_id);
 
 		$datetime = date("y-m-d H:i:s");
 
@@ -89,7 +80,6 @@ else{
 			$inp_active_from_day = "00";
 		}
 		$inp_active_from_day = output_html($inp_active_from_day);
-		$inp_active_from_day_mysql = quote_smart($link, $inp_active_from_day);
 
 
 		$inp_active_from_month = $_POST['inp_active_from_month'];
@@ -97,21 +87,17 @@ else{
 			$inp_active_from_month = "00";
 		}
 		$inp_active_from_month = output_html($inp_active_from_month);
-		$inp_active_from_month_mysql = quote_smart($link, $inp_active_from_month);
 
 		$inp_active_from_year = $_POST['inp_active_from_year'];
 		if($inp_active_from_year == ""){
 			$inp_active_from_year = "0000";
 		}
 		$inp_active_from_year = output_html($inp_active_from_year);
-		$inp_active_from_year_mysql = quote_smart($link, $inp_active_from_year);
 	
 		$inp_active_from = $inp_active_from_year . "-" . $inp_active_from_month . "-" . $inp_active_from_day . " 00:00:00";
-		$inp_active_from_mysql = quote_smart($link, $inp_active_from);
 
 		// Active from time
 		$inp_active_from_time = strtotime($inp_active_from);
-		$inp_active_from_time_mysql = quote_smart($link, $inp_active_from_time);
 	
 		// Active from saying
 		if($inp_active_from_month == "1" OR $inp_active_from_month == "01"){
@@ -154,8 +140,8 @@ else{
 			$inp_active_from_month_saying = "";
 		}
 		$inp_active_from_saying = $inp_active_from_day . " " . $inp_active_from_month_saying  . " " . $inp_active_from_year;
-		$inp_active_from_saying_mysql = quote_smart($link, $inp_active_from_saying);
 
+		$inp_active_from_hour = "00";
 
 
 		// Active to 
@@ -164,7 +150,6 @@ else{
 			$inp_active_to_day = "01";
 		}
 		$inp_active_to_day = output_html($inp_active_to_day);
-		$inp_active_to_day_mysql = quote_smart($link, $inp_active_to_day);
 	
 
 		$inp_active_to_month = $_POST['inp_active_to_month'];
@@ -172,21 +157,17 @@ else{
 			$inp_active_to_month = "01";
 		}
 		$inp_active_to_month = output_html($inp_active_to_month);
-		$inp_active_to_month_mysql = quote_smart($link, $inp_active_to_month);
 
 		$inp_active_to_year = $_POST['inp_active_to_year'];
 		if($inp_active_to_year == ""){
 			$inp_active_to_year = "9999";
 		}
 		$inp_active_to_year = output_html($inp_active_to_year);
-		$inp_active_to_year_mysql = quote_smart($link, $inp_active_to_year);
 	
 		$inp_active_to = $inp_active_to_year . "-" . $inp_active_to_month . "-" . $inp_active_to_day . " 00:00:00";
-		$inp_active_to_mysql = quote_smart($link, $inp_active_to);
 
 		// Active from time
 		$inp_active_to_time = strtotime($inp_active_to);
-		$inp_active_to_time_mysql = quote_smart($link, $inp_active_to_time);
 	
 		// Active to saying
 		if($inp_active_to_month == "1" OR $inp_active_to_month == "01"){
@@ -229,59 +210,83 @@ else{
 			$inp_active_to_month_saying = "";
 		}
 		$inp_active_to_saying = $inp_active_to_day . " " . $inp_active_to_month_saying  . " " . $inp_active_to_year;
-		$inp_active_to_saying_mysql = quote_smart($link, $inp_active_to_saying);
 	
-		// Me
-		$my_user_id = $_SESSION['admin_user_id'];
-		$my_user_id = output_html($my_user_id);
-		$my_user_id_mysql = quote_smart($link, $my_user_id);
-		$query = "SELECT user_id, user_email, user_name, user_alias, user_language, user_last_online, user_rank, user_login_tries FROM $t_users WHERE user_id=$my_user_id_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
-		list($get_my_user_id, $get_my_user_email, $get_my_user_name, $get_my_user_alias, $get_my_user_language, $get_my_user_last_online, $get_my_user_rank, $get_my_user_login_tries) = $row;
-
-		$inp_my_user_alias_mysql = quote_smart($link, $get_my_user_alias);
-
-
-		$result = mysqli_query($link, "UPDATE $t_ads_index SET 
-						ad_internal_name=$inp_internal_name_mysql,
-						ad_active=$inp_active_mysql,
-						ad_title=$inp_title_mysql, 
-						ad_text=$inp_text_mysql, 
-						ad_url=$inp_url_mysql, 
-						ad_language=$inp_language_mysql, 
-						ad_placement=$inp_placement_mysql, 
-						ad_advertiser_id=$inp_advertiser_id_mysql, 
-						ad_active_from_datetime=$inp_active_from_mysql, 
-						ad_active_from_time=$inp_active_from_time_mysql, 
-						ad_active_from_saying=$inp_active_from_saying_mysql, 
-						ad_active_from_year=$inp_active_from_year_mysql, 
-						ad_active_from_month=$inp_active_from_month_mysql, 
-						ad_active_from_day=$inp_active_from_day_mysql, 
-						ad_active_from_hour='00', 
-						ad_active_to_datetime=$inp_active_to_mysql, 
-						ad_active_to_time=$inp_active_to_time_mysql, 
-						ad_active_to_saying=$inp_active_to_saying_mysql, 
-						ad_active_to_year=$inp_active_to_year_mysql, 
-						ad_active_to_month=$inp_active_to_month_mysql, 
-						ad_active_to_day=$inp_active_to_day_mysql, 
-						ad_active_to_hour='00', 
-						ad_updated_by_user_id=$get_my_user_id, 
-						ad_updated_by_user_alias=$inp_my_user_alias_mysql, 
-						ad_updated_datetime='$datetime'
-						 WHERE ad_id=$get_current_ad_id") or die(mysqli_error($link));
-
+		$inp_active_to_hour = "00";
 
 		// Code
 		$inp_html_code = $_POST['inp_html_code'];
-	
-		$sql = "UPDATE $t_ads_index SET ad_html_code=? WHERE ad_id=$get_current_ad_id";
-		$stmt = $link->prepare($sql);
-		$stmt->bind_param("s", $inp_html_code);
+
+		// Me
+		$my_user_id = $_SESSION['admin_user_id'];
+		$my_user_id = output_html($my_user_id);
+		
+		$stmt = $mysqli->prepare("SELECT user_id, user_email, user_name, user_alias, user_language, user_last_online, user_rank, user_login_tries FROM $t_users WHERE user_id=?"); 
+		$stmt->bind_param("s", $my_user_id);
 		$stmt->execute();
-		if ($stmt->errno) {
-			echo "FAILURE!!! " . $stmt->error; die;
-		}
+		$result = $stmt->get_result();
+		$row = $result->fetch_row();
+		list($get_my_user_id, $get_my_user_email, $get_my_user_name, $get_my_user_alias, $get_my_user_language, $get_my_user_last_online, $get_my_user_rank, $get_my_user_login_tries) = $row;
+
+		$stmt = $mysqli->prepare("UPDATE $t_ads_index SET 
+			ad_internal_name=?,
+			ad_active=?,
+			ad_html_code=?,
+			ad_title=?,
+			ad_text=?,
+			ad_url=?,
+			ad_language=?,
+			ad_placement=?,
+			ad_advertiser_id=?,
+			ad_active_from_datetime=?,
+			ad_active_from_time=?,
+			ad_active_from_saying=?,
+			ad_active_from_year=?,
+			ad_active_from_month=?,
+			ad_active_from_day=?,
+			ad_active_from_hour=?,
+			ad_active_to_datetime=?,
+			ad_active_to_time=?,
+			ad_active_to_saying=?,
+			ad_active_to_year=?,
+			ad_active_to_month=?,
+			ad_active_to_day=?,
+			ad_active_to_hour=?,
+			ad_updated_by_user_id=?,
+			ad_updated_by_user_alias=?,
+			ad_updated_datetime=?
+			WHERE ad_id=?");
+		$stmt->bind_param("sssssssssssssssssssssssssss", 
+			$inp_internal_name,
+			$inp_active,
+			$inp_html_code,
+			$inp_title,
+			$inp_text,
+			$inp_url,
+			$inp_language,
+			$inp_placement,
+			$inp_advertiser_id,
+			$inp_active_from,
+			$inp_active_from_time,
+			$inp_active_from_saying,
+			$inp_active_from_year,
+			$inp_active_from_month,
+			$inp_active_from_day,
+			$inp_active_from_hour,
+			$inp_active_to,
+			$inp_active_to_time,
+			$inp_active_to_saying,
+			$inp_active_to_year,
+			$inp_active_to_month,
+			$inp_active_to_day,
+			$inp_active_to_hour,
+			$get_my_user_id, 
+			$get_my_user_name,
+			$datetime,
+			$get_current_ad_id
+			); 
+		$stmt->execute();
+		if ($stmt->errno) { echo "Error MySQLi update: " . $stmt->error; die; }
+
 	
 		// Image
 		$image_ft = "";
@@ -317,10 +322,17 @@ else{
 					// Insert into db
 
 
-					$inp_image_path_mysql = quote_smart($link, $inp_image_path);
-					$inp_image_file_mysql = quote_smart($link, $get_current_ad_id . "." . $image_file_type);
+					$inp_image_file = $get_current_ad_id . "." . $image_file_type;
 
-					$result = mysqli_query($link, "UPDATE $t_ads_index SET ad_image_path=$inp_image_path_mysql, ad_image_file=$inp_image_file_mysql WHERE ad_id=$get_current_ad_id") or die(mysqli_error($link));
+					$stmt = $mysqli->prepare("UPDATE $t_ads_index SET 
+						ad_image_path=$inp_image_path, 
+						ad_image_file=$inp_image_file 
+						WHERE ad_id=$get_current_ad_id");
+					$stmt->bind_param("sss", $inp_image_path, $inp_image_file, $get_current_ad_id); 
+					$stmt->execute();
+					if ($stmt->errno) {
+						echo "Error MySQLi update: " . $stmt->error; die;
+					}
 
 					$image_ft = "success";
 					$image_fm = "image_uploaded";
@@ -414,15 +426,15 @@ else{
 
 	<!-- Form -->
 		<script>
-		\$(document).ready(function(){
-			\$('[name=\"inp_internal_name\"]').focus();
-		});
+		window.onload = function() {
+			document.getElementById(\"inp_internal_name\").focus();
+		}
 		</script>
 			
 		<form method=\"post\" action=\"index.php?open=$open&amp;page=$page&amp;ad_id=$ad_id&amp;editor_language=$editor_language&amp;process=1\" enctype=\"multipart/form-data\">
 
 		<p><b>Internal name:</b><br />
-		<input type=\"text\" name=\"inp_internal_name\" value=\"$get_current_ad_internal_name\" size=\"40\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
+		<input type=\"text\" name=\"inp_internal_name\" id=\"inp_internal_name\" value=\"$get_current_ad_internal_name\" size=\"40\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\" />
 		</p>
 
 		<p><b>Active:</b><br />
@@ -494,8 +506,8 @@ else{
 		<select name=\"inp_advertiser_id\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">
 		<option value=\"0\">- Please select -</option>\n";
 		$query = "SELECT advertiser_id, advertiser_name FROM $t_ads_advertisers";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_advertiser_id, $get_advertiser_name) = $row;
 			echo"	<option value=\"$get_advertiser_id\""; if($get_advertiser_id == "$get_current_ad_advertiser_id"){ echo" selected=\"selected\""; } echo">$get_advertiser_name</option>\n";
 		}
