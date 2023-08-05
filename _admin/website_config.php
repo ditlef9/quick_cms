@@ -7,11 +7,28 @@ ini_set('arg_separator.output', '&amp;');
 *
 * File: _admin/website_config.php
 * Version 1.0
-* Date 00.53 21.03.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Date 2023
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
+
+/*- Datettime ----------------------------------------------------------------- */
+$datetime = date("Y-m-d H:i:s");
+$datetime_day = date("d");
+$datetime_saying = date("d.m.Y H:i");
+$datetime_ymd = date("Y-m-d");
+$datetime_date_saying = date("d.m.Y");
+$datetime_year = date("Y");
+$datetime_month = date("m");
+$datetime_month_full = date("F");
+$datetime_month_short = date("M");
+$datetime_day = date("d");
+$datetime_day_full = date('l');
+$datetime_day_short = date('D');
+$datetime_week = date("W");
+$time_saying = date("H:i");
+$timestamp = time();
 
 
 /*- Important functions ---------------------------------------------------------------- */
@@ -66,6 +83,8 @@ if(file_exists("$root/_admin/_data/config/meta.php")){
 /*- Common variables ----------------------------------------------------------------- */
 $server_name = $_SERVER['HTTP_HOST'];
 $server_name = clean($server_name);
+
+
 
 /*- Check if setup is run ------------------------------------------------------------ */
 $check = substr($server_name, 0, 3);
@@ -137,9 +156,14 @@ if(isset($_GET['fm'])) {
 $mysql_config_file = "$root/_admin/_data/mysql_" . $server_name . ".php";
 if(file_exists($mysql_config_file)){
 	include("$mysql_config_file");
-	$link = mysqli_connect($mysqlHostSav, $mysqlUserNameSav, $mysqlPasswordSav, $mysqlDatabaseNameSav);
-	if (mysqli_connect_errno()){
-		echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	$mysqli = new mysqli($mysqlHostSav, $mysqlUserNameSav, $mysqlPasswordSav, $mysqlDatabaseNameSav);
+
+	if ($mysqli -> connect_errno) {
+		$error = $mysqli -> connect_error;
+		echo "
+		<div class=\"error\"><p><b>MySQL connection error</b>: $error</p>
+		</div>
+		";
 	}
 
 	/*- MySQL Tables -------------------------------------------------- */
@@ -186,6 +210,8 @@ if(file_exists($mysql_config_file)){
 
 }
 /*- Language ------------------------------------------------------------------------- */
+
+
 if(isset($_GET['l'])) {
 	$l = $_GET['l'];
 	// Look for hacker in string (this will ban user if hacker string is used more than 5 times)
@@ -199,12 +225,13 @@ if(isset($_GET['l'])) {
 		die;
 	}
 	$l = strip_tags(stripslashes($l));
-	$l_mysql = quote_smart($link, $l);
 
 	// Is that language in list of languages?
-	$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_iso_two=$l_mysql";
-	$result = mysqli_query($link, $query);
-	$row = mysqli_fetch_row($result);
+	$stmt = $mysqli->prepare("SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_iso_two=?"); 
+	$stmt->bind_param("s", $l);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$row = $result->fetch_row();
 	list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two) = $row;
 	if($get_current_language_active_iso_two  != ""){
 		
@@ -212,90 +239,23 @@ if(isset($_GET['l'])) {
 	
 	}
 	else{
-		// Find the pre defined language
-		$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_default='1'";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
-		list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two) = $row;
-		if($get_current_language_active_iso_two == ""){
-			$l = "en";
-			echo"<div class=\"error\"><a href=\"$root/_admin\">Please select a default language</a></div>"; die;
-		}
-
-		$_SESSION['l'] = "$get_current_language_active_iso_two";
-		$l = "$get_current_language_active_iso_two";
+		echo"<div class=\"error\"><p>Unknown language</p></div>";
+		die;
 	}
 }
 else{
-	// Look for language in session
-	if(isset($_SESSION['l'])){
-		$l = $_SESSION['l'];
-
-		// Check if we have that language
-		$l_mysql = quote_smart($link, $l);
-		$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_iso_two=$l_mysql";
-		$result = mysqli_query($link, $query);
-		$row = mysqli_fetch_row($result);
-		list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two) = $row;
-		if($get_current_language_active_iso_two == ""){
-			// That language doesnt exists
-			// Find the pre defined language
-			$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_default='1'";
-			$result = mysqli_query($link, $query);
-			$row = mysqli_fetch_row($result);
-			list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two) = $row;
-			if($get_current_language_active_iso_two != ""){
-				$_SESSION['l'] = "$get_current_language_active_iso_two";
-				$l = $_SESSION['l'];
-			}
-		}	
+	// Find the pre defined language
+	$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_default='1'";
+	$result = $mysqli->query($query);
+	$row = $result->fetch_row();
+	list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two) = $row;
+	if($get_current_language_active_iso_two == ""){
+		echo"<div class=\"error\"><a href=\"$root/_admin\">Please select a default language</a></div>"; 
+		die;
 	}
-	else{
 
-		if(isset($_COOKIE['l'])) {
-	        	$cookie_l = $_COOKIE['l'];
-			$l = $cookie_l;
-		}
-		else{
-			// Check my browsers settings for language
-			if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
-				$language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-				$language = output_html($language);
-				$language = strtolower($language);
-				$language = substr("$language", 0,2);
-				$language_mysql = quote_smart($link, $language);
-
-				// Check if we have that language
-				$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_iso_two=$language_mysql OR language_active_iso_two_alt_a=$language_mysql OR language_active_iso_two_alt_b=$language_mysql";
-				$result = mysqli_query($link, $query);
-				$row = mysqli_fetch_row($result);
-				list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two) = $row;
-
-				if($get_current_language_active_iso_two != ""){
-					$l = $get_current_language_active_iso_two;
-					$_SESSION['l'] = "$l";
-				}
-			}
-
-			if(!(isset($l))) {
-				// Find the pre defined language
-				$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active WHERE language_active_default='1'";
-				$result = mysqli_query($link, $query);
-				$row = mysqli_fetch_row($result);
-				list($get_current_language_active_id, $get_current_language_active_name, $get_current_language_active_iso_two) = $row;
-				if($get_current_language_active_iso_two == ""){
-					$l = "en";
-				}
-
-				$_SESSION['l'] = "$get_current_language_active_iso_two";
-				$l = $_SESSION['l'];
-			}
-		}
-		
-	}
+	$l = $get_current_language_active_iso_two;
 }
-
-
 
 /*- Translation and CSS -------------------------------------------------------------------------- */
 // 1. Common
@@ -423,7 +383,7 @@ else{
 
 
 /*- Stats ---------------------------------------------------------------------------- */
-include("$root/_admin/_functions/registrer_stats.php");
+include("$root/_admin/_functions/register_stats/registrer_stats.php");
 
 /*- Cookie? -------------------------------------------------------------------------- */
 if(isset($_SESSION['user_id'])) {

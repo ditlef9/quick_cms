@@ -2,8 +2,8 @@
 /**
 *
 * File: _admin/_inc/blog/default.php
-* Version 15.00 03.03.2017
-* Copyright (c) 2008-2017 Sindre Andre Ditlefsen
+* Version 2
+* Copyright (c) 2008-2023 Sindre Andre Ditlefsen
 * License: http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -41,6 +41,33 @@ if(!(file_exists("_data/blog.php"))){
 }
 /*- Check if setup is run ------------------------------------------------------------- */
 $t_blog_liquidbase			= $mysqlPrefixSav . "blog_liquidbase";
+
+
+/*- Check if installed ---------------------------------------------------------------- */
+$ads_index_exists = false;
+$query = "SHOW TABLES";
+$result = $mysqli->query($query);
+if($result !== false) {
+	if($result->num_rows > 0) {
+		while($row = $result->fetch_row()) {
+			if($row[0] == "$t_ads_index"){
+				$ads_index_exists = true;
+				break;
+			}
+    		}
+  	}
+}
+else echo "Error Unable to check tables " . $mysqli->error;
+
+if(!($ads_index_exists)){
+	echo"
+	<div class=\"info\"><p><img src=\"_design/gfx/loading_22.gif\" alt=\"loading_22.gif\" /> Running setup</p></div>
+	<meta http-equiv=\"refresh\" content=\"1;url=index.php?open=ads&amp;page=tables&amp;refererer=default&amp;editor_language=$editor_language&amp;l=$l\" />
+	";
+}
+
+
+
 $query = "SELECT * FROM $t_blog_liquidbase LIMIT 1";
 $result = mysqli_query($link, $query);
 if($result !== FALSE){

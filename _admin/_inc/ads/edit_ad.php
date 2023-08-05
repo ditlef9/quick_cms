@@ -31,12 +31,12 @@ else{
 	$ad_id = "";
 }
 // Ad
-$stmt = $mysqli->prepare("SELECT ad_id, ad_active, ad_html_code, ad_title, ad_text, ad_url, ad_language, ad_image_path, ad_image_file, ad_video_file, ad_placement, ad_advertiser_id, ad_active_from_datetime, ad_active_from_time, ad_active_from_saying, ad_active_from_year, ad_active_from_month, ad_active_from_day, ad_active_from_hour, ad_active_to_datetime, ad_active_to_time, ad_active_to_saying, ad_active_to_year, ad_active_to_month, ad_active_to_day, ad_active_to_hour, ad_clicks, ad_unique_clicks, ad_unique_clicks_ip_block, ad_created_by_user_id, ad_created_by_user_alias, ad_created_datetime, ad_updated_by_user_id, ad_updated_by_user_alias, ad_updated_datetime FROM $t_ads_index WHERE ad_id=?"); 
+$stmt = $mysqli->prepare("SELECT ad_id, ad_internal_name, ad_active, ad_html_code, ad_title, ad_text, ad_url, ad_language, ad_image_path, ad_image_file, ad_video_file, ad_placement, ad_advertiser_id, ad_active_from_datetime, ad_active_from_time, ad_active_from_saying, ad_active_from_year, ad_active_from_month, ad_active_from_day, ad_active_from_hour, ad_active_to_datetime, ad_active_to_time, ad_active_to_saying, ad_active_to_year, ad_active_to_month, ad_active_to_day, ad_active_to_hour, ad_clicks, ad_unique_clicks, ad_unique_clicks_ip_block, ad_created_by_user_id, ad_created_by_user_alias, ad_created_datetime, ad_updated_by_user_id, ad_updated_by_user_alias, ad_updated_datetime FROM $t_ads_index WHERE ad_id=?"); 
 $stmt->bind_param("s", $ad_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_row();
-list($get_current_ad_id, $get_current_ad_active, $get_current_ad_html_code, $get_current_ad_title, $get_current_ad_text, $get_current_ad_url, $get_current_ad_language, $get_current_ad_image_path, $get_current_ad_image_file, $get_current_ad_video_file, $get_current_ad_placement, $get_current_ad_advertiser_id, $get_current_ad_active_from_datetime, $get_current_ad_active_from_time, $get_current_ad_active_from_saying, $get_current_ad_active_from_year, $get_current_ad_active_from_month, $get_current_ad_active_from_day, $get_current_ad_active_from_hour, $get_current_ad_active_to_datetime, $get_current_ad_active_to_time, $get_current_ad_active_to_saying, $get_current_ad_active_to_year, $get_current_ad_active_to_month, $get_current_ad_active_to_day, $get_current_ad_active_to_hour, $get_current_ad_clicks, $get_current_ad_unique_clicks, $get_current_ad_unique_clicks_ip_block, $get_current_ad_created_by_user_id, $get_current_ad_created_by_user_alias, $get_current_ad_created_datetime, $get_current_ad_updated_by_user_id, $get_current_ad_updated_by_user_alias, $get_current_ad_updated_datetime) = $row;
+list($get_current_ad_id, $get_current_ad_internal_name, $get_current_ad_active, $get_current_ad_html_code, $get_current_ad_title, $get_current_ad_text, $get_current_ad_url, $get_current_ad_language, $get_current_ad_image_path, $get_current_ad_image_file, $get_current_ad_video_file, $get_current_ad_placement, $get_current_ad_advertiser_id, $get_current_ad_active_from_datetime, $get_current_ad_active_from_time, $get_current_ad_active_from_saying, $get_current_ad_active_from_year, $get_current_ad_active_from_month, $get_current_ad_active_from_day, $get_current_ad_active_from_hour, $get_current_ad_active_to_datetime, $get_current_ad_active_to_time, $get_current_ad_active_to_saying, $get_current_ad_active_to_year, $get_current_ad_active_to_month, $get_current_ad_active_to_day, $get_current_ad_active_to_hour, $get_current_ad_clicks, $get_current_ad_unique_clicks, $get_current_ad_unique_clicks_ip_block, $get_current_ad_created_by_user_id, $get_current_ad_created_by_user_alias, $get_current_ad_created_datetime, $get_current_ad_updated_by_user_id, $get_current_ad_updated_by_user_alias, $get_current_ad_updated_datetime) = $row;
 
 if($get_current_ad_id == ""){
 	echo"<p>Ad not found</p>";
@@ -465,8 +465,8 @@ else{
 		<p><b>Language:</b><br />
 		<select name=\"inp_language\" tabindex=\"";$tabindex=$tabindex+1;echo"$tabindex\">\n";
 		$query = "SELECT language_active_id, language_active_name, language_active_iso_two FROM $t_languages_active";
-		$result = mysqli_query($link, $query);
-		while($row = mysqli_fetch_row($result)) {
+		$result = $mysqli->query($query);
+		while($row = $result->fetch_row()) {
 			list($get_language_active_id, $get_language_active_name, $get_language_active_iso_two) = $row;
 			echo"	<option value=\"$get_language_active_iso_two\""; if($get_language_active_iso_two == "$get_current_ad_language"){ echo" selected=\"selected\""; } echo">$get_language_active_name</option>\n";
 		}
